@@ -5,6 +5,7 @@ import { addToCart } from '@/actions/cart';
 import { Minus, Plus, ShoppingCart, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/context/ToastContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface QuantitySelectorProps {
   productId: string;
@@ -22,6 +23,7 @@ export default function QuantitySelector({
   const [added, setAdded] = useState(false);
   const router = useRouter();
   const toast = useToast();
+  const { t } = useLanguage();
 
   const decrement = () => setQuantity((q) => Math.max(1, q - 1));
   const increment = () => setQuantity((q) => Math.min(maxStock, q + 1));
@@ -61,7 +63,7 @@ export default function QuantitySelector({
     <div className="flex flex-col gap-4">
       {/* Quantity Control */}
       <div className="flex items-center gap-4">
-        <span className="text-sm font-semibold text-gray-700">Quantity:</span>
+        <span className="text-sm font-semibold text-gray-700">{t('cart.quantity')}</span>
         <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-white shadow-sm">
           <button
             onClick={decrement}
@@ -84,7 +86,7 @@ export default function QuantitySelector({
           </button>
         </div>
         <span className="text-xs text-gray-500">
-          (Max: {maxStock})
+          ({t('cart.max')} {maxStock})
         </span>
       </div>
 
@@ -103,7 +105,7 @@ export default function QuantitySelector({
         ) : (
           <ShoppingCart className="w-5 h-5" />
         )}
-        {added ? 'Added to Cart!' : loading ? 'Adding...' : 'Add to Cart'}
+        {added ? t('cart.addedToCart') : loading ? t('product.adding') : t('product.addToCart')}
       </button>
     </div>
   );

@@ -5,6 +5,7 @@ import { Minus, Plus, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface CartItem {
   id: string;
@@ -27,6 +28,7 @@ export default function CartItemRow({ item }: CartItemRowProps) {
   const router = useRouter();
   const [qty, setQty] = useState(item.quantity);
   const [loading, setLoading] = useState(false);
+  const { t } = useLanguage();
 
   const handleQtyChange = async (newQty: number) => {
     if (newQty < 0) return;
@@ -100,7 +102,7 @@ export default function CartItemRow({ item }: CartItemRowProps) {
             className="flex items-center gap-1 text-xs text-red-500 hover:text-red-700 transition-colors disabled:opacity-50 p-1"
           >
             <Trash2 className="w-4 h-4" />
-            Remove
+            {t('cart.remove')}
           </button>
         </div>
       </div>

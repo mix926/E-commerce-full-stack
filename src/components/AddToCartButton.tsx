@@ -5,6 +5,7 @@ import { ShoppingCart, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/context/ToastContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface AddToCartButtonProps {
   productId: string;
@@ -27,6 +28,7 @@ export default function AddToCartButton({
   const [added, setAdded] = useState(false);
   const router = useRouter();
   const toast = useToast();
+  const { t } = useLanguage();
 
   const handleAddToCart = async () => {
     setLoading(true);
@@ -75,7 +77,7 @@ export default function AddToCartButton({
       ) : showIcon ? (
         <ShoppingCart className="w-4 h-4" />
       ) : null}
-      {added ? 'Added!' : loading ? 'Adding...' : disabled ? 'Out of Stock' : 'Add to Cart'}
+      {added ? t('product.addedToCart') : loading ? t('product.adding') : disabled ? t('product.outOfStock') : t('product.addToCart')}
     </button>
   );
 }

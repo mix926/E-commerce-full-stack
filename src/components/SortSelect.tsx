@@ -1,21 +1,23 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface SortSelectProps {
   defaultValue: string;
 }
 
-const SORT_OPTIONS = [
-  { label: 'Newest First', value: 'newest' },
-  { label: 'Price: Low → High', value: 'price_asc' },
-  { label: 'Price: High → Low', value: 'price_desc' },
-  { label: 'Top Rated', value: 'rating' },
-];
-
 export default function SortSelect({ defaultValue }: SortSelectProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useLanguage();
+
+  const SORT_OPTIONS = [
+    { label: t('sort.newest'), value: 'newest' },
+    { label: t('sort.priceAsc'), value: 'price_asc' },
+    { label: t('sort.priceDesc'), value: 'price_desc' },
+    { label: t('sort.rating'), value: 'rating' },
+  ];
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const params = new URLSearchParams(searchParams.toString());
