@@ -12,10 +12,12 @@ import {
   CheckCircle2,
   Heart,
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const { t } = useLanguage();
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +44,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-sm text-gray-400 leading-relaxed max-w-sm">
-              Your trusted marketplace for premium electronics, fashion, lifestyle gear, and everyday essentials. Delivered straight to your doorstep with speed and care.
+              {t('footer.tagline')}
             </p>
 
             <div className="space-y-2 text-xs text-gray-400 pt-2">
@@ -64,7 +66,7 @@ export default function Footer() {
           {/* Categories */}
           <div>
             <h3 className="text-white text-sm font-bold uppercase tracking-wider mb-4">
-              Categories
+              {t('footer.categories')}
             </h3>
             <ul className="space-y-2.5 text-sm">
               {['Electronics', 'Accessories', 'Clothing', 'Home', 'Sports', 'Books'].map((cat) => (
@@ -83,37 +85,37 @@ export default function Footer() {
           {/* Customer Care */}
           <div>
             <h3 className="text-white text-sm font-bold uppercase tracking-wider mb-4">
-              Customer Care
+              {t('footer.customerCare')}
             </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/faq" className="hover:text-blue-400 transition-colors">
-                  Help Center & FAQ
+                  {t('footer.helpFaq')}
                 </Link>
               </li>
               <li>
                 <Link href="/orders" className="hover:text-blue-400 transition-colors">
-                  Track My Order
+                  {t('footer.trackOrder')}
                 </Link>
               </li>
               <li>
                 <Link href="/wishlist" className="hover:text-blue-400 transition-colors">
-                  My Wishlist
+                  {t('footer.myWishlist')}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-blue-400 transition-colors">
-                  Shipping & Delivery
+                  {t('footer.shipping')}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-blue-400 transition-colors">
-                  Returns & Refunds
+                  {t('footer.returns')}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-blue-400 transition-colors">
-                  Contact Support
+                  {t('footer.contactSupport')}
                 </Link>
               </li>
             </ul>
@@ -122,10 +124,10 @@ export default function Footer() {
           {/* Newsletter */}
           <div>
             <h3 className="text-white text-sm font-bold uppercase tracking-wider mb-4">
-              Stay in the Loop
+              {t('footer.newsletter')}
             </h3>
             <p className="text-xs text-gray-400 mb-4 leading-relaxed">
-              Subscribe to get exclusive discount codes, flash sales alerts, and weekly new arrivals.
+              {t('footer.newsletterDesc')}
             </p>
 
             <form onSubmit={handleSubscribe} className="space-y-2">
@@ -134,7 +136,7 @@ export default function Footer() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t('footer.emailPlaceholder')}
                   required
                   className="w-full bg-gray-800 text-white placeholder-gray-500 text-xs rounded-xl px-3.5 py-2.5 border border-gray-700 focus:outline-none focus:border-blue-500"
                 />
@@ -150,14 +152,14 @@ export default function Footer() {
               {subscribed && (
                 <div className="flex items-center gap-1.5 text-xs text-green-400 bg-green-950/50 p-2 rounded-lg border border-green-800">
                   <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-                  <span>Subscribed! Check your inbox for 10% off.</span>
+                  <span>{t('footer.subscribed')}</span>
                 </div>
               )}
             </form>
 
             <div className="flex items-center gap-2 mt-4 text-[11px] text-gray-500">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>We value your privacy. No spam ever.</span>
+              <span>{t('footer.privacy')}</span>
             </div>
           </div>
         </div>
@@ -166,7 +168,7 @@ export default function Footer() {
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Payment Methods */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-gray-400 mr-2">Secure Payments:</span>
+            <span className="text-xs text-gray-400 mr-2">{t('footer.securePayments')}</span>
             {['VISA', 'Mastercard', 'KHQR / ABA', 'PayPal', 'Apple Pay', 'Cash on Delivery'].map((method) => (
               <span
                 key={method}
@@ -179,9 +181,9 @@ export default function Footer() {
 
           {/* Copyright */}
           <div className="text-xs text-gray-500 text-center md:text-right">
-            <p>© {new Date().getFullYear()} E-Shop Inc. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} {t('footer.copyright')}</p>
             <p className="mt-0.5 text-gray-600 flex items-center justify-center md:justify-end gap-1">
-              Crafted with <Heart className="w-3 h-3 text-rose-500 fill-rose-500" /> for modern shoppers
+              {t('footer.crafted')} <Heart className="w-3 h-3 text-rose-500 fill-rose-500" /> {t('footer.forShoppers')}
             </p>
           </div>
         </div>

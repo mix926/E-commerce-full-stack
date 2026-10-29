@@ -6,18 +6,14 @@ import { ArrowRight, Star, ShieldCheck, Truck, RefreshCw, Zap } from 'lucide-rea
 export const dynamic = 'force-dynamic';
 
 interface HomePageProps {
-  searchParams: Promise<{ category?: string; search?: string }>;
+  searchParams: Promise<{ search?: string }>;
 }
-
-const CATEGORIES = ['All', 'Electronics', 'Accessories', 'Clothing', 'Home', 'Sports', 'Books'];
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const params = await searchParams;
-  const selectedCategory = params.category || 'All';
   const searchQuery = params.search || '';
 
   const where: Record<string, unknown> = {};
-  if (selectedCategory !== 'All') where.category = selectedCategory;
   if (searchQuery) {
     where.OR = [
       { name: { contains: searchQuery } },
@@ -40,7 +36,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   return (
     <div>
       {/* Hero Banner */}
-      {!searchQuery && selectedCategory === 'All' && (
+      {!searchQuery && (
         <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 flex flex-col md:flex-row items-center gap-10">
             <div className="flex-1 text-center md:text-left">
@@ -92,7 +88,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       )}
 
       {/* Features Strip */}
-      {!searchQuery && selectedCategory === 'All' && (
+      {!searchQuery && (
         <section className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -116,23 +112,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Category Filters */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat}
-              href={cat === 'All' ? '/' : `/?category=${cat}`}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === cat
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'bg-white text-gray-700 border border-gray-200 hover:border-blue-300 hover:text-blue-600'
-              }`}
-            >
-              {cat}
-            </Link>
-          ))}
-        </div>
-
         {/* Search Info */}
         {searchQuery && (
           <div className="mb-6">
@@ -150,19 +129,15 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         {!searchQuery && (
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-extrabold text-gray-900">
-                {selectedCategory === 'All' ? 'All Products' : selectedCategory}
-              </h2>
+              <h2 className="text-2xl font-extrabold text-gray-900">All Products</h2>
               <p className="text-gray-500 text-sm mt-1">{products.length} products available</p>
             </div>
-            {selectedCategory === 'All' && (
-              <Link
-                href="/products"
-                className="text-sm text-blue-600 hover:underline flex items-center gap-1"
-              >
-                View all <ArrowRight className="w-4 h-4" />
-              </Link>
-            )}
+            <Link
+              href="/products"
+              className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+            >
+              View all <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         )}
 
@@ -192,7 +167,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         )}
 
         {/* Top Rated Section */}
-        {!searchQuery && selectedCategory === 'All' && featuredProducts.length > 0 && (
+        {!searchQuery && featuredProducts.length > 0 && (
           <section className="mt-16">
             <div className="flex items-center justify-between mb-6">
               <div>

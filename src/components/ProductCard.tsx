@@ -28,7 +28,7 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col group relative">
+    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group relative">
       {/* Product Image & Badges */}
       <div className="relative h-56 w-full bg-gray-100 overflow-hidden">
         <Link href={`/products/${product.id}`} className="block w-full h-full">

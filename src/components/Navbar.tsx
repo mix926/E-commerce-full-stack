@@ -5,6 +5,7 @@ import { ShoppingBag, Search, Sparkles } from 'lucide-react';
 import UserMenu from './UserMenu';
 import WishlistNavButton from './WishlistNavButton';
 import MobileNav from './MobileNav';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const QUICK_CATEGORIES = [
   'Electronics',
@@ -60,6 +61,9 @@ export default async function Navbar() {
 
           {/* Nav Actions */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+
             {/* Wishlist Icon */}
             <WishlistNavButton />
 
