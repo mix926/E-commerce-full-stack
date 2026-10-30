@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Loader2, AlertCircle, ShoppingBag, Sparkles, KeyRound } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 
 function SignInContent() {
   const searchParams = useSearchParams();
@@ -15,6 +16,7 @@ function SignInContent() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { t } = useLanguage();
 
   const fillDemoAccount = () => {
     setEmail('demo@example.com');
@@ -51,9 +53,9 @@ function SignInContent() {
               <ShoppingBag className="w-7 h-7" />
             </div>
           </div>
-          <h2 className="text-2xl font-extrabold text-gray-900">Welcome Back</h2>
+          <h2 className="text-2xl font-extrabold text-gray-900">{t('signin.title')}</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Sign in to access your orders, cart, and profile
+            {t('signin.subtitle')}
           </p>
         </div>
 
@@ -62,7 +64,7 @@ function SignInContent() {
           <div>
             <div className="font-bold text-blue-900 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              Testing out the store?
+              {t('signin.demoTitle')}
             </div>
             <div className="text-blue-700 mt-0.5 font-mono text-[11px]">
               demo@example.com / password123
@@ -74,7 +76,7 @@ function SignInContent() {
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-lg transition-colors shrink-0 flex items-center gap-1"
           >
             <KeyRound className="w-3 h-3" />
-            Fill Demo
+            {t('signin.fillDemo')}
           </button>
         </div>
 
@@ -90,7 +92,7 @@ function SignInContent() {
 
           <div>
             <label className="text-xs font-semibold text-gray-700 block mb-1">
-              Email Address
+              {t('signin.email')}
             </label>
             <input
               name="email"
@@ -105,7 +107,7 @@ function SignInContent() {
 
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-xs font-semibold text-gray-700">Password</label>
+              <label className="text-xs font-semibold text-gray-700">{t('signin.password')}</label>
             </div>
             <input
               name="password"
@@ -124,17 +126,17 @@ function SignInContent() {
             className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading ? 'Signing In...' : 'Sign In'}
+            {loading ? t('signin.submitting') : t('signin.submit')}
           </button>
         </form>
 
         <p className="text-center text-xs text-gray-600 pt-2 border-t border-gray-100">
-          Don&apos;t have an account yet?{' '}
+          {t('signin.noAccount')}{' '}
           <Link
             href={`/signup${redirectTo !== '/' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`}
             className="font-bold text-blue-600 hover:underline"
           >
-            Create an Account
+            {t('signin.createAccount')}
           </Link>
         </p>
       </div>

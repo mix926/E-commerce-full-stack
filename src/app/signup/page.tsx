@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState, Suspense } from 'react';
 import { Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 
 function SignUpContent() {
   const searchParams = useSearchParams();
@@ -12,6 +13,7 @@ function SignUpContent() {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { t } = useLanguage();
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
@@ -42,9 +44,9 @@ function SignUpContent() {
               <ShoppingBag className="w-7 h-7" />
             </div>
           </div>
-          <h2 className="text-2xl font-extrabold text-gray-900">Create an Account</h2>
+          <h2 className="text-2xl font-extrabold text-gray-900">{t('signup.title')}</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Join E-Shop today for personalized deals & fast checkout
+            {t('signup.subtitle')}
           </p>
         </div>
 
@@ -60,7 +62,7 @@ function SignUpContent() {
 
           <div>
             <label className="text-xs font-semibold text-gray-700 block mb-1">
-              Full Name
+              {t('signup.fullName')}
             </label>
             <input
               name="name"
@@ -73,7 +75,7 @@ function SignUpContent() {
 
           <div>
             <label className="text-xs font-semibold text-gray-700 block mb-1">
-              Email Address
+              {t('signup.email')}
             </label>
             <input
               name="email"
@@ -86,7 +88,7 @@ function SignUpContent() {
 
           <div>
             <label className="text-xs font-semibold text-gray-700 block mb-1">
-              Password
+              {t('signup.password')}
             </label>
             <input
               name="password"
@@ -94,7 +96,7 @@ function SignUpContent() {
               required
               minLength={6}
               className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="At least 6 characters"
+              placeholder={t('signup.passwordHint')}
             />
           </div>
 
@@ -104,17 +106,17 @@ function SignUpContent() {
             className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading ? 'Creating Account...' : 'Sign Up'}
+            {loading ? t('signup.submitting') : t('signup.submit')}
           </button>
         </form>
 
         <p className="text-center text-xs text-gray-600 pt-2 border-t border-gray-100">
-          Already have an account?{' '}
+          {t('signup.haveAccount')}{' '}
           <Link
             href={`/signin${redirectTo !== '/' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`}
             className="font-bold text-blue-600 hover:underline"
           >
-            Sign In
+            {t('signup.signIn')}
           </Link>
         </p>
       </div>

@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, MessageSquare } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,7 +17,7 @@ export default function ContactPage() {
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
-      toast.success('Your message has been sent! Our support team will reply within 24 hours.');
+      toast.success(t('contact.toastSuccess'));
     }, 800);
   };
 
@@ -23,10 +25,10 @@ export default function ContactPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
-          Contact Customer Care
+          {t('contact.title')}
         </h1>
         <p className="text-gray-500 text-sm mt-2 max-w-lg mx-auto">
-          Need help with an order, return, or product recommendation? We are here to support you 24/7.
+          {t('contact.subtitle')}
         </p>
       </div>
 
@@ -38,8 +40,8 @@ export default function ContactPage() {
               <Phone className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-gray-900">Phone & Hotline</h3>
-              <p className="text-xs text-gray-500 mt-1">Available Mon–Sun 8:00 AM – 8:00 PM</p>
+              <h3 className="text-sm font-bold text-gray-900">{t('contact.phone')}</h3>
+              <p className="text-xs text-gray-500 mt-1">{t('contact.phoneHours')}</p>
               <p className="text-sm font-semibold text-blue-600 mt-1.5">+855 (0) 23 888 999</p>
             </div>
           </div>
@@ -49,8 +51,8 @@ export default function ContactPage() {
               <Mail className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-gray-900">Email Inquiries</h3>
-              <p className="text-xs text-gray-500 mt-1">Expected response within 24 hours</p>
+              <h3 className="text-sm font-bold text-gray-900">{t('contact.email')}</h3>
+              <p className="text-xs text-gray-500 mt-1">{t('contact.emailResponse')}</p>
               <p className="text-sm font-semibold text-blue-600 mt-1.5">support@eshop-demo.com</p>
             </div>
           </div>
@@ -60,7 +62,7 @@ export default function ContactPage() {
               <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-gray-900">Showroom & Headquarters</h3>
+              <h3 className="text-sm font-bold text-gray-900">{t('contact.address')}</h3>
               <p className="text-xs text-gray-500 mt-1 leading-relaxed">
                 Preah Monivong Boulevard, Daun Penh, Phnom Penh, Cambodia
               </p>
@@ -72,9 +74,9 @@ export default function ContactPage() {
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-gray-900">Operating Hours</h3>
-              <p className="text-xs text-gray-500 mt-1">Monday – Saturday: 8:00 AM – 7:00 PM</p>
-              <p className="text-xs text-gray-500">Sunday: 9:00 AM – 5:00 PM</p>
+              <h3 className="text-sm font-bold text-gray-900">{t('contact.hours')}</h3>
+              <p className="text-xs text-gray-500 mt-1">{t('contact.hoursWeekday')}</p>
+              <p className="text-xs text-gray-500">{t('contact.hoursSunday')}</p>
             </div>
           </div>
         </div>
@@ -84,10 +86,10 @@ export default function ContactPage() {
           <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
               <MessageSquare className="w-5 h-5 text-blue-600" />
-              Send Us a Message
+              {t('contact.sendMessage')}
             </h2>
             <p className="text-xs text-gray-500 mb-6">
-              Fill out the form below and our team will get back to you shortly.
+              {t('contact.formDesc')}
             </p>
 
             {submitted ? (
@@ -95,15 +97,15 @@ export default function ContactPage() {
                 <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <h3 className="font-bold text-green-900 text-base">Message Sent!</h3>
+                <h3 className="font-bold text-green-900 text-base">{t('contact.successTitle')}</h3>
                 <p className="text-xs text-green-700 max-w-sm mx-auto">
-                  Thank you for reaching out. A representative has received your ticket and will follow up with you via email.
+                  {t('contact.successMsg')}
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
                   className="mt-2 text-xs font-semibold text-green-800 underline hover:text-green-900"
                 >
-                  Send another message
+                  {t('contact.sendAnother')}
                 </button>
               </div>
             ) : (
@@ -111,7 +113,7 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs font-semibold text-gray-700 block mb-1">
-                      Your Name *
+                      {t('contact.yourName')}
                     </label>
                     <input
                       type="text"
@@ -122,7 +124,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className="text-xs font-semibold text-gray-700 block mb-1">
-                      Your Email *
+                      {t('contact.yourEmail')}
                     </label>
                     <input
                       type="email"
@@ -135,7 +137,7 @@ export default function ContactPage() {
 
                 <div>
                   <label className="text-xs font-semibold text-gray-700 block mb-1">
-                    Subject *
+                    {t('contact.subject')}
                   </label>
                   <input
                     type="text"
@@ -147,7 +149,7 @@ export default function ContactPage() {
 
                 <div>
                   <label className="text-xs font-semibold text-gray-700 block mb-1">
-                    Message Details *
+                    {t('contact.message')}
                   </label>
                   <textarea
                     rows={5}
@@ -163,7 +165,7 @@ export default function ContactPage() {
                   className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-8 py-3 rounded-xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
                 >
                   <Send className="w-4 h-4" />
-                  {loading ? 'Sending...' : 'Send Message'}
+                  {loading ? t('contact.sending') : t('contact.send')}
                 </button>
               </form>
             )}

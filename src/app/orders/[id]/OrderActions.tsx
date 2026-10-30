@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { cancelOrder } from '@/actions/orders';
 import { Printer, XCircle, Loader2 } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface OrderActionsProps {
   orderId: string;
@@ -13,6 +14,7 @@ interface OrderActionsProps {
 export default function OrderActions({ orderId, canCancel }: OrderActionsProps) {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const { t } = useLanguage();
 
   const handlePrint = () => {
     window.print();
@@ -41,7 +43,7 @@ export default function OrderActions({ orderId, canCancel }: OrderActionsProps) 
         className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors shadow-xs"
       >
         <Printer className="w-3.5 h-3.5 text-gray-500" />
-        Print Invoice
+        {t('order.printInvoice')}
       </button>
 
       {canCancel && (
@@ -55,7 +57,7 @@ export default function OrderActions({ orderId, canCancel }: OrderActionsProps) 
           ) : (
             <XCircle className="w-3.5 h-3.5" />
           )}
-          Cancel Order
+          {t('order.cancelOrder')}
         </button>
       )}
     </div>

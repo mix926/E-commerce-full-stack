@@ -4,9 +4,11 @@ import { useWishlist } from '@/context/WishlistContext';
 import Link from 'next/link';
 import { Heart, Trash2, ArrowRight, Star } from 'lucide-react';
 import AddToCartButton from '@/components/AddToCartButton';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function WishlistPage() {
   const { items, removeFromWishlist, clearWishlist } = useWishlist();
+  const { t } = useLanguage();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -15,10 +17,10 @@ export default function WishlistPage() {
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900 flex items-center gap-3">
             <Heart className="w-8 h-8 text-rose-500 fill-rose-500" />
-            My Wishlist
+            {t('wishlist.title')}
           </h1>
           <p className="text-gray-500 text-sm mt-1">
-            {items.length} item{items.length !== 1 ? 's' : ''} saved for later
+            {items.length} {t('wishlist.items')} {t('wishlist.saved')}
           </p>
         </div>
 
@@ -28,7 +30,7 @@ export default function WishlistPage() {
             className="text-xs text-gray-500 hover:text-red-600 transition-colors flex items-center gap-1.5 px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            Clear Wishlist
+            {t('wishlist.clear')}
           </button>
         )}
       </div>
@@ -40,15 +42,15 @@ export default function WishlistPage() {
               <Heart className="w-12 h-12 text-rose-400" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Your wishlist is empty</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('wishlist.empty')}</h2>
           <p className="text-gray-500 mb-8 max-w-md mx-auto text-sm">
-            Save items you like by clicking the heart icon on any product, so you can easily find them later.
+            {t('wishlist.emptyDesc')}
           </p>
           <Link
             href="/products"
             className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors inline-flex items-center gap-2 shadow-sm"
           >
-            Explore Products <ArrowRight className="w-4 h-4" />
+            {t('wishlist.explore')} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       ) : (
@@ -93,7 +95,7 @@ export default function WishlistPage() {
                   <span>{item.rating.toFixed(1)}</span>
                   <span>•</span>
                   <span className={item.stock > 0 ? 'text-green-600' : 'text-red-500'}>
-                    {item.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                    {item.stock > 0 ? t('wishlist.inStock') : t('wishlist.outOfStock')}
                   </span>
                 </div>
 
