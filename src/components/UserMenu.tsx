@@ -2,15 +2,16 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { User, Package, LogOut, ChevronDown, Heart } from 'lucide-react';
+import { User, Package, LogOut, ChevronDown, Heart, LayoutDashboard } from 'lucide-react';
 import { logoutUser } from '@/actions/auth';
 
 interface UserMenuProps {
   name: string | null;
   email: string;
+  role?: string;
 }
 
-export default function UserMenu({ name, email }: UserMenuProps) {
+export default function UserMenu({ name, email, role }: UserMenuProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -44,6 +45,16 @@ export default function UserMenu({ name, email }: UserMenuProps) {
               <p className="text-xs text-gray-400">Signed in as</p>
               <p className="text-sm font-bold text-gray-800 truncate">{email}</p>
             </div>
+            {role === 'admin' && (
+              <Link
+                href="/admin"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                Admin Dashboard
+              </Link>
+            )}
             <Link
               href="/orders"
               onClick={() => setOpen(false)}
