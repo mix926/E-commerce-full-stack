@@ -36,89 +36,81 @@ function SignUpContent() {
   }
 
   return (
-    <div className="flex min-h-[80vh] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-6 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-        <div className="text-center">
-          <div className="inline-flex justify-center mb-3">
-            <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-              <ShoppingBag className="w-7 h-7" />
-            </div>
+    <div className="min-h-[85vh] flex">
+      {/* Left panel */}
+      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-700 via-blue-600 to-blue-700 items-center justify-center p-12 relative overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="relative text-center text-white">
+          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/30">
+            <ShoppingBag className="w-8 h-8" />
           </div>
-          <h2 className="text-2xl font-extrabold text-gray-900">{t('signup.title')}</h2>
-          <p className="text-sm text-gray-500 mt-1">
-            {t('signup.subtitle')}
+          <h2 className="text-3xl font-extrabold mb-3">Join E-Shop!</h2>
+          <p className="text-blue-100 text-sm max-w-xs leading-relaxed">
+            Create your free account and start shopping thousands of premium products today.
+          </p>
+          <div className="mt-8 space-y-3 text-sm">
+            {['✓ Free shipping on orders over $50', '✓ Easy 30-day returns', '✓ Secure & fast checkout'].map((item) => (
+              <div key={item} className="bg-white/10 backdrop-blur rounded-xl px-4 py-2.5 border border-white/20 font-medium text-left">{item}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Right panel */}
+      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-8 bg-gray-50">
+        <div className="w-full max-w-md">
+          <div className="lg:hidden text-center mb-8">
+            <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-blue-500/30">
+              <ShoppingBag className="w-6 h-6 text-white" />
+            </div>
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">E-Shop</p>
+          </div>
+
+          <h2 className="text-2xl font-extrabold text-gray-900 mb-1">{t('signup.title')}</h2>
+          <p className="text-sm text-gray-500 mb-7">{t('signup.subtitle')}</p>
+
+          {error && (
+            <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-xs mb-4">
+              <AlertCircle className="w-4 h-4 shrink-0" />{error}
+            </div>
+          )}
+
+          <form className="space-y-4" action={handleSubmit}>
+            <input type="hidden" name="redirect" value={redirectTo} />
+            <div>
+              <label className="text-xs font-semibold text-gray-700 block mb-1.5">{t('signup.fullName')}</label>
+              <input name="name" type="text" required
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"
+                placeholder="e.g. Sokha Chan" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-700 block mb-1.5">{t('signup.email')}</label>
+              <input name="email" type="email" required
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"
+                placeholder="you@example.com" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-700 block mb-1.5">{t('signup.password')}</label>
+              <input name="password" type="password" required minLength={6}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"
+                placeholder={t('signup.passwordHint')} />
+            </div>
+            <button type="submit" disabled={loading}
+              className="w-full flex justify-center items-center gap-2 py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-md shadow-blue-500/25 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed mt-2">
+              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+              {loading ? t('signup.submitting') : t('signup.submit')}
+            </button>
+          </form>
+
+          <p className="text-center text-xs text-gray-500 mt-6 pt-5 border-t border-gray-200">
+            {t('signup.haveAccount')}{' '}
+            <Link href={`/signin${redirectTo !== '/' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`}
+              className="font-bold text-blue-600 hover:underline">
+              {t('signup.signIn')}
+            </Link>
           </p>
         </div>
-
-        {error && (
-          <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-xs">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            {error}
-          </div>
-        )}
-
-        <form className="space-y-4" action={handleSubmit}>
-          <input type="hidden" name="redirect" value={redirectTo} />
-
-          <div>
-            <label className="text-xs font-semibold text-gray-700 block mb-1">
-              {t('signup.fullName')}
-            </label>
-            <input
-              name="name"
-              type="text"
-              required
-              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g. Sokha Chan"
-            />
-          </div>
-
-          <div>
-            <label className="text-xs font-semibold text-gray-700 block mb-1">
-              {t('signup.email')}
-            </label>
-            <input
-              name="email"
-              type="email"
-              required
-              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <label className="text-xs font-semibold text-gray-700 block mb-1">
-              {t('signup.password')}
-            </label>
-            <input
-              name="password"
-              type="password"
-              required
-              minLength={6}
-              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder={t('signup.passwordHint')}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading ? t('signup.submitting') : t('signup.submit')}
-          </button>
-        </form>
-
-        <p className="text-center text-xs text-gray-600 pt-2 border-t border-gray-100">
-          {t('signup.haveAccount')}{' '}
-          <Link
-            href={`/signin${redirectTo !== '/' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`}
-            className="font-bold text-blue-600 hover:underline"
-          >
-            {t('signup.signIn')}
-          </Link>
-        </p>
       </div>
     </div>
   );

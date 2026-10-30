@@ -1,0 +1,12 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "severity": "medium",
+      "page": "src/context/LanguageContext.tsx",
+      "issue": "product.onlyLeft and product.price were added to the km translation object but are absent from the en object, so the two language tables are asymmetric (confirmed). The t() fallback renders the raw key string when an entry is missing; product.price is already consumed by the in-progress ProductCard translation, so English users would see the literal 'product.price' as a label once that work lands.",
+      "suggestion": "Add the missing en entries (e.g. product.price -> 'Price', product.onlyLeft -> 'Only {n} left') so en and km stay mirror images, or drop the orphaned km entries (product.onlyLeft appears unused — the sibling work uses product.only + product.leftInStock instead)."
+    }
+  ],
+  "reviewDoc": "/Users/moengmix/Desktop/e-commerce-app/.agents/tasks/lang-switching/review.md"
+}
