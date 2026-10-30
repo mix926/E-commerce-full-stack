@@ -4,22 +4,17 @@ import Link from 'next/link';
 import { Sparkles, Search } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
-const QUICK_CATEGORIES = [
-  { value: 'Electronics', key: 'category.electronics' },
-  { value: 'Accessories', key: 'category.accessories' },
-  { value: 'Clothing',    key: 'category.clothing' },
-  { value: 'Home',        key: 'category.home' },
-  { value: 'Sports',      key: 'category.sports' },
-  { value: 'Books',       key: 'category.books' },
-];
+interface NavCategoryBarProps {
+  categories: string[];
+}
 
-export default function NavCategoryBar() {
+export default function NavCategoryBar({ categories }: NavCategoryBarProps) {
   const { t } = useLanguage();
 
   return (
     <>
       {/* Quick Categories Bar (Desktop) */}
-      <div className="hidden md:flex items-center gap-6 py-2 border-t border-gray-100 text-xs font-medium text-gray-600 overflow-x-auto">
+      <div className="hidden md:flex items-center gap-5 py-2 border-t border-gray-100 text-xs font-medium text-gray-600 overflow-x-auto scrollbar-hide">
         <Link
           href="/products"
           className="text-blue-600 font-semibold hover:text-blue-700 transition-colors shrink-0 flex items-center gap-1"
@@ -27,16 +22,23 @@ export default function NavCategoryBar() {
           <Sparkles className="w-3 h-3 text-amber-500" />
           {t('nav.allProducts')}
         </Link>
-        {QUICK_CATEGORIES.map((cat) => (
-          <Link
-            key={cat.value}
-            href={`/products?category=${cat.value}`}
-            className="hover:text-blue-600 transition-colors shrink-0"
-          >
-            {t(cat.key)}
-          </Link>
-        ))}
-        <div className="ml-auto flex items-center gap-4 text-gray-400">
+
+        {categories.map((cat) => {
+          // Use translation key if it exists, fallback to raw name
+          const key = `category.${cat.toLowerCase()}`;
+          const label = t(key) === key ? cat : t(key);
+          return (
+            <Link
+              key={cat}
+              href={`/products?category=${encodeURIComponent(cat)}`}
+              className="hover:text-blue-600 transition-colors shrink-0 whitespace-nowrap"
+            >
+              {label}
+            </Link>
+          );
+        })}
+
+        <div className="ml-auto flex items-center gap-4 text-gray-400 shrink-0">
           <Link href="/faq" className="hover:text-gray-600 transition-colors">
             {t('nav.help')}
           </Link>

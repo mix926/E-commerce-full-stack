@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getSession } from '@/lib/session';
 import { getCartCount } from '@/actions/cart';
+import { getCategories } from '@/lib/categories';
 import { ShoppingBag, ShoppingCart } from 'lucide-react';
 import UserMenu from './UserMenu';
 import WishlistNavButton from './WishlistNavButton';
@@ -11,7 +12,10 @@ import NavCategoryBar from './NavCategoryBar';
 import NavSearchBar from './NavSearchBar';
 
 export default async function Navbar() {
-  const session = await getSession();
+  const [session, categories] = await Promise.all([
+    getSession(),
+    getCategories(),
+  ]);
   const cartCount = session ? await getCartCount() : 0;
 
   return (
@@ -68,7 +72,7 @@ export default async function Navbar() {
           </div>
         </div>
 
-        <NavCategoryBar />
+        <NavCategoryBar categories={categories} />
       </div>
     </header>
   );

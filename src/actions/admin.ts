@@ -61,3 +61,60 @@ export async function updateOrderStatus(orderId: string, status: string) {
   revalidatePath('/admin/orders');
   revalidatePath(`/admin/orders/${orderId}`);
 }
+
+export async function deleteReview(reviewId: string) {
+  await requireAdmin();
+
+  // Get the productId before deleting so we can recalculate rating
+  const review = await prisma.review.findUnique({ where: { id: reviewId } });
+  if (!review) return;
+
+  await prisma.review.delete({ where: { id: reviewId } });
+
+  // Recalculate product rating after deletion
+  const remaining = await prisma.review.aggregate({
+    where: { productId: review.productId },
+    _avg: { rating: true },
+    _count: { rating: true },
+  });
+
+  await prisma.product.update({
+    where: { id: review.productId },
+    data: {
+      rating: remaining._count.rating > 0 ? (remaining._avg.rating ?? 0) : 0,
+    },
+  });
+
+  revalidatePath('/admin/reviews');
+  revalidatePath(`/products/${review.productId}`);
+}
+
+export async function updateReview(reviewId: string, formData: FormData) {
+  await requireAdmin();
+
+  const rating = parseInt(formData.get('rating') as string, 10);
+  const comment = formData.get('comment') as string;
+
+  const review = await prisma.review.findUnique({ where: { id: reviewId } });
+  if (!review) return;
+
+  await prisma.review.update({
+    where: { id: reviewId },
+    data: { rating, comment },
+  });
+
+  // Recalculate product average rating
+  const agg = await prisma.review.aggregate({
+    where: { productId: review.productId },
+    _avg: { rating: true },
+  });
+
+  await prisma.product.update({
+    where: { id: review.productId },
+    data: { rating: agg._avg.rating ?? 0 },
+  });
+
+  revalidatePath('/admin/reviews');
+  revalidatePath(`/products/${review.productId}`);
+  redirect('/admin/reviews');
+}
