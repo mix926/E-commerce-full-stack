@@ -154,6 +154,9 @@ const translations: Record<Lang, Record<string, string>> = {
     'toast.signInRequired': 'Please sign in to add items to your cart',
     'toast.addFailed': 'Could not add item to cart. Please try again.',
     'toast.addFailedRetry': 'Failed to add item to cart. Please try again.',
+    // ProductCard labels
+    'product.price': 'Price',
+    'product.onlyLeft': 'Only {n} left',
     // Category names
     'category.electronics': 'Electronics',
     'category.accessories': 'Accessories',
