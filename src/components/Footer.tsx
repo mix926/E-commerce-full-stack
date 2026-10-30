@@ -69,13 +69,20 @@ export default function Footer() {
               {t('footer.categories')}
             </h3>
             <ul className="space-y-2.5 text-sm">
-              {['Electronics', 'Accessories', 'Clothing', 'Home', 'Sports', 'Books'].map((cat) => (
-                <li key={cat}>
+              {[
+                { value: 'Electronics', key: 'category.electronics' },
+                { value: 'Accessories', key: 'category.accessories' },
+                { value: 'Clothing',    key: 'category.clothing' },
+                { value: 'Home',        key: 'category.home' },
+                { value: 'Sports',      key: 'category.sports' },
+                { value: 'Books',       key: 'category.books' },
+              ].map((cat) => (
+                <li key={cat.value}>
                   <Link
-                    href={`/products?category=${cat}`}
+                    href={`/products?category=${cat.value}`}
                     className="hover:text-blue-400 transition-colors"
                   >
-                    {cat}
+                    {t(cat.key)}
                   </Link>
                 </li>
               ))}

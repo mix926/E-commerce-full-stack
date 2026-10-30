@@ -35,8 +35,8 @@ export default function QuantitySelector({
       setAdded(true);
       toast.success(
         productName
-          ? `Added ${quantity} × "${productName}" to your cart!`
-          : `Added ${quantity} item(s) to your cart!`
+          ? t('toast.addedQtyWithName').replace('{qty}', String(quantity)).replace('{name}', productName)
+          : t('toast.addedQtyItems').replace('{qty}', String(quantity))
       );
       router.refresh();
       setTimeout(() => setAdded(false), 2500);
@@ -49,11 +49,11 @@ export default function QuantitySelector({
         (error as { digest: string }).digest.startsWith('NEXT_REDIRECT');
 
       if (isRedirect) {
-        toast.info('Please sign in to add items to your cart');
+        toast.info(t('toast.signInRequired'));
         router.push('/signin');
         return;
       }
-      toast.error('Failed to add item to cart. Please try again.');
+      toast.error(t('toast.addFailedRetry'));
     } finally {
       setLoading(false);
     }

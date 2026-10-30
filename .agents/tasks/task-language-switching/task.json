@@ -1,0 +1,7 @@
+{
+  "task_id": "task-language-switching",
+  "task_description": "Fix the language switching system so that switching EN/Khmer (ខ្មែរ) affects ALL pages — home, products listing, product detail, and cart. Pages are async server components that cannot use useLanguage(). Fix by splitting each page into a server component (data-fetching) + a client content component (rendering with useLanguage()). Also add missing translation keys and translate strings currently hardcoded in shared components (AddToCartButton, SortSelect, QuantitySelector, CartItemRow).",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}

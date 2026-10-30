@@ -1,8 +1,11 @@
+'use client';
+
 import { Product } from '@prisma/client';
 import Link from 'next/link';
 import AddToCartButton from './AddToCartButton';
 import WishlistButton from './WishlistButton';
 import { Star } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface ProductCardProps {
   product: Product;
@@ -27,6 +30,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { t } = useLanguage();
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group relative">
       {/* Product Image & Badges */}
@@ -42,12 +46,12 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Stock Badge */}
         {product.stock <= 10 && product.stock > 0 && (
           <span className="absolute top-3 left-3 bg-amber-500/90 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-sm shadow-sm">
-            Only {product.stock} left
+            {t('product.only')} {product.stock} {t('product.leftInStock')}
           </span>
         )}
         {product.stock === 0 && (
           <span className="absolute top-3 left-3 bg-rose-600/95 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-sm shadow-sm">
-            Out of Stock
+            {t('product.outOfStock')}
           </span>
         )}
 
@@ -72,7 +76,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex items-center justify-between gap-2 mb-1.5">
           <span className="text-[11px] font-bold text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-md">
-            {product.category}
+            {t(`category.${product.category.toLowerCase()}`) || product.category}
           </span>
           <StarRating rating={product.rating} />
         </div>
@@ -90,7 +94,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Price & Add to Cart */}
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
           <div>
-            <span className="text-xs text-gray-400 block -mb-0.5">Price</span>
+            <span className="text-xs text-gray-400 block -mb-0.5">{t('product.price')}</span>
             <span className="text-xl font-extrabold text-gray-900">
               ${product.price.toFixed(2)}
             </span>

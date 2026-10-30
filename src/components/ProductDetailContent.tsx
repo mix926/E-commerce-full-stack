@@ -63,9 +63,11 @@ export default function ProductDetailContent({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-8 flex items-center gap-2">
-        <Link href="/" className="hover:text-blue-600">Home</Link>
+        <Link href="/" className="hover:text-blue-600">{t('home.breadcrumbHome') || 'Home'}</Link>
         <span>/</span>
-        <Link href={`/?category=${product.category}`} className="hover:text-blue-600">{product.category}</Link>
+        <Link href={`/products?category=${product.category}`} className="hover:text-blue-600">
+          {t(`category.${product.category.toLowerCase()}`) || product.category}
+        </Link>
         <span>/</span>
         <span className="text-gray-900 font-medium truncate max-w-[200px]">{product.name}</span>
       </nav>
@@ -91,7 +93,7 @@ export default function ProductDetailContent({
         {/* Product Info */}
         <div className="flex flex-col">
           <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2">
-            {product.category}
+            {t(`category.${product.category.toLowerCase()}`) || product.category}
           </span>
           <h1 className="text-3xl font-extrabold text-gray-900 mb-3">
             {product.name}
@@ -195,11 +197,11 @@ export default function ProductDetailContent({
                   className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">{t('product.selectRating')}</option>
-                  <option value="5">5 stars — Excellent</option>
-                  <option value="4">4 stars — Good</option>
-                  <option value="3">3 stars — Average</option>
-                  <option value="2">2 stars — Poor</option>
-                  <option value="1">1 star — Terrible</option>
+                  <option value="5">{t('product.star5')}</option>
+                  <option value="4">{t('product.star4')}</option>
+                  <option value="3">{t('product.star3')}</option>
+                  <option value="2">{t('product.star2')}</option>
+                  <option value="1">{t('product.star1')}</option>
                 </select>
               </div>
               <div className="mb-4">

@@ -1,0 +1,8 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    "ProductDetailContent.tsx review form has 5 hardcoded English star-rating option labels ('5 stars — Excellent', '4 stars — Good', '3 stars — Average', '2 stars — Poor', '1 star — Terrible'). These are new code in this PR and will not translate when switching to Khmer. Add translation keys (e.g. product.star5 through product.star1) to LanguageContext and replace them with t() calls.",
+    "ProductCard.tsx has hardcoded 'Out of Stock', 'Only {n} left', and 'Price' labels. These are pre-existing issues outside the strict scope of this PR, but since ProductCard renders on every page and the task goal is full-page language switching, they should be addressed. The context.json notes 'no change needed' for ProductCard — confirm this exclusion is intentional before approving.",
+    "Toast messages in AddToCartButton.tsx ('Added X to your cart!', 'Item added to your cart!', 'Please sign in to add items to your cart', 'Could not add item to cart. Please try again.') and QuantitySelector.tsx ('Added N × X to your cart!', 'Please sign in to add items to your cart', 'Failed to add item to cart. Please try again.') are hardcoded English strings not wrapped in t(). These are likely pre-existing, but they are user-visible strings that will not switch to Khmer."
+  ]
+}

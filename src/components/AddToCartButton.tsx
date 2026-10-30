@@ -37,8 +37,8 @@ export default function AddToCartButton({
       setAdded(true);
       toast.success(
         productName
-          ? `Added "${productName}" to your cart!`
-          : `Item added to your cart!`
+          ? `${t('toast.addedWithName').replace('{name}', productName)}`
+          : t('toast.addedToCart')
       );
       router.refresh();
       setTimeout(() => setAdded(false), 2000);
@@ -51,12 +51,12 @@ export default function AddToCartButton({
         (error as { digest: string }).digest.startsWith('NEXT_REDIRECT');
 
       if (isRedirect) {
-        toast.info('Please sign in to add items to your cart');
+        toast.info(t('toast.signInRequired'));
         router.push('/signin');
         return;
       }
 
-      toast.error('Could not add item to cart. Please try again.');
+      toast.error(t('toast.addFailed'));
     } finally {
       setLoading(false);
     }
