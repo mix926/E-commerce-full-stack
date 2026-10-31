@@ -142,11 +142,84 @@
   }
 }
 
+/* ── Page enter ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 main {
   animation: fadeUp 0.25s ease both;
+}
+
+/* ── Hero text reveal ── */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-badge   { animation: heroFadeUp 0.55s cubic-bezier(.22,1,.36,1) 0.05s both; }
+.hero-title   { animation: heroFadeUp 0.65s cubic-bezier(.22,1,.36,1) 0.18s both; }
+.hero-sub     { animation: heroFadeUp 0.65s cubic-bezier(.22,1,.36,1) 0.30s both; }
+.hero-ctas    { animation: heroFadeUp 0.65s cubic-bezier(.22,1,.36,1) 0.42s both; }
+.hero-trust   { animation: heroFadeUp 0.65s cubic-bezier(.22,1,.36,1) 0.52s both; }
+.hero-cards   { animation: heroFadeUp 0.75s cubic-bezier(.22,1,.36,1) 0.35s both; }
+
+/* ── Product card stagger ── */
+@keyframes cardPop {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+.product-card-anim {
+  animation: cardPop 0.5s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* ── Section title slide ── */
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.section-title-anim {
+  animation: slideRight 0.55s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* ── Category marquee ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 22s linear infinite;
+  display: flex;
+  width: max-content;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Pulse glow on stat cards ── */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+  50%       { box-shadow: 0 0 18px 4px rgba(59,130,246,0.18); }
+}
+.stat-card-glow {
+  animation: pulseGlow 3.5s ease-in-out infinite;
+}
+
+/* ── Float animation for hero right panel ── */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+.float-anim {
+  animation: floatY 4s ease-in-out infinite;
+}
+
+/* ── Shimmer skeleton ── */
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
 }

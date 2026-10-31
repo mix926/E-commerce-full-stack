@@ -2,7 +2,7 @@
 
 **Database:** MySQL · **ORM:** Prisma · **ID type:** UUID on all models
 
----
+
 
 ## ER Diagram — All Tables
 

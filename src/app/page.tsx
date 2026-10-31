@@ -26,8 +26,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       take: 12,
     }),
     prisma.product.findMany({
+      where: { featured: true },
       orderBy: { rating: 'desc' },
-      take: 4,
+      take: 8,
     }),
   ]);
 

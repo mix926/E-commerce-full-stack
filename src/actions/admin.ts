@@ -13,15 +13,18 @@ async function requireAdmin() {
 
 export async function createProduct(formData: FormData) {
   await requireAdmin();
-  const name = formData.get('name') as string;
+  const name        = formData.get('name') as string;
   const description = formData.get('description') as string;
-  const price = parseFloat(formData.get('price') as string);
-  const image = formData.get('image') as string;
-  const category = formData.get('category') as string;
-  const stock = parseInt(formData.get('stock') as string, 10);
+  const price       = parseFloat(formData.get('price') as string);
+  const image       = formData.get('image') as string;
+  const category    = formData.get('category') as string;
+  const stock       = parseInt(formData.get('stock') as string, 10);
+  const sizes       = (formData.get('sizes') as string | null)?.trim() || null;
+  const colors      = (formData.get('colors') as string | null)?.trim() || null;
+  const featured    = formData.get('featured') === 'true';
 
   await prisma.product.create({
-    data: { name, description, price, image, category, stock },
+    data: { name, description, price, image, category, stock, sizes, colors, featured },
   });
 
   revalidatePath('/admin/products');
@@ -30,16 +33,19 @@ export async function createProduct(formData: FormData) {
 
 export async function updateProduct(id: string, formData: FormData) {
   await requireAdmin();
-  const name = formData.get('name') as string;
+  const name        = formData.get('name') as string;
   const description = formData.get('description') as string;
-  const price = parseFloat(formData.get('price') as string);
-  const image = formData.get('image') as string;
-  const category = formData.get('category') as string;
-  const stock = parseInt(formData.get('stock') as string, 10);
+  const price       = parseFloat(formData.get('price') as string);
+  const image       = formData.get('image') as string;
+  const category    = formData.get('category') as string;
+  const stock       = parseInt(formData.get('stock') as string, 10);
+  const sizes       = (formData.get('sizes') as string | null)?.trim() || null;
+  const colors      = (formData.get('colors') as string | null)?.trim() || null;
+  const featured    = formData.get('featured') === 'true';
 
   await prisma.product.update({
     where: { id },
-    data: { name, description, price, image, category, stock },
+    data: { name, description, price, image, category, stock, sizes, colors, featured },
   });
 
   revalidatePath('/admin/products');

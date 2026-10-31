@@ -7,6 +7,64 @@ import QuantitySelector from '@/components/QuantitySelector';
 import WishlistButton from '@/components/WishlistButton';
 import { submitReview } from '@/actions/orders';
 import { useLanguage } from '@/context/LanguageContext';
+import { useState } from 'react';
+
+const COLOR_MAP: Record<string, string> = {
+  Black: '#1f2937', White: '#f9fafb', Red: '#ef4444', Blue: '#3b82f6',
+  Green: '#22c55e', Yellow: '#eab308', Purple: '#a855f7', Pink: '#ec4899',
+  Gray: '#9ca3af', Brown: '#92400e',
+};
+
+function SizePicker({ sizes }: { sizes: string[] }) {
+  const [selected, setSelected] = useState<string | null>(null);
+  return (
+    <div className="mb-5">
+      <p className="text-xs font-bold text-gray-700 uppercase tracking-widest mb-2">
+        Size {selected && <span className="text-indigo-600 normal-case font-semibold tracking-normal ml-1">— {selected}</span>}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {sizes.map(s => (
+          <button key={s} type="button" onClick={() => setSelected(s === selected ? null : s)}
+            className={`min-w-[42px] px-3 py-1.5 rounded-lg text-xs font-bold border-2 transition-all hover:scale-105 active:scale-95 ${
+              selected === s
+                ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/25'
+                : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-400'
+            }`}>
+            {s}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ColorPicker({ colors }: { colors: string[] }) {
+  const [selected, setSelected] = useState<string | null>(null);
+  return (
+    <div className="mb-5">
+      <p className="text-xs font-bold text-gray-700 uppercase tracking-widest mb-2">
+        Color {selected && <span className="text-indigo-600 normal-case font-semibold tracking-normal ml-1">— {selected}</span>}
+      </p>
+      <div className="flex flex-wrap gap-2.5">
+        {colors.map(c => {
+          const hex = COLOR_MAP[c] ?? '#9ca3af';
+          return (
+            <button key={c} type="button" title={c} onClick={() => setSelected(c === selected ? null : c)}
+              className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-110 active:scale-95 ${
+                selected === c ? 'border-indigo-600 scale-110 shadow-lg shadow-black/20' : 'border-gray-200 hover:border-gray-400'
+              }`}
+              style={{ background: hex }}>
+              {selected === c && (
+                <span className="flex items-center justify-center w-full h-full text-white text-xs font-black"
+                  style={{ textShadow: '0 1px 2px rgba(0,0,0,.5)' }}>✓</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 interface ReviewUser {
   name: string | null;
@@ -114,6 +172,22 @@ export default function ProductDetailContent({
           <p className="text-gray-600 leading-relaxed mb-6">
             {product.description}
           </p>
+
+          {/* Sizes */}
+          {product.sizes && product.sizes.trim() && (() => {
+            const sizeList = product.sizes.split(',').map(s => s.trim()).filter(Boolean);
+            return sizeList.length > 0 ? (
+              <SizePicker sizes={sizeList} />
+            ) : null;
+          })()}
+
+          {/* Colors */}
+          {product.colors && product.colors.trim() && (() => {
+            const colorList = product.colors.split(',').map(c => c.trim()).filter(Boolean);
+            return colorList.length > 0 ? (
+              <ColorPicker colors={colorList} />
+            ) : null;
+          })()}
 
           {/* Stock */}
           <div className="flex items-center gap-2 mb-6">

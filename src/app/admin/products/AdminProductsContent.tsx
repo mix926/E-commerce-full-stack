@@ -29,8 +29,10 @@ export default function AdminProductsContent({ products }: { products: Product[]
                 <th className="px-5 py-3 text-left">{t('admin.image')}</th>
                 <th className="px-5 py-3 text-left">{t('admin.name')}</th>
                 <th className="px-5 py-3 text-left">{t('admin.category')}</th>
+                <th className="px-5 py-3 text-left">Sizes / Colors</th>
                 <th className="px-5 py-3 text-left">{t('admin.price')}</th>
                 <th className="px-5 py-3 text-left">{t('admin.stock')}</th>
+                <th className="px-5 py-3 text-left">Featured</th>
                 <th className="px-5 py-3 text-left">{t('admin.actions')}</th>
               </tr>
             </thead>
@@ -49,6 +51,23 @@ export default function AdminProductsContent({ products }: { products: Product[]
                       {product.category}
                     </span>
                   </td>
+                  <td className="px-5 py-4">
+                    <div className="space-y-1">
+                      {product.sizes ? (
+                        <p className="text-[11px] text-gray-500">
+                          <span className="font-semibold text-gray-700">Sizes:</span> {product.sizes}
+                        </p>
+                      ) : <p className="text-[11px] text-gray-300">No sizes</p>}
+                      {product.colors ? (
+                        <div className="flex items-center gap-1 flex-wrap">
+                          <span className="text-[11px] font-semibold text-gray-700 mr-0.5">Colors:</span>
+                          {product.colors.split(',').map(c => c.trim()).filter(Boolean).map(c => (
+                            <span key={c} className="text-[11px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">{c}</span>
+                          ))}
+                        </div>
+                      ) : <p className="text-[11px] text-gray-300">No colors</p>}
+                    </div>
+                  </td>
                   <td className="px-5 py-4 font-semibold text-gray-900">${product.price.toFixed(2)}</td>
                   <td className="px-5 py-4">
                     <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
@@ -58,6 +77,13 @@ export default function AdminProductsContent({ products }: { products: Product[]
                     }`}>
                       {product.stock}
                     </span>
+                  </td>
+                  <td className="px-5 py-4">
+                    {product.featured ? (
+                      <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full">⭐ Featured</span>
+                    ) : (
+                      <span className="text-xs text-gray-300">—</span>
+                    )}
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-2">

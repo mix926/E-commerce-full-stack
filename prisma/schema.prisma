@@ -30,6 +30,9 @@ model Product {
   category    String
   rating      Float    @default(0.0)
   stock       Int      @default(100)
+  sizes       String?  @db.Text
+  colors      String?  @db.Text
+  featured    Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
