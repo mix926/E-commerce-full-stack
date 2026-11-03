@@ -9,7 +9,11 @@ export default async function CartPage() {
   const session = await getSession();
   if (!session) redirect('/signin?redirect=/cart');
 
-  const cart = await getOrCreateCart(session.userId);
-
-  return <CartContent cart={cart} />;
+  try {
+    const cart = await getOrCreateCart(session.userId);
+    return <CartContent cart={cart} />;
+  } catch (error) {
+    // If cart initialization fails, redirect to sign in
+    redirect('/signin?redirect=/cart&error=session_expired');
+  }
 }

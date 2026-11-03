@@ -7,6 +7,15 @@ import { redirect } from 'next/navigation';
 
 // Get or create the user's cart
 export async function getOrCreateCart(userId: string) {
+  // First verify the user exists
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new Error('User not found. Please sign in again.');
+  }
+
   let cart = await prisma.cart.findUnique({
     where: { userId },
     include: {
@@ -18,15 +27,22 @@ export async function getOrCreateCart(userId: string) {
   });
 
   if (!cart) {
-    cart = await prisma.cart.create({
-      data: { userId },
-      include: {
-        items: {
-          include: { product: true },
-          orderBy: { createdAt: 'asc' },
+    try {
+      cart = await prisma.cart.create({
+        data: { userId },
+        include: {
+          items: {
+            include: { product: true },
+            orderBy: { createdAt: 'asc' },
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+      // If cart creation fails, user may have been deleted
+      // Return empty cart structure
+      console.error('Failed to create cart:', error);
+      throw new Error('Failed to initialize cart. Please try signing in again.');
+    }
   }
 
   return cart;
@@ -95,13 +111,25 @@ export async function clearCart(userId: string) {
 
 // Get cart item count for navbar badge
 export async function getCartCount(): Promise<number> {
-  const session = await getSession();
-  if (!session) return 0;
+  try {
+    const session = await getSession();
+    if (!session) return 0;
 
-  const cart = await prisma.cart.findUnique({
-    where: { userId: session.userId },
-    include: { items: true },
-  });
+    // Verify user still exists
+    const user = await prisma.user.findUnique({
+      where: { id: session.userId },
+    });
 
-  return cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
+    if (!user) return 0;
+
+    const cart = await prisma.cart.findUnique({
+      where: { userId: session.userId },
+      include: { items: true },
+    });
+
+    return cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
+  } catch (error) {
+    console.error('Error getting cart count:', error);
+    return 0;
+  }
 }
