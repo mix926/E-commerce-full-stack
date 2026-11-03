@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Package, ArrowRight } from 'lucide-react';
+import { Package, ArrowRight, Truck, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 interface OrderItemThumb {
@@ -22,72 +22,133 @@ interface OrdersContentProps {
   orders: OrderListItem[];
 }
 
-const STATUS_STYLES: Record<string, string> = {
-  pending: 'bg-yellow-100 text-yellow-700 border border-yellow-200',
-  processing: 'bg-blue-100 text-blue-700 border border-blue-200',
-  shipped: 'bg-indigo-100 text-indigo-700 border border-indigo-200',
-  delivered: 'bg-green-100 text-green-700 border border-green-200',
-  cancelled: 'bg-red-100 text-red-700 border border-red-200',
+const STATUS_CONFIG: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
+  pending: {
+    color: 'bg-amber-50 text-amber-700 border-amber-200',
+    icon: <Clock className="w-4 h-4" />,
+    label: 'Pending'
+  },
+  processing: {
+    color: 'bg-blue-50 text-blue-700 border-blue-200',
+    icon: <Package className="w-4 h-4" />,
+    label: 'Processing'
+  },
+  shipped: {
+    color: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    icon: <Truck className="w-4 h-4" />,
+    label: 'Shipped'
+  },
+  delivered: {
+    color: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    icon: <CheckCircle2 className="w-4 h-4" />,
+    label: 'Delivered'
+  },
+  cancelled: {
+    color: 'bg-red-50 text-red-700 border-red-200',
+    icon: <AlertCircle className="w-4 h-4" />,
+    label: 'Cancelled'
+  },
 };
 
 export default function OrdersContent({ orders }: OrdersContentProps) {
   const { t } = useLanguage();
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="flex items-center gap-3 mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl px-5 py-4">
-        <Package className="w-8 h-8 text-blue-600" />
-        <div>
-          <h1 className="text-3xl font-extrabold text-gray-900">{t('orders.title')}</h1>
-          <p className="text-gray-500 text-sm mt-0.5">{orders.length} {t('orders.count')}</p>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Header */}
+      <div className="mb-10 animate-in fade-in duration-500">
+        <div className="flex items-center gap-4 mb-3">
+          <div className="p-3 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl">
+            <Package className="w-8 h-8 text-blue-600" />
+          </div>
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900">
+              {t('orders.title')}
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">
+              {orders.length} {orders.length !== 1 ? t('orders.count') : 'order'}
+            </p>
+          </div>
         </div>
       </div>
 
       {orders.length === 0 ? (
-        <div className="text-center py-24 bg-white border border-gray-200 rounded-2xl shadow-sm">
-          <div className="flex justify-center mb-4">
-            <div className="bg-gray-100 rounded-full p-6">
-              <Package className="w-10 h-10 text-gray-400" />
+        <div className="py-20 px-6 bg-white border border-gray-200 rounded-3xl shadow-sm text-center max-w-2xl mx-auto animate-in fade-in duration-500">
+          <div className="flex justify-center mb-6">
+            <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full">
+              <Package className="w-12 h-12 text-gray-400" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('orders.none')}</h2>
-          <p className="text-gray-500 mb-8">{t('orders.noneDesc')}</p>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3">
+            {t('orders.none')}
+          </h2>
+          <p className="text-gray-500 mb-8 max-w-sm mx-auto">
+            {t('orders.noneDesc')}
+          </p>
           <Link
             href="/products"
-            className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3.5 rounded-xl font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95"
           >
             {t('orders.shopNow')} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       ) : (
         <div className="space-y-4">
-          {orders.map((order) => {
+          {orders.map((order, idx) => {
             const totalItems = order.items.reduce((s, i) => s + i.quantity, 0);
+            const statusConfig = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
+            
             return (
               <Link
                 key={order.id}
                 href={`/orders/${order.id}`}
-                className="block bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
+                className="block bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 animate-in fade-in slide-in-from-bottom-4"
+                style={{ animationDelay: `${idx * 50}ms` }}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2 flex-wrap">
-                      <span className="text-sm font-bold text-gray-900 font-mono">
-                        #{order.id.slice(-8).toUpperCase()}
-                      </span>
-                      <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${STATUS_STYLES[order.status] || 'bg-gray-100 text-gray-600 border border-gray-200'}`}>
-                        {t('status.' + order.status)}
-                      </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 items-start">
+                  {/* Order ID & Status */}
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+                      Order ID
+                    </p>
+                    <p className="text-sm font-bold text-gray-900 font-mono break-all">
+                      #{order.id.slice(-8).toUpperCase()}
+                    </p>
+                    <div className={`mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border ${statusConfig.color}`}>
+                      {statusConfig.icon}
+                      {t('status.' + order.status)}
                     </div>
-                    <p className="text-sm text-gray-500 mb-2">
+                  </div>
+
+                  {/* Date */}
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+                      Order Date
+                    </p>
+                    <p className="text-sm font-semibold text-gray-900">
                       {new Date(order.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric', month: 'long', day: 'numeric',
+                        year: 'numeric', month: 'short', day: 'numeric',
                       })}
                     </p>
-                    {/* Item thumbnails */}
+                    <p className="text-xs text-gray-400 mt-1">
+                      {new Date(order.createdAt).toLocaleTimeString('en-US', {
+                        hour: '2-digit', minute: '2-digit'
+                      })}
+                    </p>
+                  </div>
+
+                  {/* Items Preview */}
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                      Items ({totalItems})
+                    </p>
                     <div className="flex items-center gap-2 flex-wrap">
-                      {order.items.slice(0, 4).map((item) => (
-                        <div key={item.id} className="w-10 h-10 bg-gray-100 rounded-lg overflow-hidden">
+                      {order.items.slice(0, 3).map((item, i) => (
+                        <div
+                          key={item.id}
+                          className="relative w-10 h-10 bg-gray-100 rounded-lg overflow-hidden ring-2 ring-white"
+                          style={{ zIndex: 3 - i }}
+                        >
                           <img
                             src={item.product.image}
                             alt={item.product.name}
@@ -95,21 +156,25 @@ export default function OrdersContent({ orders }: OrdersContentProps) {
                           />
                         </div>
                       ))}
-                      {order.items.length > 4 && (
-                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">
-                          +{order.items.length - 4} {t('orders.more')}
-                        </span>
+                      {order.items.length > 3 && (
+                        <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center text-xs font-bold text-gray-600">
+                          +{order.items.length - 3}
+                        </div>
                       )}
-                      <span className="text-xs text-gray-500 ml-1">
-                        {totalItems} {totalItems !== 1 ? t('orders.items') : t('orders.item')}
-                      </span>
                     </div>
                   </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-lg font-bold text-gray-900">${order.total.toFixed(2)}</p>
-                    <p className="text-xs text-blue-600 mt-1 flex items-center gap-1 justify-end">
-                      {t('orders.viewDetails')} <ArrowRight className="w-3 h-3" />
+
+                  {/* Total & Action */}
+                  <div className="text-right">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+                      Total Amount
                     </p>
+                    <p className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
+                      ${order.total.toFixed(2)}
+                    </p>
+                    <div className="flex items-center justify-end gap-1 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors">
+                      View Details <ArrowRight className="w-4 h-4" />
+                    </div>
                   </div>
                 </div>
               </Link>
