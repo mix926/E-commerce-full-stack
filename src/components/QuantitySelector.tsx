@@ -62,30 +62,30 @@ export default function QuantitySelector({
   return (
     <div className="flex flex-col gap-4">
       {/* Quantity Control */}
-      <div className="flex items-center gap-4">
-        <span className="text-sm font-semibold text-gray-700">{t('cart.quantity')}</span>
-        <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-white shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+        <span className="text-xs sm:text-sm font-semibold text-gray-700">{t('cart.quantity')}</span>
+        <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-white shadow-sm touch-target">
           <button
             onClick={decrement}
             disabled={quantity === 1}
-            className="p-2.5 hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="p-2 sm:p-2.5 hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed touch-target flex-shrink-0"
             aria-label="Decrease quantity"
           >
             <Minus className="w-4 h-4 text-gray-600" />
           </button>
-          <span className="px-4 py-2 font-bold text-gray-900 min-w-[3rem] text-center bg-white">
+          <span className="px-3 sm:px-4 py-2 font-bold text-gray-900 min-w-[2.5rem] sm:min-w-[3rem] text-center bg-white text-sm sm:text-base">
             {quantity}
           </span>
           <button
             onClick={increment}
             disabled={quantity === maxStock}
-            className="p-2.5 hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="p-2 sm:p-2.5 hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed touch-target flex-shrink-0"
             aria-label="Increase quantity"
           >
             <Plus className="w-4 h-4 text-gray-600" />
           </button>
         </div>
-        <span className="text-xs text-gray-500">
+        <span className="text-[11px] sm:text-xs text-gray-500">
           ({t('cart.max')} {maxStock})
         </span>
       </div>
@@ -94,18 +94,18 @@ export default function QuantitySelector({
       <button
         onClick={handleAddToCart}
         disabled={loading}
-        className={`flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-base transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm ${
+        className={`flex items-center justify-center gap-2 py-3 sm:py-3.5 px-4 sm:px-6 rounded-xl font-bold text-xs sm:text-base transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm touch-target ${
           added
             ? 'bg-green-600 hover:bg-green-700 text-white'
             : 'bg-blue-600 hover:bg-blue-700 text-white'
         }`}
       >
         {loading ? (
-          <Loader2 className="w-5 h-5 animate-spin" />
+          <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
         ) : (
-          <ShoppingCart className="w-5 h-5" />
+          <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
         )}
-        {added ? t('cart.addedToCart') : loading ? t('product.adding') : t('product.addToCart')}
+        <span className="line-clamp-1">{added ? t('cart.addedToCart') : loading ? t('product.adding') : t('product.addToCart')}</span>
       </button>
     </div>
   );

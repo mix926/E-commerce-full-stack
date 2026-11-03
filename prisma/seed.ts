@@ -55,178 +55,187 @@ async function main() {
 
   console.log('📦 Seeding products...');
   const productsData = [
-    // Electronics
+    // Electronics - Clean Product Shots
     {
-      name: 'Modern Wireless Headphones',
-      description: 'High-quality active noise-canceling wireless headphones with deep bass and 40-hour battery life. Perfect for music lovers and remote workers.',
-      price: 129.99,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
-      category: 'Electronics',
-      rating: 4.8,
-      stock: 50,
-    },
-    {
-      name: 'Ergonomic Mechanical Keyboard',
-      description: 'RGB backlit mechanical keyboard designed for ultimate coding comfort. Features Cherry MX switches and customizable lighting.',
-      price: 89.99,
-      image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&q=80',
+      name: 'Pro Studio Headphones',
+      description: 'Professional-grade studio headphones with 40mm drivers, closed-back design, and detachable cables. Ideal for music production and critical listening.',
+      price: 249.99,
+      image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?w=500&q=80',
       category: 'Electronics',
       rating: 4.9,
-      stock: 30,
-    },
-    {
-      name: 'Wireless Gaming Mouse',
-      description: 'Ultra-precise wireless gaming mouse with 25,600 DPI sensor, 70-hour battery, and ergonomic design for long gaming sessions.',
-      price: 69.99,
-      image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&q=80',
-      category: 'Electronics',
-      rating: 4.7,
-      stock: 40,
-    },
-    {
-      name: 'USB-C Hub 7-in-1',
-      description: 'Expand your laptop ports with 4K HDMI, USB 3.0, SD card reader, and 100W PD charging. Compatible with all USB-C laptops.',
-      price: 49.99,
-      image: 'https://images.unsplash.com/photo-1625314996978-1fc8d3c6b3c0?w=500&q=80',
-      category: 'Electronics',
-      rating: 4.5,
-      stock: 60,
-    },
-    {
-      name: '4K Webcam Pro',
-      description: 'Crystal clear 4K webcam with autofocus, built-in ring light, and noise-canceling microphone. Perfect for video calls and streaming.',
-      price: 119.99,
-      image: 'https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=500&q=80',
-      category: 'Electronics',
-      rating: 4.6,
       stock: 25,
     },
-
-    // Accessories
     {
-      name: 'Minimalist Smart Watch',
-      description: 'Track your health, fitness, and notifications with a sleek minimalist design. Features heart rate monitoring and 7-day battery life.',
+      name: 'Portable SSD 2TB',
+      description: 'Ultra-fast NVMe SSD with 1050MB/s read speeds, shock resistance, and compact design. Perfect for content creators and data backup.',
       price: 199.99,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
-      category: 'Accessories',
-      rating: 4.6,
-      stock: 35,
-    },
-    {
-      name: 'Leather Wallet - Slim RFID',
-      description: 'Premium genuine leather slim wallet with RFID blocking technology. Holds up to 8 cards with quick-access cash slot.',
-      price: 39.99,
-      image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80',
-      category: 'Accessories',
-      rating: 4.4,
-      stock: 80,
-    },
-    {
-      name: 'Sunglasses Polarized UV400',
-      description: 'Classic aviator sunglasses with polarized UV400 lenses, stainless steel frame, and scratch-resistant coating.',
-      price: 59.99,
-      image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&q=80',
-      category: 'Accessories',
-      rating: 4.3,
+      image: 'https://images.pexels.com/photos/8566486/pexels-photo-8566486.jpeg?w=500&q=80',
+      category: 'Electronics',
+      rating: 4.8,
       stock: 45,
     },
-
-    // Clothing
     {
-      name: 'Premium Hoodie - Black',
-      description: 'Ultra-soft 100% organic cotton hoodie with kangaroo pocket. Pre-shrunk fabric that stays soft wash after wash.',
-      price: 59.99,
-      image: 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=500&q=80',
-      category: 'Clothing',
+      name: 'Smart Standing Desk',
+      description: 'Dual-motor electric standing desk with memory presets, anti-collision sensor, and app control. Promotes healthier work habits.',
+      price: 399.99,
+      image: 'https://images.pexels.com/photos/1496181/pexels-photo-1496181.jpeg?w=500&q=80',
+      category: 'Electronics',
       rating: 4.7,
-      stock: 100,
+      stock: 15,
     },
     {
-      name: 'Classic White T-Shirt',
-      description: 'Essential white crewneck t-shirt made from premium Supima cotton. Heavyweight 200gsm fabric with a relaxed fit.',
-      price: 29.99,
-      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&q=80',
-      category: 'Clothing',
-      rating: 4.5,
-      stock: 150,
-    },
-    {
-      name: 'Running Sneakers - White',
-      description: 'Lightweight performance running shoes with responsive foam cushioning, breathable mesh upper, and rubber outsole.',
-      price: 109.99,
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80',
-      category: 'Clothing',
-      rating: 4.8,
-      stock: 60,
-    },
-
-    // Home
-    {
-      name: 'Minimalist Desk Lamp LED',
-      description: 'Eye-care LED desk lamp with 5 color temperatures, 10 brightness levels, and USB charging port. Perfect for work and study.',
-      price: 44.99,
-      image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&q=80',
-      category: 'Home',
+      name: 'Wireless Charging Pad Pro',
+      description: 'Fast wireless charger supporting up to 30W charging for compatible devices. Non-slip rubber surface and aluminum construction.',
+      price: 79.99,
+      image: 'https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?w=500&q=80',
+      category: 'Electronics',
       rating: 4.6,
-      stock: 70,
-    },
-    {
-      name: 'Bamboo Desk Organizer',
-      description: 'Eco-friendly bamboo desk organizer with 6 compartments. Keep your workspace tidy with this natural and stylish organizer.',
-      price: 34.99,
-      image: 'https://images.unsplash.com/photo-1583845112203-29329902332e?w=500&q=80',
-      category: 'Home',
-      rating: 4.4,
       stock: 55,
     },
     {
-      name: 'Scented Soy Candle Set',
-      description: 'Set of 3 hand-poured soy wax candles with relaxing lavender, vanilla, and eucalyptus scents. 40-hour burn time each.',
-      price: 39.99,
-      image: 'https://images.unsplash.com/photo-1602607144729-a7b39d41f8a5?w=500&q=80',
+      name: 'Portable Power Bank 25000mAh',
+      description: 'High-capacity power bank with dual USB-C ports and display. Charges phones and laptops with 100W fast charging support.',
+      price: 89.99,
+      image: 'https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?w=500&q=80',
+      category: 'Electronics',
+      rating: 4.8,
+      stock: 70,
+    },
+
+    // Accessories - Clean Product Shots
+    {
+      name: 'Premium Backpack Pro',
+      description: 'Anti-theft laptop backpack with USB charging port, multiple compartments, and ergonomic design. Holds up to 17-inch laptops.',
+      price: 149.99,
+      image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?w=500&q=80',
+      category: 'Accessories',
+      rating: 4.8,
+      stock: 40,
+    },
+    {
+      name: 'Stainless Steel Watch',
+      description: 'Elegant analog watch with stainless steel case, mineral crystal, and water-resistant design. Perfect for any occasion.',
+      price: 129.99,
+      image: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?w=500&q=80',
+      category: 'Accessories',
+      rating: 4.7,
+      stock: 50,
+    },
+    {
+      name: 'Leather Wallet',
+      description: 'Premium genuine leather wallet with RFID blocking technology. Minimalist design that fits perfectly in any pocket.',
+      price: 49.99,
+      image: 'https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?w=500&q=80',
+      category: 'Accessories',
+      rating: 4.5,
+      stock: 100,
+    },
+
+    // Clothing - Clean Product Shots
+    {
+      name: 'Merino Wool Sweater',
+      description: '100% merino wool sweater with moisture-wicking properties and natural temperature regulation. Extremely soft and breathable.',
+      price: 89.99,
+      image: 'https://images.pexels.com/photos/3622608/pexels-photo-3622608.jpeg?w=500&q=80',
+      category: 'Clothing',
+      rating: 4.8,
+      stock: 60,
+    },
+    {
+      name: 'Denim Jeans - Classic Blue',
+      description: 'Premium raw denim jeans with perfect fit and fade potential. Made from 100% organic cotton for comfort and durability.',
+      price: 129.99,
+      image: 'https://images.pexels.com/photos/2220294/pexels-photo-2220294.jpeg?w=500&q=80',
+      category: 'Clothing',
+      rating: 4.7,
+      stock: 80,
+    },
+    {
+      name: 'Running Shoes White',
+      description: 'Lightweight performance running shoes with responsive foam cushioning, breathable mesh upper, and durable rubber outsole.',
+      price: 129.99,
+      image: 'https://images.pexels.com/photos/3625517/pexels-photo-3625517.jpeg?w=500&q=80',
+      category: 'Clothing',
+      rating: 4.9,
+      stock: 75,
+    },
+
+    // Home & Living - Clean Product Shots
+    {
+      name: 'Smart Humidifier 4L',
+      description: 'Ultrasonic smart humidifier with app control, essential oil diffuser, and auto humidity adjustment. Whisper-quiet operation.',
+      price: 94.99,
+      image: 'https://images.pexels.com/photos/4202771/pexels-photo-4202771.jpeg?w=500&q=80',
       category: 'Home',
       rating: 4.7,
-      stock: 90,
+      stock: 35,
+    },
+    {
+      name: 'Coffee Maker Set',
+      description: 'Premium pour-over coffee set with thermal carafe and reusable filter. Perfect for coffee enthusiasts and morning rituals.',
+      price: 64.99,
+      image: 'https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?w=500&q=80',
+      category: 'Home',
+      rating: 4.8,
+      stock: 45,
+    },
+    {
+      name: 'LED Desk Lamp',
+      description: 'Modern LED desk lamp with adjustable brightness, touch control, and USB charging port. Perfect for any workspace.',
+      price: 49.99,
+      image: 'https://images.pexels.com/photos/207896/pexels-photo-207896.jpeg?w=500&q=80',
+      category: 'Home',
+      rating: 4.6,
+      stock: 55,
     },
 
-    // Sports
+    // Sports & Fitness - Clean Product Shots
     {
-      name: 'Yoga Mat Premium Non-Slip',
-      description: 'Extra thick 6mm non-slip yoga mat with alignment lines, carrying strap, and eco-friendly natural rubber material.',
-      price: 49.99,
-      image: 'https://images.unsplash.com/photo-1601925228736-4a6a97c2ba84?w=500&q=80',
+      name: 'Resistance Bands Set',
+      description: 'Complete set of 5 resistance bands with varying tension levels, carrying pouch, and exercise guide. Full-body workouts made easy.',
+      price: 29.99,
+      image: 'https://images.pexels.com/photos/4397820/pexels-photo-4397820.jpeg?w=500&q=80',
       category: 'Sports',
-      rating: 4.8,
-      stock: 65,
-    },
-    {
-      name: 'Insulated Water Bottle 1L',
-      description: '1-liter double-wall vacuum insulated stainless steel bottle. Keeps drinks cold 24hrs, hot 12hrs. BPA-free and leak-proof.',
-      price: 34.99,
-      image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&q=80',
-      category: 'Sports',
-      rating: 4.9,
+      rating: 4.7,
       stock: 120,
     },
-
-    // Books
     {
-      name: 'Atomic Habits - James Clear',
-      description: 'The #1 New York Times bestseller. Learn how tiny changes can lead to remarkable results with a proven system for building good habits.',
-      price: 18.99,
-      image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500&q=80',
+      name: 'Yoga Mat Premium',
+      description: 'Extra thick 6mm non-slip yoga mat with alignment lines and carrying strap. Made from eco-friendly natural rubber.',
+      price: 49.99,
+      image: 'https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?w=500&q=80',
+      category: 'Sports',
+      rating: 4.8,
+      stock: 40,
+    },
+
+    // Books & Learning - Clean Product Shots
+    {
+      name: 'The Lean Startup',
+      description: 'Groundbreaking guide to building successful startups with minimum viable products and rapid experimentation cycles.',
+      price: 17.99,
+      image: 'https://images.pexels.com/photos/159775/open-book-pages-book-education-159775.jpeg?w=500&q=80',
       category: 'Books',
-      rating: 4.9,
-      stock: 200,
+      rating: 4.8,
+      stock: 180,
     },
     {
-      name: 'Deep Work - Cal Newport',
-      description: 'Rules for focused success in a distracted world. Learn how to cultivate the ability to focus without distraction.',
-      price: 16.99,
-      image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500&q=80',
+      name: 'Thinking Fast and Slow',
+      description: 'Revolutionary insights into human decision-making, psychology, and behavioral economics by a Nobel Prize laureate.',
+      price: 19.99,
+      image: 'https://images.pexels.com/photos/3692132/pexels-photo-3692132.jpeg?w=500&q=80',
       category: 'Books',
-      rating: 4.7,
+      rating: 4.9,
       stock: 150,
+    },
+    {
+      name: 'Atomic Habits',
+      description: 'The #1 New York Times bestseller. Learn how tiny changes can lead to remarkable results with proven habit systems.',
+      price: 18.99,
+      image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?w=500&q=80',
+      category: 'Books',
+      rating: 4.9,
+      stock: 140,
     },
   ];
 
@@ -243,7 +252,7 @@ async function main() {
       userId: sophiaUser.id,
       productId: createdProducts[0].id,
       rating: 5,
-      comment: 'Best wireless headphones I have ever used! The active noise canceling blocks out all office chatter and the soundstage is deep and punchy.',
+      comment: 'Best headphones for studio work! Crystal clear sound and extremely comfortable.',
     },
   });
   await prisma.review.create({
@@ -251,25 +260,25 @@ async function main() {
       userId: alexUser.id,
       productId: createdProducts[0].id,
       rating: 5,
-      comment: 'Super fast delivery and great build quality. Comfortable for 8-hour workdays without any ear fatigue.',
+      comment: 'Professional quality at an affordable price. Highly recommended!',
     },
   });
 
-  // Add reviews to mechanical keyboard
+  // Add reviews to denim jeans
   await prisma.review.create({
     data: {
       userId: demoUser.id,
-      productId: createdProducts[1].id,
+      productId: createdProducts[9].id,
       rating: 5,
-      comment: 'Typing on this keyboard is pure joy. The tactile click is crisp, RGB colors look premium, and it feels built like a tank.',
+      comment: 'Great fit and amazing quality. Love how they fade naturally.',
     },
   });
   await prisma.review.create({
     data: {
       userId: sophiaUser.id,
-      productId: createdProducts[1].id,
+      productId: createdProducts[9].id,
       rating: 5,
-      comment: 'Must-have for developers and gamers alike. Excellent layout and wrist angle.',
+      comment: 'Perfect for everyday wear. Super comfortable and durable!',
     },
   });
 
@@ -277,9 +286,9 @@ async function main() {
   await prisma.review.create({
     data: {
       userId: alexUser.id,
-      productId: createdProducts[16].id,
+      productId: createdProducts[17].id,
       rating: 5,
-      comment: 'Life changing book! The concepts are practical, easy to apply, and deliver immediate improvements in productivity.',
+      comment: 'Life-changing book! The concepts are practical and easy to apply.',
     },
   });
 
@@ -299,9 +308,9 @@ async function main() {
             price: createdProducts[0].price,
           },
           {
-            productId: createdProducts[2].id,
+            productId: createdProducts[8].id,
             quantity: 1,
-            price: createdProducts[2].price,
+            price: createdProducts[8].price,
           },
         ],
       },

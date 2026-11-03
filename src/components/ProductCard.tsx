@@ -33,9 +33,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { t } = useLanguage();
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+    <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group h-full">
       {/* Image */}
-      <div className="relative aspect-square w-full bg-gray-50 overflow-hidden">
+      <div className="relative aspect-square w-full bg-gray-50 overflow-hidden flex-shrink-0">
         <Link href={`/products/${product.id}`} className="block w-full h-full">
           <img
             src={product.image}
@@ -49,18 +49,18 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Stock Badge */}
         {product.stock <= 10 && product.stock > 0 && (
-          <span className="absolute top-2.5 left-2.5 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+          <span className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 bg-amber-500 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow">
             {t('product.only')} {product.stock} {t('product.leftInStock')}
           </span>
         )}
         {product.stock === 0 && (
-          <span className="absolute top-2.5 left-2.5 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+          <span className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 bg-red-500 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow">
             {t('product.outOfStock')}
           </span>
         )}
 
         {/* Wishlist */}
-        <div className="absolute top-2.5 right-2.5 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div className="absolute top-2 sm:top-2.5 right-2 sm:right-2.5 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <WishlistButton
             product={{
               id: product.id,
@@ -77,10 +77,10 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Details */}
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-3 sm:p-4 flex flex-col flex-grow">
         {/* Category + Rating row */}
         <div className="flex items-center justify-between gap-2 mb-2">
-          <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-full">
+          <span className="text-[9px] sm:text-[10px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-1.5 sm:px-2 py-0.5 rounded-full truncate">
             {t(`category.${product.category.toLowerCase()}`) || product.category}
           </span>
           <StarRating rating={product.rating} />
@@ -88,22 +88,22 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Name */}
         <Link href={`/products/${product.id}`}>
-          <h3 className="text-sm font-bold text-gray-900 mb-1.5 hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+          <h3 className="text-xs sm:text-sm font-bold text-gray-900 mb-1.5 hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
             {product.name}
           </h3>
         </Link>
 
         {/* Description */}
-        <p className="text-xs text-gray-400 line-clamp-2 mb-3 flex-grow leading-relaxed">
+        <p className="text-[11px] sm:text-xs text-gray-400 line-clamp-2 mb-3 flex-grow leading-relaxed">
           {product.description}
         </p>
 
         {/* Price + Cart */}
-        <div className="mt-auto pt-3 border-t border-gray-100">
+        <div className="mt-auto pt-2 sm:pt-3 border-t border-gray-100">
           <div className="flex items-center justify-between gap-2">
             <div>
-              <p className="text-[10px] text-gray-400 uppercase tracking-wider">{t('product.price')}</p>
-              <p className="text-lg font-extrabold text-gray-900 leading-none">
+              <p className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider">{t('product.price')}</p>
+              <p className="text-base sm:text-lg font-extrabold text-gray-900 leading-none">
                 ${product.price.toFixed(2)}
               </p>
             </div>
@@ -111,7 +111,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               productId={product.id}
               productName={product.name}
               disabled={product.stock === 0}
-              className="text-xs px-3 py-1.5 rounded-lg"
+              className="text-[10px] sm:text-xs px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg touch-target"
             />
           </div>
         </div>

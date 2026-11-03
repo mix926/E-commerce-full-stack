@@ -108,7 +108,7 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
                   {t('home.hero.badge')}
                 </div>
 
-                <h1 className="font-black tracking-tight leading-tight mb-6" style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)' }}>
+                <h1 className="font-black tracking-tight leading-tight mb-6" style={{ fontSize: 'clamp(1.875rem, 6vw, 3.75rem)' }}>
                   <span className="block text-slate-900">{t('home.hero.title1')}</span>
                   <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">{t('home.hero.title2')}</span>
                 </h1>
@@ -230,9 +230,9 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
                 { value: '4.9★', label: t('home.rating'), color: 'text-amber-500' },
                 { value: 'Free', label: 'Shipping on $50+', color: 'text-violet-600' },
               ].map((s, i) => (
-                <div key={s.label} className="py-8 px-6 text-center"
+                <div key={s.label} className="py-6 sm:py-8 px-3 sm:px-6 text-center"
                   style={statsReveal.visible ? { animation: `fadeUp .5s cubic-bezier(.22,1,.36,1) ${i * 60}ms both` } : { opacity: 0 }}>
-                  <p className={`text-3xl font-black ${s.color}`}>{s.value}</p>
+                  <p className={`text-2xl sm:text-3xl font-black ${s.color}`}>{s.value}</p>
                   <p className="text-xs text-slate-500 mt-1.5 font-semibold uppercase tracking-wide">{s.label}</p>
                 </div>
               ))}
@@ -246,17 +246,17 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
       ═══════════════════════════════════════════ */}
       {!searchQuery && (
         <section className="bg-white border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {features.map((f) => (
-                <div key={f.title} className={`${f.bg} border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 group cursor-default`}>
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-white rounded-xl group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                <div key={f.title} className={`${f.bg} border border-slate-200 rounded-2xl p-4 sm:p-6 hover:shadow-lg transition-all duration-300 group cursor-default`}>
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="p-2 sm:p-3 bg-white rounded-xl group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0">
                       {f.icon}
                     </div>
-                    <div className="flex-1">
-                      <p className="font-bold text-slate-900 text-base leading-tight">{f.title}</p>
-                      <p className="text-sm text-slate-600 mt-1">{f.desc}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-slate-900 text-sm sm:text-base leading-tight">{f.title}</p>
+                      <p className="text-xs sm:text-sm text-slate-600 mt-1">{f.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -269,18 +269,18 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
       {/* ═══════════════════════════════════════════
           MAIN CONTENT
       ═══════════════════════════════════════════ */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 bg-white">
 
         {searchQuery && (
-          <div className="mb-10 p-6 bg-blue-50 rounded-2xl border-2 border-blue-200 flex items-start gap-4">
-            <Tag className="w-6 h-6 text-blue-600 mt-0.5 shrink-0" />
-            <div className="flex-1">
-              <h2 className="font-bold text-slate-900 text-lg">
-                {t('home.searchResults')} <span className="text-blue-600">&ldquo;{searchQuery}&rdquo;</span>
+          <div className="mb-8 sm:mb-10 p-4 sm:p-6 bg-blue-50 rounded-2xl border-2 border-blue-200 flex items-start gap-4">
+            <Tag className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mt-0.5 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <h2 className="font-bold text-slate-900 text-base sm:text-lg">
+                {t('home.searchResults')} <span className="text-blue-600 break-words">&ldquo;{searchQuery}&rdquo;</span>
               </h2>
-              <p className="text-slate-600 text-sm mt-1">{products.length} {t('home.productsFound')}</p>
-              <Link href="/" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
-                <ArrowRight className="w-4 h-4 rotate-180" /> {t('home.clearSearch')}
+              <p className="text-slate-600 text-xs sm:text-sm mt-1">{products.length} {t('home.productsFound')}</p>
+              <Link href="/" className="mt-3 inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
+                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 rotate-180" /> {t('home.clearSearch')}
               </Link>
             </div>
           </div>
@@ -288,13 +288,13 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
 
         {/* Section header */}
         {!searchQuery && (
-          <div className="flex items-center justify-between mb-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
             <div>
-              <h2 className="text-3xl font-black text-slate-900">{t('home.allProducts')}</h2>
-              <p className="text-sm text-slate-500 mt-1 font-medium">{products.length} {t('home.productsAvailable')}</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900">{t('home.allProducts')}</h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">{products.length} {t('home.productsAvailable')}</p>
             </div>
             <Link href="/products"
-              className="group text-sm font-bold text-white flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-blue-600/20">
+              className="group text-xs sm:text-sm font-bold text-white flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-blue-600/20 touch-target shrink-0">
               {t('home.viewAll')} <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
@@ -312,7 +312,7 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
             </Link>
           </div>
         ) : (
-          <div ref={productsReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div ref={productsReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {products.map((product, i) => (
               <div key={product.id} style={productsReveal.visible ? { animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 40}ms both` } : { opacity: 0 }}>
                 <ProductCard product={product} />
@@ -335,7 +335,7 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
                 <p className="text-sm text-slate-500 mt-2 font-medium">{t('home.topRatedDesc')}</p>
               </div>
             </div>
-            <div ref={featuredReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div ref={featuredReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {featuredProducts.map((product, i) => (
                 <div key={product.id} style={featuredReveal.visible ? { animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 50}ms both` } : { opacity: 0 }}>
                   <ProductCard product={product} />

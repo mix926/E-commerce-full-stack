@@ -21,17 +21,17 @@ export default async function Navbar() {
   return (
     <header className="sticky top-0 z-40 bg-white/98 backdrop-blur-lg border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="h-16 flex items-center justify-between gap-4">
+        <div className="h-16 flex items-center justify-between gap-2 sm:gap-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow">
-              <ShoppingBag className="w-5 h-5" />
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow touch-target">
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="flex flex-col">
-              <span className="leading-none text-gray-900 text-lg font-extrabold tracking-tight">
+              <span className="leading-none text-gray-900 text-base sm:text-lg font-extrabold tracking-tight">
                 E<span className="text-blue-600">-Shop</span>
               </span>
-              <span className="text-[9px] text-gray-400 font-semibold tracking-[0.15em] uppercase mt-0.5">
+              <span className="text-[8px] sm:text-[9px] text-gray-400 font-semibold tracking-[0.15em] uppercase mt-0.5">
                 Premium Store
               </span>
             </div>
@@ -41,7 +41,7 @@ export default async function Navbar() {
           <NavSearchBar />
 
           {/* Actions */}
-          <div className="flex items-center gap-1 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <LanguageSwitcher />
 
             <WishlistNavButton />
@@ -49,7 +49,7 @@ export default async function Navbar() {
             <Link
               href="/cart"
               aria-label="Cart"
-              className="relative flex items-center text-gray-600 hover:text-blue-600 transition-colors p-2 rounded-xl hover:bg-blue-50"
+              className="relative flex items-center justify-center text-gray-600 hover:text-blue-600 transition-colors p-2 sm:p-2.5 rounded-xl hover:bg-blue-50 touch-target"
             >
               <ShoppingCart className="w-5 h-5" />
               {cartCount > 0 && (

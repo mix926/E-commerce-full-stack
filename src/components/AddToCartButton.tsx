@@ -66,18 +66,18 @@ export default function AddToCartButton({
     <button
       onClick={handleAddToCart}
       disabled={loading || disabled}
-      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${
+      className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-sm font-medium transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed touch-target ${
         added
           ? 'bg-green-600 hover:bg-green-700 text-white'
           : 'bg-blue-600 hover:bg-blue-700 text-white'
       } ${className}`}
     >
       {loading ? (
-        <Loader2 className="w-4 h-4 animate-spin" />
+        <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin flex-shrink-0" />
       ) : showIcon ? (
-        <ShoppingCart className="w-4 h-4" />
+        <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
       ) : null}
-      {added ? t('product.addedToCart') : loading ? t('product.adding') : disabled ? t('product.outOfStock') : t('product.addToCart')}
+      <span className="line-clamp-1">{added ? t('product.addedToCart') : loading ? t('product.adding') : disabled ? t('product.outOfStock') : t('product.addToCart')}</span>
     </button>
   );
 }
