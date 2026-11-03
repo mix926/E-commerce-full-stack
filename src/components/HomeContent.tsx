@@ -4,7 +4,7 @@ import { Product } from '@prisma/client';
 import Link from 'next/link';
 import {
   ArrowRight, Star, ShieldCheck, Truck, RefreshCw,
-  Zap, TrendingUp, Sparkles, Tag,
+  Zap, TrendingUp, Sparkles, Tag, CheckCircle2,
 } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import { useLanguage } from '@/context/LanguageContext';
@@ -36,13 +36,13 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
   const { t } = useLanguage();
   const productsReveal = useReveal();
   const featuredReveal = useReveal();
-  const statsReveal    = useReveal(0.3);
+  const statsReveal = useReveal(0.3);
 
   // ── Product carousel state ──
   const showcaseProducts = products.slice(0, 6);
-  const [activeIdx, setActiveIdx]   = useState(0);
-  const [animating, setAnimating]   = useState(false);
-  const [direction, setDirection]   = useState<'next'|'prev'>('next');
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [animating, setAnimating] = useState(false);
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
 
   useEffect(() => {
     if (showcaseProducts.length < 2) return;
@@ -67,201 +67,153 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
   const activeProduct = showcaseProducts[activeIdx];
 
   const features = [
-    { icon: <Truck className="w-5 h-5 text-blue-500" />,      title: t('home.features.freeShipping'),   desc: t('home.features.freeShippingDesc'),   color: 'text-blue-500',    bg: 'bg-blue-50' },
-    { icon: <RefreshCw className="w-5 h-5 text-emerald-500" />, title: t('home.features.easyReturns'),  desc: t('home.features.easyReturnsDesc'),    color: 'text-emerald-500', bg: 'bg-emerald-50' },
-    { icon: <ShieldCheck className="w-5 h-5 text-violet-500" />, title: t('home.features.securePayment'), desc: t('home.features.securePaymentDesc'), color: 'text-violet-500',  bg: 'bg-violet-50' },
-    { icon: <Star className="w-5 h-5 text-amber-500" />,      title: t('home.features.topQuality'),     desc: t('home.features.topQualityDesc'),     color: 'text-amber-500',   bg: 'bg-amber-50' },
+    { icon: <Truck className="w-6 h-6 text-blue-600" />, title: t('home.features.freeShipping'), desc: t('home.features.freeShippingDesc'), color: 'text-blue-600', bg: 'bg-blue-50' },
+    { icon: <RefreshCw className="w-6 h-6 text-emerald-600" />, title: t('home.features.easyReturns'), desc: t('home.features.easyReturnsDesc'), color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { icon: <ShieldCheck className="w-6 h-6 text-violet-600" />, title: t('home.features.securePayment'), desc: t('home.features.securePaymentDesc'), color: 'text-violet-600', bg: 'bg-violet-50' },
+    { icon: <Star className="w-6 h-6 text-amber-600" />, title: t('home.features.topQuality'), desc: t('home.features.topQualityDesc'), color: 'text-amber-600', bg: 'bg-amber-50' },
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <style>{`
-        @keyframes fadeUp      { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeUp      { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
         @keyframes fadeLeft    { from{opacity:0;transform:translateX(-24px)} to{opacity:1;transform:translateX(0)} }
         @keyframes fadeRight   { from{opacity:0;transform:translateX(24px)}  to{opacity:1;transform:translateX(0)} }
-        @keyframes cardPop     { from{opacity:0;transform:translateY(16px) scale(.98)} to{opacity:1;transform:translateY(0) scale(1)} }
-        @keyframes floatUp     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-        @keyframes slideInNext { from{opacity:0;transform:translateX(48px) scale(.96)} to{opacity:1;transform:translateX(0) scale(1)} }
-        @keyframes slideInPrev { from{opacity:0;transform:translateX(-48px) scale(.96)} to{opacity:1;transform:translateX(0) scale(1)} }
-        @keyframes slideOutNext{ from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(-48px)} }
+        @keyframes cardPop     { from{opacity:0;transform:translateY(12px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+        @keyframes slideInNext { from{opacity:0;transform:translateX(32px)} to{opacity:1;transform:translateX(0)} }
+        @keyframes slideInPrev { from{opacity:0;transform:translateX(-32px)} to{opacity:1;transform:translateX(0)} }
         @keyframes progressBar { from{width:0%} to{width:100%} }
+        @keyframes pulse-soft  { 0%, 100% { opacity: 1 } 50% { opacity: 0.7 } }
       `}</style>
 
       {/* ═══════════════════════════════════════════
-          HERO
+          HERO SECTION
       ═══════════════════════════════════════════ */}
       {!searchQuery && (
-        <section className="relative overflow-hidden bg-white border-b border-gray-100" style={{ minHeight: 600 }}>
-          {/* subtle dot grid */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            backgroundImage: 'radial-gradient(rgba(99,102,241,0.06) 1px,transparent 1px)',
-            backgroundSize: '28px 28px',
-          }} />
-          {/* soft colour orbs */}
-          <div className="absolute pointer-events-none" style={{ top:-120,left:-100,width:520,height:520,background:'radial-gradient(circle,rgba(99,102,241,.07) 0%,transparent 65%)',borderRadius:'50%' }} />
-          <div className="absolute pointer-events-none" style={{ bottom:-80,right:-80,width:400,height:400,background:'radial-gradient(circle,rgba(168,85,247,.06) 0%,transparent 65%)',borderRadius:'50%' }} />
+        <section className="relative overflow-hidden border-b border-slate-200" style={{ minHeight: 650 }}>
+          {/* Background gradients */}
+          <div className="absolute inset-0 pointer-events-none opacity-40">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl" />
+          </div>
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-            <div className="flex flex-col lg:flex-row items-center gap-14">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
 
               {/* ── Copy ── */}
-              <div className="flex-1 text-center lg:text-left"
-                style={{ animation: 'fadeLeft .65s cubic-bezier(.22,1,.36,1) both' }}>
+              <div className="text-center lg:text-left" style={{ animation: 'fadeLeft .65s cubic-bezier(.22,1,.36,1) both' }}>
 
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold mb-6"
-                  style={{ background: 'rgba(99,102,241,.08)', border: '1px solid rgba(99,102,241,.2)', color: '#6366f1' }}>
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold mb-6 bg-blue-50 text-blue-700 border border-blue-200 ring-2 ring-blue-100/50">
+                  <Sparkles className="w-4 h-4" />
                   {t('home.hero.badge')}
-                </span>
+                </div>
 
-                <h1 className="font-black tracking-tight leading-[1.04] mb-5"
-                  style={{ fontSize: 'clamp(2.4rem,5.5vw,4.2rem)' }}>
-                  <span className="block text-gray-900">{t('home.hero.title1')}</span>
-                  <span className="block" style={{
-                    background: 'linear-gradient(95deg,#6366f1,#a855f7)',
-                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                  }}>{t('home.hero.title2')}</span>
+                <h1 className="font-black tracking-tight leading-tight mb-6" style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)' }}>
+                  <span className="block text-slate-900">{t('home.hero.title1')}</span>
+                  <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">{t('home.hero.title2')}</span>
                 </h1>
 
-                <p className="text-gray-500 text-base sm:text-lg leading-relaxed mb-9 max-w-md mx-auto lg:mx-0">
+                <p className="text-slate-600 text-lg leading-relaxed mb-8 max-w-md mx-auto lg:mx-0 font-medium">
                   {t('home.hero.subtitle')}
                 </p>
 
-                <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-10">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
                   <Link href="/products"
-                    className="group inline-flex items-center gap-2 font-bold px-7 py-3.5 rounded-xl text-white transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
-                    style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', boxShadow: '0 8px 24px rgba(99,102,241,.3)' }}>
+                    className="group inline-flex items-center justify-center gap-2 font-bold px-8 py-4 rounded-2xl text-white transition-all duration-200 hover:-translate-y-1 active:scale-95 shadow-lg shadow-blue-600/30 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
                     {t('home.hero.shopNow')}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                   <Link href="/products?category=Electronics"
-                    className="inline-flex items-center gap-2 font-semibold px-7 py-3.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:scale-95 text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200">
+                    className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 rounded-2xl transition-all duration-200 hover:-translate-y-1 active:scale-95 text-slate-700 bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-slate-300 shadow-sm">
                     {t('home.hero.viewElectronics')}
                   </Link>
                 </div>
 
-                <div className="flex flex-wrap gap-5 justify-center lg:justify-start">
+                <div className="flex flex-wrap gap-6 justify-center lg:justify-start">
                   {[
-                    { icon: <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />, label: 'Secure checkout' },
-                    { icon: <Truck className="w-3.5 h-3.5 text-blue-500" />,          label: 'Free shipping $50+' },
-                    { icon: <RefreshCw className="w-3.5 h-3.5 text-violet-500" />,    label: '30-day returns' },
+                    { icon: <CheckCircle2 className="w-4 h-4" />, label: 'Secure checkout' },
+                    { icon: <Truck className="w-4 h-4" />, label: 'Free shipping $50+' },
+                    { icon: <RefreshCw className="w-4 h-4" />, label: '30-day returns' },
                   ].map(b => (
-                    <span key={b.label} className="flex items-center gap-1.5 text-gray-400 text-sm">{b.icon}{b.label}</span>
+                    <span key={b.label} className="flex items-center gap-2 text-slate-600 text-sm font-medium">
+                      <span className="text-blue-600">{b.icon}</span>{b.label}
+                    </span>
                   ))}
                 </div>
               </div>
 
               {/* ── Product carousel showcase ── */}
               {activeProduct && (
-                <div className="hidden lg:flex flex-col shrink-0 w-[320px]"
-                  style={{ animation: 'fadeRight .7s cubic-bezier(.22,1,.36,1) .1s both' }}>
-
-                  {/* Card */}
+                <div className="hidden lg:flex flex-col shrink-0 w-full" style={{ animation: 'fadeRight .7s cubic-bezier(.22,1,.36,1) .1s both' }}>
                   <Link href={`/products/${activeProduct.id}`}
-                    className="group block rounded-3xl overflow-hidden relative"
-                    style={{
-                      background: '#fff',
-                      border: '1px solid #e5e7eb',
-                      boxShadow: '0 20px 60px rgba(99,102,241,.12), 0 4px 16px rgba(0,0,0,.06)',
-                    }}>
+                    className="group block rounded-3xl overflow-hidden relative shadow-2xl shadow-blue-600/20 hover:shadow-2xl hover:shadow-blue-600/30 transition-all duration-300">
 
                     {/* Image */}
-                    <div className="relative overflow-hidden" style={{ height: 260 }}>
+                    <div className="relative overflow-hidden bg-slate-100" style={{ aspectRatio: '1' }}>
                       <img
                         key={activeProduct.id}
                         src={activeProduct.image}
                         alt={activeProduct.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         style={{
-                          animation: animating
-                            ? undefined
-                            : `${direction === 'next' ? 'slideInNext' : 'slideInPrev'} .4s cubic-bezier(.22,1,.36,1) both`,
+                          animation: animating ? undefined : `${direction === 'next' ? 'slideInNext' : 'slideInPrev'} .5s cubic-bezier(.22,1,.36,1) both`,
                         }}
                       />
-                      {/* shine */}
-                      <div className="absolute inset-0 pointer-events-none"
-                        style={{ background: 'linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 55%)' }} />
-                      {/* category badge */}
-                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/90 text-indigo-600 shadow-sm">
+                      {/* Shine overlay */}
+                      <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-white/20 via-transparent to-transparent" />
+                      {/* Badges */}
+                      <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold bg-white/95 text-blue-600 shadow-lg backdrop-blur">
                         {activeProduct.category}
                       </div>
-                      {/* rating badge */}
-                      <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/90 text-gray-700 shadow-sm">
-                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <div className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-white/95 text-slate-700 shadow-lg backdrop-blur">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                         {activeProduct.rating.toFixed(1)}
                       </div>
                     </div>
 
                     {/* Info */}
-                    <div className="p-4 bg-white"
-                      style={animating
-                        ? { opacity: 0 }
-                        : { animation: `${direction === 'next' ? 'slideInNext' : 'slideInPrev'} .4s cubic-bezier(.22,1,.36,1) .05s both` }}>
-                      <p className="text-gray-900 font-bold text-base leading-snug line-clamp-1 mb-1">
+                    <div className="p-6 bg-white border-t-2 border-slate-100"
+                      style={animating ? { opacity: 0 } : { animation: `${direction === 'next' ? 'slideInNext' : 'slideInPrev'} .5s cubic-bezier(.22,1,.36,1) .05s both` }}>
+                      <p className="text-slate-900 font-bold text-lg leading-snug line-clamp-2 mb-2">
                         {activeProduct.name}
                       </p>
                       <div className="flex items-center justify-between">
-                        <span className="text-2xl font-black text-indigo-600">
+                        <span className="text-3xl font-black text-blue-600">
                           ${activeProduct.price.toFixed(2)}
                         </span>
-                        <span className="text-xs font-bold px-3 py-1.5 rounded-xl text-white"
-                          style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)' }}>
+                        <span className="text-xs font-bold px-3 py-2 rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-700">
                           View →
                         </span>
                       </div>
                     </div>
 
-                    {/* 4s progress bar */}
-                    <div className="h-0.5 w-full bg-gray-100">
-                      <div key={`${activeIdx}-bar`} className="h-full"
-                        style={{
-                          background: 'linear-gradient(90deg,#6366f1,#a855f7)',
-                          animation: 'progressBar 4s linear both',
-                        }} />
+                    {/* Auto-progress bar */}
+                    <div className="h-1 w-full bg-slate-200">
+                      <div key={`${activeIdx}-bar`} className="h-full bg-gradient-to-r from-blue-600 to-purple-600"
+                        style={{ animation: 'progressBar 4s linear both' }} />
                     </div>
                   </Link>
 
-                  {/* Dot indicators */}
-                  <div className="flex items-center justify-center gap-2 mt-4">
+                  {/* Navigation */}
+                  <div className="flex items-center justify-center gap-3 mt-6">
                     {showcaseProducts.map((_, i) => (
                       <button key={i} onClick={() => goTo(i)}
                         className="transition-all duration-300 rounded-full"
                         style={{
-                          width:  i === activeIdx ? 20 : 6,
-                          height: 6,
-                          background: i === activeIdx
-                            ? 'linear-gradient(90deg,#6366f1,#a855f7)'
-                            : '#e5e7eb',
-                          border: 'none',
+                          width: i === activeIdx ? 28 : 8,
+                          height: 8,
+                          background: i === activeIdx ? 'linear-gradient(90deg, #2563eb, #7c3aed)' : '#e2e8f0',
                           cursor: 'pointer',
+                          border: 'none',
                           padding: 0,
                         }} />
                     ))}
-                  </div>
-
-                  {/* Prev / Next arrows */}
-                  <div className="flex items-center justify-center gap-2 mt-3">
-                    <button onClick={() => goTo((activeIdx - 1 + showcaseProducts.length) % showcaseProducts.length)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200">
-                      ‹
-                    </button>
-                    <span className="text-gray-400 text-xs font-medium">
-                      {activeIdx + 1} / {showcaseProducts.length}
-                    </span>
-                    <button onClick={() => goTo((activeIdx + 1) % showcaseProducts.length)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-200">
-                      ›
-                    </button>
                   </div>
                 </div>
               )}
 
             </div>
           </div>
-
-          {/* bottom fade */}
-          <div className="absolute bottom-0 inset-x-0 h-12 pointer-events-none"
-            style={{ background: 'linear-gradient(to bottom,transparent,rgba(255,255,255,.8))' }} />
         </section>
       )}
 
@@ -269,20 +221,19 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
           STATS BAR
       ═══════════════════════════════════════════ */}
       {!searchQuery && (
-        <div ref={statsReveal.ref} className="bg-white border-b border-gray-100">
+        <div ref={statsReveal.ref} className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
+            <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200">
               {[
-                { value: '500+', label: t('home.products'),   color: 'text-indigo-600' },
-                { value: '10k+', label: t('home.customers'),  color: 'text-emerald-600' },
-                { value: '4.9★', label: t('home.rating'),     color: 'text-amber-500' },
-                { value: 'Free', label: 'Shipping on $50+',   color: 'text-blue-600' },
+                { value: '500+', label: t('home.products'), color: 'text-blue-600' },
+                { value: '10k+', label: t('home.customers'), color: 'text-emerald-600' },
+                { value: '4.9★', label: t('home.rating'), color: 'text-amber-500' },
+                { value: 'Free', label: 'Shipping on $50+', color: 'text-violet-600' },
               ].map((s, i) => (
-                <div key={s.label}
-                  className="py-5 px-6 text-center"
-                  style={statsReveal.visible ? { animation: `fadeUp .5s cubic-bezier(.22,1,.36,1) ${i * 70}ms both` } : { opacity: 0 }}>
-                  <p className={`text-2xl font-black ${s.color}`}>{s.value}</p>
-                  <p className="text-xs text-gray-500 mt-0.5 font-medium">{s.label}</p>
+                <div key={s.label} className="py-8 px-6 text-center"
+                  style={statsReveal.visible ? { animation: `fadeUp .5s cubic-bezier(.22,1,.36,1) ${i * 60}ms both` } : { opacity: 0 }}>
+                  <p className={`text-3xl font-black ${s.color}`}>{s.value}</p>
+                  <p className="text-xs text-slate-500 mt-1.5 font-semibold uppercase tracking-wide">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -291,18 +242,22 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
       )}
 
       {/* ═══════════════════════════════════════════
-          FEATURES STRIP
+          FEATURES SECTION
       ═══════════════════════════════════════════ */}
       {!searchQuery && (
-        <section className="bg-white border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <section className="bg-white border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((f) => (
-                <div key={f.title} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 border border-transparent hover:border-gray-100 hover:shadow-sm transition-all duration-200 group cursor-default">
-                  <div className={`${f.bg} p-2.5 rounded-xl shrink-0 group-hover:scale-110 transition-transform duration-200`}>{f.icon}</div>
-                  <div>
-                    <p className="text-sm font-bold text-gray-900 leading-tight">{f.title}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">{f.desc}</p>
+                <div key={f.title} className={`${f.bg} border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 group cursor-default`}>
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-white rounded-xl group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      {f.icon}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-slate-900 text-base leading-tight">{f.title}</p>
+                      <p className="text-sm text-slate-600 mt-1">{f.desc}</p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -312,20 +267,20 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
       )}
 
       {/* ═══════════════════════════════════════════
-          MAIN
+          MAIN CONTENT
       ═══════════════════════════════════════════ */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white">
 
         {searchQuery && (
-          <div className="mb-8 p-5 bg-indigo-50 rounded-2xl border border-indigo-100 flex items-start gap-3">
-            <Tag className="w-5 h-5 text-indigo-500 mt-0.5 shrink-0" />
-            <div>
-              <h2 className="font-bold text-gray-900 text-base">
-                {t('home.searchResults')} <span className="text-indigo-600">&ldquo;{searchQuery}&rdquo;</span>
+          <div className="mb-10 p-6 bg-blue-50 rounded-2xl border-2 border-blue-200 flex items-start gap-4">
+            <Tag className="w-6 h-6 text-blue-600 mt-0.5 shrink-0" />
+            <div className="flex-1">
+              <h2 className="font-bold text-slate-900 text-lg">
+                {t('home.searchResults')} <span className="text-blue-600">&ldquo;{searchQuery}&rdquo;</span>
               </h2>
-              <p className="text-gray-500 text-sm mt-0.5">{products.length} {t('home.productsFound')}</p>
-              <Link href="/" className="mt-1.5 inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:underline">
-                <ArrowRight className="w-3.5 h-3.5 rotate-180" /> {t('home.clearSearch')}
+              <p className="text-slate-600 text-sm mt-1">{products.length} {t('home.productsFound')}</p>
+              <Link href="/" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
+                <ArrowRight className="w-4 h-4 rotate-180" /> {t('home.clearSearch')}
               </Link>
             </div>
           </div>
@@ -333,58 +288,56 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
 
         {/* Section header */}
         {!searchQuery && (
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-10">
             <div>
-              <h2 className="text-2xl font-black text-gray-900">{t('home.allProducts')}</h2>
-              <p className="text-sm text-gray-400 mt-0.5">{products.length} {t('home.productsAvailable')}</p>
+              <h2 className="text-3xl font-black text-slate-900">{t('home.allProducts')}</h2>
+              <p className="text-sm text-slate-500 mt-1 font-medium">{products.length} {t('home.productsAvailable')}</p>
             </div>
             <Link href="/products"
-              className="group text-sm font-bold text-indigo-600 flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-xl transition-all duration-200">
+              className="group text-sm font-bold text-white flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-blue-600/20">
               {t('home.viewAll')} <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
         )}
 
         {products.length === 0 ? (
-          <div className="text-center py-24 bg-gray-50 rounded-2xl border border-gray-100">
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-              <Star className="w-8 h-8 text-gray-200" />
+          <div className="text-center py-24 bg-slate-50 rounded-3xl border-2 border-slate-200">
+            <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <Star className="w-10 h-10 text-blue-600" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{t('home.noProductsFound')}</h3>
-            <p className="text-gray-400 mb-6 text-sm">{t('home.noProductsDesc')}</p>
-            <Link href="/" className="bg-indigo-600 text-white px-6 py-2.5 rounded-xl hover:bg-indigo-700 transition-colors font-semibold text-sm shadow-md shadow-indigo-500/25">
-              {t('home.browseAll')}
+            <h3 className="text-2xl font-black text-slate-900 mb-3">{t('home.noProductsFound')}</h3>
+            <p className="text-slate-600 mb-8 text-base max-w-md mx-auto">{t('home.noProductsDesc')}</p>
+            <Link href="/" className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-xl hover:bg-blue-700 transition-all font-bold shadow-lg shadow-blue-600/20 hover:-translate-y-0.5">
+              {t('home.browseAll')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         ) : (
-          <div ref={productsReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+          <div ref={productsReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map((product, i) => (
-              <div key={product.id} style={productsReveal.visible
-                ? { animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 45}ms both` }
-                : { opacity: 0 }}>
+              <div key={product.id} style={productsReveal.visible ? { animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 40}ms both` } : { opacity: 0 }}>
                 <ProductCard product={product} />
               </div>
             ))}
           </div>
         )}
 
-        {/* Top Rated */}
+        {/* Top Rated Section */}
         {!searchQuery && featuredProducts.length > 0 && (
-          <section className="mt-20">
-            <div className="flex items-center justify-between mb-8">
+          <section className="mt-24">
+            <div className="flex items-center justify-between mb-10">
               <div>
-                <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
-                  <TrendingUp className="w-6 h-6 text-amber-500" />
+                <h2 className="text-3xl font-black text-slate-900 flex items-center gap-3">
+                  <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-amber-600" />
+                  </div>
                   {t('home.topRated')}
                 </h2>
-                <p className="text-sm text-gray-400 mt-0.5">{t('home.topRatedDesc')}</p>
+                <p className="text-sm text-slate-500 mt-2 font-medium">{t('home.topRatedDesc')}</p>
               </div>
             </div>
-            <div ref={featuredReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            <div ref={featuredReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
               {featuredProducts.map((product, i) => (
-                <div key={product.id} style={featuredReveal.visible
-                  ? { animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 55}ms both` }
-                  : { opacity: 0 }}>
+                <div key={product.id} style={featuredReveal.visible ? { animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 50}ms both` } : { opacity: 0 }}>
                   <ProductCard product={product} />
                 </div>
               ))}
@@ -394,28 +347,24 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
 
         {/* Bottom CTA */}
         {!searchQuery && (
-          <div className="mt-20 rounded-3xl overflow-hidden relative text-center py-14 px-6 border border-gray-100 shadow-sm bg-white">
-            {/* subtle dot grid */}
-            <div className="absolute inset-0 pointer-events-none" style={{
-              backgroundImage: 'radial-gradient(rgba(99,102,241,.05) 1px,transparent 1px)',
-              backgroundSize: '24px 24px',
-            }} />
-            {/* soft orbs */}
-            <div className="absolute -top-16 -left-16 w-48 h-48 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle,rgba(99,102,241,.08),transparent 70%)' }} />
-            <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle,rgba(168,85,247,.07),transparent 70%)' }} />
+          <div className="mt-24 rounded-3xl overflow-hidden relative text-center py-16 px-6 border-2 border-slate-200 bg-gradient-to-br from-slate-50 to-white shadow-lg">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 pointer-events-none opacity-30">
+              <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl" />
+              <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl" />
+            </div>
 
             <div className="relative">
-              <span className="inline-flex items-center gap-1.5 bg-indigo-50 border border-indigo-100 text-indigo-600 text-xs font-bold px-3 py-1.5 rounded-full mb-4">
-                <Zap className="w-3.5 h-3.5 text-indigo-500" /> Limited time offer
-              </span>
-              <h3 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3">Ready to explore?</h3>
-              <p className="text-gray-400 text-base mb-8 max-w-md mx-auto">
-                Browse our full catalogue and discover thousands of products.
+              <div className="inline-flex items-center gap-2 bg-white border border-slate-200 text-blue-700 text-xs font-bold px-4 py-2 rounded-full mb-5 shadow-sm">
+                <Zap className="w-4 h-4 text-blue-600" /> Limited time offer
+              </div>
+              <h3 className="text-4xl sm:text-5xl font-black text-slate-900 mb-4">Ready to explore?</h3>
+              <p className="text-slate-600 text-lg mb-10 max-w-md mx-auto">
+                Browse our full catalogue and discover thousands of amazing products.
               </p>
               <Link href="/products"
-                className="group inline-flex items-center gap-2 font-bold px-8 py-3.5 rounded-xl text-white transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:-translate-y-0.5 active:scale-95"
-                style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)' }}>
-                {t('home.browseAll')} <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                className="group inline-flex items-center justify-center gap-2 font-bold px-10 py-4 rounded-2xl text-white transition-all duration-200 shadow-lg shadow-blue-600/30 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 hover:-translate-y-1 active:scale-95">
+                {t('home.browseAll')} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>

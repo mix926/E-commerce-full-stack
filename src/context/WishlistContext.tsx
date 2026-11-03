@@ -43,8 +43,10 @@ function getSnapshot(): WishlistItem[] {
   }
 }
 
+let serverSnapshot: WishlistItem[] = [];
+
 function getServerSnapshot(): WishlistItem[] {
-  return [];
+  return serverSnapshot;
 }
 
 function subscribe(notify: () => void): () => void {

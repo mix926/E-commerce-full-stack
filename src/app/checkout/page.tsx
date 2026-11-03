@@ -3,7 +3,7 @@ import { getOrCreateCart } from '@/actions/cart';
 import { redirect } from 'next/navigation';
 import CheckoutForm from './CheckoutForm';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Lock, Truck, Shield } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,37 +23,77 @@ export default async function CheckoutPage() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-6">
-        <Link
-          href="/cart"
-          className="text-xs font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1.5 transition-colors"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Back to Shopping Cart
-        </Link>
-        <h1 className="text-3xl font-extrabold text-gray-900 mt-2">
-          Secure Checkout
-        </h1>
-        <p className="text-sm text-gray-500">
-          Complete your order with encrypted, risk-free payment
-        </p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <style>{`
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
+
+      {/* Header */}
+      <div className="bg-white border-b-2 border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <Link
+            href="/cart"
+            className="text-sm font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-2 transition-colors mb-4 group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Shopping Cart
+          </Link>
+          <h1 className="text-3xl font-black text-slate-900">
+            Secure Checkout
+          </h1>
+          <p className="text-slate-600 text-sm mt-2 font-medium">
+            Complete your order with our encrypted, risk-free payment system
+          </p>
+        </div>
       </div>
 
-      <CheckoutForm
-        userName={session.name || ''}
-        userEmail={session.email || ''}
-        cartItems={cart.items.map((i) => ({
-          id: i.id,
-          quantity: i.quantity,
-          product: {
-            name: i.product.name,
-            price: i.product.price,
-            image: i.product.image,
-          },
-        }))}
-        subtotal={subtotal}
-      />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Trust indicators */}
+        <div className="grid grid-cols-3 gap-3 mb-8">
+          <div className="bg-white border-2 border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Lock className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-900">SSL Secure</p>
+              <p className="text-xs text-slate-600">256-bit encrypted</p>
+            </div>
+          </div>
+          <div className="bg-white border-2 border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+            <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Shield className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-900">Protected</p>
+              <p className="text-xs text-slate-600">30-day guarantee</p>
+            </div>
+          </div>
+          <div className="bg-white border-2 border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+            <div className="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Truck className="w-5 h-5 text-violet-600" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-900">Fast Delivery</p>
+              <p className="text-xs text-slate-600">2-5 business days</p>
+            </div>
+          </div>
+        </div>
+
+        <CheckoutForm
+          userName={session.name || ''}
+          userEmail={session.email || ''}
+          cartItems={cart.items.map((i) => ({
+            id: i.id,
+            quantity: i.quantity,
+            product: {
+              name: i.product.name,
+              price: i.product.price,
+              image: i.product.image,
+            },
+          }))}
+          subtotal={subtotal}
+        />
+      </div>
     </div>
   );
 }
