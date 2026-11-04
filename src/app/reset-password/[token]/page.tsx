@@ -9,6 +9,7 @@ function ResetPasswordContent() {
   const params = useParams();
   const token = params.token as string;
   
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +32,13 @@ function ResetPasswordContent() {
     setError('');
     setSuccess(false);
 
+    // Validate email
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address');
+      setLoading(false);
+      return;
+    }
+
     // Validate passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -51,6 +59,7 @@ function ResetPasswordContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           token,
+          email,
           newPassword: password,
         }),
       });
@@ -68,6 +77,7 @@ function ResetPasswordContent() {
         setSuccess(true);
         setPassword('');
         setConfirmPassword('');
+        setEmail('');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to reset password');
@@ -185,6 +195,22 @@ function ResetPasswordContent() {
               )}
 
               <form className="space-y-4" onSubmit={handleSubmit}>
+                {/* Email Input */}
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <label className="text-xs font-bold text-slate-700 block mb-2">Email Address</label>
+                  <div className="relative group">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                    <input 
+                      type="email"
+                      required 
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 text-sm text-slate-900 bg-slate-50 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all placeholder-slate-400 font-medium" 
+                    />
+                  </div>
+                </div>
+
                 {/* Password Input */}
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: '50ms' }}>
                   <label className="text-xs font-bold text-slate-700 block mb-2">New Password</label>
@@ -234,7 +260,7 @@ function ResetPasswordContent() {
                 {/* Submit Button */}
                 <button 
                   type="submit" 
-                  disabled={loading || !password || !confirmPassword}
+                  disabled={loading || !email || !password || !confirmPassword}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black text-white transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500" 
                   style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)', animationDelay: '150ms', boxShadow: '0 10px 30px rgba(59,130,246,.3)' }}
                 >

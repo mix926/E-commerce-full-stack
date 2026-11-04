@@ -7,12 +7,19 @@ const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
-    const { token, newPassword } = await request.json();
+    const { token, newPassword, email } = await request.json();
 
     // Validate inputs
     if (!token || typeof token !== 'string') {
       return NextResponse.json(
         { error: 'Invalid or missing reset token' },
+        { status: 400 }
+      );
+    }
+
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
+      return NextResponse.json(
+        { error: 'Invalid or missing email' },
         { status: 400 }
       );
     }
@@ -24,17 +31,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find user with valid reset token
-    const user = await prisma.user.findFirst({
+    // Find user by email with valid reset token
+    const user = await prisma.user.findUnique({
       where: {
-        AND: [
-          { password_reset_token: { not: null } },
-          { password_reset_expires: { gt: new Date() } },
-        ],
+        email: email.toLowerCase(),
       },
     });
 
-    if (!user || !user.password_reset_token) {
+    if (!user || !user.password_reset_token || !user.password_reset_expires) {
+      return NextResponse.json(
+        { error: 'Invalid or expired reset token' },
+        { status: 400 }
+      );
+    }
+
+    // Check if token is expired
+    if (user.password_reset_expires < new Date()) {
       return NextResponse.json(
         { error: 'Invalid or expired reset token' },
         { status: 400 }
