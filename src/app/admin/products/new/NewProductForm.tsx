@@ -2,7 +2,8 @@
 
 import { useTransition, useState } from 'react';
 import { createProduct } from '@/actions/admin';
-import { PlusCircle, Tag, Ruler, Palette, Star } from 'lucide-react';
+import { extractPinterestImage } from '@/actions/image';
+import { PlusCircle, Tag, Ruler, Palette, Star, Loader2 } from 'lucide-react';
 
 const PRESET_SIZES  = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '6', '7', '8', '9', '10', '11', '12'];
 const PRESET_COLORS = [
@@ -26,12 +27,31 @@ export default function NewProductForm({ categories }: NewProductFormProps) {
   const [selectedCategory, setSelectedCategory]   = useState('');
   const [customCategory, setCustomCategory]       = useState('');
   const [imageUrl, setImageUrl]                   = useState('');
+  const [isLoadingImage, setIsLoadingImage]       = useState(false);
   const [selectedSizes, setSelectedSizes]         = useState<string[]>([]);
   const [selectedColors, setSelectedColors]       = useState<string[]>([]);
   const [featured, setFeatured]                   = useState(false);
 
   const toggleSize  = (s: string) => setSelectedSizes(p  => p.includes(s) ? p.filter(x => x !== s) : [...p, s]);
   const toggleColor = (c: string) => setSelectedColors(p => p.includes(c) ? p.filter(x => x !== c) : [...p, c]);
+
+  async function handleImageUrlChange(value: string) {
+    setImageUrl(value);
+    
+    // Auto-extract image from Pinterest links
+    if (value.includes('pinterest.com')) {
+      setIsLoadingImage(true);
+      try {
+        const extracted = await extractPinterestImage(value);
+        setImageUrl(extracted);
+      } catch (error) {
+        console.error('Failed to extract image:', error);
+        // Keep the original URL if extraction fails
+      } finally {
+        setIsLoadingImage(false);
+      }
+    }
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -76,13 +96,17 @@ export default function NewProductForm({ categories }: NewProductFormProps) {
       {/* Image */}
       <div>
         <label className={label}>Image URL</label>
-        <input name="image" type="text" required placeholder="https://…" className={input}
-          value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
+        <div className="flex gap-2">
+          <input name="image" type="text" required placeholder="https://… or paste Pinterest link" className={input}
+            value={imageUrl} onChange={e => handleImageUrlChange(e.target.value)} disabled={isLoadingImage} />
+          {isLoadingImage && <Loader2 className="w-5 h-5 animate-spin text-indigo-500 mt-2.5" />}
+        </div>
         {imageUrl && (
           <div className="mt-2 w-24 h-24 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
             <img src={imageUrl} alt="preview" className="w-full h-full object-cover" onError={() => setImageUrl('')} />
           </div>
         )}
+        <p className="text-xs text-gray-400 mt-1">💡 Tip: Paste Pinterest links directly—we'll extract the image for you!</p>
       </div>
 
       {/* Category */}
@@ -182,7 +206,7 @@ export default function NewProductForm({ categories }: NewProductFormProps) {
       </div>
 
       <button type="submit"
-        disabled={isPending || (!useCustomCategory && !selectedCategory) || (useCustomCategory && !customCategory.trim())}
+        disabled={isPending || !imageUrl || (!useCustomCategory && !selectedCategory) || (useCustomCategory && !customCategory.trim())}
         className="w-full py-3 rounded-xl font-black text-sm text-white transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
         style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', boxShadow: '0 6px 20px rgba(99,102,241,.3)' }}>
         {isPending ? 'Creating Product…' : 'Create Product'}

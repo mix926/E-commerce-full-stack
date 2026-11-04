@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Star, Pencil, Filter } from 'lucide-react';
+import { Star, Pencil, Trash2, Filter, Search } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useState, useMemo } from 'react';
 import DeleteReviewButton from './DeleteReviewButton';
 
 const CATEGORIES = ['Electronics', 'Accessories', 'Clothing', 'Home', 'Sports', 'Books'];
@@ -13,12 +14,12 @@ function StarDisplay({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((s) => (
         <Star
           key={s}
-          className={`w-3.5 h-3.5 ${
+          className={`w-4 h-4 ${
             s <= rating ? 'fill-amber-400 text-amber-400' : 'fill-gray-200 text-gray-200'
           }`}
         />
       ))}
-      <span className="ml-1 text-xs font-bold text-gray-700">{rating}.0</span>
+      <span className="ml-2 text-sm font-bold text-gray-900">{rating}</span>
     </div>
   );
 }
@@ -52,274 +53,245 @@ export default function AdminReviewsContent({
   totalReviews,
   avgRating,
   categoryCounts,
-  ratingFilter,
-  productFilter,
-  categoryFilter,
+  ratingFilter: initialRatingFilter,
+  productFilter: initialProductFilter,
+  categoryFilter: initialCategoryFilter,
 }: Props) {
   const { t } = useLanguage();
+  const [searchTerm, setSearchTerm] = useState(initialProductFilter ?? '');
+  const [categoryFilter, setCategoryFilter] = useState(initialCategoryFilter ?? 'all');
+  const [ratingFilter, setRatingFilter] = useState(initialRatingFilter ? parseInt(initialRatingFilter) : 0);
 
-  function buildUrl(overrides: Record<string, string | undefined>) {
-    const params = new URLSearchParams();
-    const merged = {
-      ...(ratingFilter ? { rating: ratingFilter } : {}),
-      ...(productFilter ? { product: productFilter } : {}),
-      ...(categoryFilter ? { category: categoryFilter } : {}),
-      ...overrides,
-    };
-    Object.entries(merged).forEach(([k, v]) => {
-      if (v && v !== 'all') params.set(k, v);
+  // Filter reviews
+  const filteredReviews = useMemo(() => {
+    return reviews.filter(review => {
+      // Search filter
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        if (!review.product.name.toLowerCase().includes(searchLower) &&
+            !review.user.email.toLowerCase().includes(searchLower)) {
+          return false;
+        }
+      }
+
+      // Category filter
+      if (categoryFilter !== 'all' && review.product.category !== categoryFilter) {
+        return false;
+      }
+
+      // Rating filter
+      if (ratingFilter > 0 && review.rating !== ratingFilter) {
+        return false;
+      }
+
+      return true;
     });
-    const qs = params.toString();
-    return `/admin/reviews${qs ? `?${qs}` : ''}`;
-  }
+  }, [reviews, searchTerm, categoryFilter, ratingFilter]);
 
-  const hasFilters = !!(ratingFilter || productFilter || (categoryFilter && categoryFilter !== 'all'));
+  const hasFilters = !!(searchTerm || categoryFilter !== 'all' || ratingFilter > 0);
 
   return (
-    <div className="p-8">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('admin.reviewsManagement')}</h1>
-          <p className="text-sm text-gray-500 mt-0.5">
-            {totalReviews} {t('admin.totalReviews')} · {t('admin.avgRating')}:{' '}
-            <span className="text-amber-500 font-semibold">
-              {avgRating?.toFixed(1) ?? '—'}★
-            </span>
-          </p>
-        </div>
-        {hasFilters && (
-          <Link
-            href="/admin/reviews"
-            className="text-xs font-semibold text-gray-500 hover:text-red-600 border border-gray-200 hover:border-red-200 px-3 py-1.5 rounded-lg transition-colors"
-          >
-            {t('admin.clearAll')}
-          </Link>
-        )}
-      </div>
-
-      {/* ── CATEGORY FILTER ── */}
-      <div className="mb-5">
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-          <Filter className="w-3.5 h-3.5" /> {t('admin.filterCategory')}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href={buildUrl({ category: undefined })}
-            className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-              !categoryFilter || categoryFilter === 'all'
-                ? 'bg-gray-900 text-white border-gray-900'
-                : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
-            }`}
-          >
-            {t('admin.all')} ({totalReviews})
-          </Link>
-
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat}
-              href={buildUrl({ category: cat })}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                categoryFilter === cat
-                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm shadow-blue-500/25'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-600'
-              }`}
-            >
-              {cat}
-              <span className={`ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
-                categoryFilter === cat
-                  ? 'bg-white/20 text-white'
-                  : 'bg-gray-100 text-gray-500'
-              }`}>
-                {categoryCounts.find((c) => c.category === cat)?.count ?? 0}
-              </span>
-            </Link>
-          ))}
+      <div className="bg-white border-b-2 border-slate-200 px-8 py-6">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-black text-slate-900 mb-2">{t('admin.reviewsManagement')}</h1>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-slate-600">Total Reviews:</span>
+              <span className="text-2xl font-black text-blue-600">{totalReviews}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-slate-600">Average Rating:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-2xl font-black text-amber-500">
+                  {avgRating?.toFixed(1) ?? '—'}
+                </span>
+                <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ── STAR FILTER ── */}
-      <div className="mb-5">
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-          {t('admin.filterRating')}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href={buildUrl({ rating: undefined })}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-              !ratingFilter || ratingFilter === 'all'
-                ? 'bg-amber-500 text-white border-amber-500'
-                : 'bg-white text-gray-600 border-gray-200 hover:border-amber-300'
-            }`}
-          >
-            {t('admin.allStars')}
-          </Link>
-          {[5, 4, 3, 2, 1].map((star) => (
-            <Link
-              key={star}
-              href={buildUrl({ rating: String(star) })}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                ratingFilter === String(star)
-                  ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-amber-300 hover:text-amber-600'
-              }`}
-            >
-              {'★'.repeat(star)} {star}
-            </Link>
-          ))}
+      <div className="p-8 max-w-7xl mx-auto">
+        {/* Filters Section */}
+        <div className="bg-white rounded-2xl border-2 border-slate-200 p-6 mb-8 shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Search */}
+            <div>
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">
+                🔍 Search Product
+              </label>
+              <div className="relative">
+                <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search by product or email..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 border-2 border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Category Filter */}
+            <div>
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">
+                📂 Category
+              </label>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="all">All Categories</option>
+                {CATEGORIES.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Rating Filter */}
+            <div>
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block">
+                ⭐ Rating
+              </label>
+              <select
+                value={ratingFilter}
+                onChange={(e) => setRatingFilter(parseInt(e.target.value))}
+                className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="0">All Ratings</option>
+                <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                <option value="3">⭐⭐⭐ 3 Stars</option>
+                <option value="2">⭐⭐ 2 Stars</option>
+                <option value="1">⭐ 1 Star</option>
+              </select>
+            </div>
+
+            {/* Results Count */}
+            <div className="flex items-end">
+              <div className="text-sm font-bold text-slate-700">
+                Showing <span className="text-blue-600">{filteredReviews.length}</span> of <span className="text-slate-600">{totalReviews}</span> reviews
+              </div>
+            </div>
+          </div>
+
+          {hasFilters && (
+            <div className="mt-4 pt-4 border-t-2 border-slate-200">
+              <button
+                onClick={() => {
+                  setSearchTerm('');
+                  setCategoryFilter('all');
+                  setRatingFilter(0);
+                }}
+                className="text-sm font-bold text-red-600 hover:text-red-700 transition-colors"
+              >
+                ✕ Clear All Filters
+              </button>
+            </div>
+          )}
         </div>
-      </div>
 
-      {/* ── SEARCH ── */}
-      <form method="GET" action="/admin/reviews" className="mb-6 flex gap-2 flex-wrap">
-        {ratingFilter && <input type="hidden" name="rating" value={ratingFilter} />}
-        {categoryFilter && categoryFilter !== 'all' && (
-          <input type="hidden" name="category" value={categoryFilter} />
-        )}
-        <input
-          name="product"
-          type="text"
-          defaultValue={productFilter ?? ''}
-          placeholder={t('admin.searchProduct')}
-          className="border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 bg-white shadow-sm"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors"
-        >
-          {t('admin.search')}
-        </button>
-      </form>
+        {/* Reviews Grid */}
+        {filteredReviews.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredReviews.map((review) => (
+              <div
+                key={review.id}
+                className="bg-white rounded-2xl border-2 border-slate-200 overflow-hidden shadow-sm hover:shadow-lg hover:border-slate-300 transition-all duration-300 flex flex-col"
+              >
+                {/* Product Image */}
+                <div className="relative h-40 bg-slate-100 overflow-hidden group">
+                  <img
+                    src={review.product.image}
+                    alt={review.product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
 
-      {/* ── ACTIVE FILTERS SUMMARY ── */}
-      {hasFilters && (
-        <div className="flex flex-wrap gap-2 mb-5">
-          {categoryFilter && categoryFilter !== 'all' && (
-            <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full border border-blue-200">
-              {t('admin.category')}: {categoryFilter}
-              <Link href={buildUrl({ category: undefined })} className="hover:text-red-500 font-bold">✕</Link>
-            </span>
-          )}
-          {ratingFilter && ratingFilter !== 'all' && (
-            <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs font-semibold px-3 py-1 rounded-full border border-amber-200">
-              {'★'.repeat(parseInt(ratingFilter))} {ratingFilter} {t('admin.filterRating').toLowerCase()}
-              <Link href={buildUrl({ rating: undefined })} className="hover:text-red-500 font-bold">✕</Link>
-            </span>
-          )}
-          {productFilter && (
-            <span className="inline-flex items-center gap-1.5 bg-gray-100 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full border border-gray-200">
-              {t('admin.productName')}: &ldquo;{productFilter}&rdquo;
-              <Link href={buildUrl({ product: undefined })} className="hover:text-red-500 font-bold">✕</Link>
-            </span>
-          )}
-        </div>
-      )}
+                {/* Review Content */}
+                <div className="p-5 flex-1 flex flex-col">
+                  {/* Product Name and Category */}
+                  <div className="mb-3">
+                    <Link
+                      href={`/products/${review.product.id}`}
+                      target="_blank"
+                      className="font-bold text-slate-900 hover:text-blue-600 line-clamp-1 mb-2 block"
+                    >
+                      {review.product.name}
+                    </Link>
+                    <span className="inline-block px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
+                      {review.product.category}
+                    </span>
+                  </div>
 
-      {/* ── REVIEWS TABLE ── */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        {reviews.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">
-            <Star className="w-10 h-10 mx-auto mb-3 text-gray-200" />
-            <p className="font-semibold text-gray-500">{t('admin.noReviews')}</p>
-            <p className="text-xs mt-1">{t('products.noFoundDesc')}</p>
+                  {/* Rating */}
+                  <div className="mb-3 pb-3 border-b-2 border-slate-100">
+                    <StarDisplay rating={review.rating} />
+                  </div>
+
+                  {/* Customer Info */}
+                  <div className="mb-3 pb-3 border-b-2 border-slate-100">
+                    <p className="text-xs font-bold text-slate-700 mb-1">
+                      {review.user.name || 'Anonymous'}
+                    </p>
+                    <p className="text-xs text-slate-500 truncate">
+                      {review.user.email}
+                    </p>
+                  </div>
+
+                  {/* Comment */}
+                  <p className="text-sm text-slate-700 line-clamp-3 mb-3 flex-1">
+                    {review.comment}
+                  </p>
+
+                  {/* Date */}
+                  <p className="text-xs text-slate-500 mb-4">
+                    {new Date(review.createdAt).toLocaleDateString('en-US', {
+                      year: 'numeric', month: 'short', day: 'numeric',
+                    })}
+                  </p>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/admin/reviews/${review.id}/edit`}
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 transition-colors"
+                    >
+                      <Pencil className="w-4 h-4" />
+                      Edit
+                    </Link>
+                    <div className="flex-1">
+                      <DeleteReviewButton reviewId={review.id} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
-          <>
-            <div className="px-5 py-3 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-              <p className="text-xs text-gray-500 font-medium">
-                {t('admin.showing')} <span className="font-bold text-gray-900">{reviews.length}</span> {t('admin.reviews').toLowerCase()}
-                {categoryFilter && categoryFilter !== 'all' && (
-                  <span> {t('admin.in')} <span className="text-blue-600 font-bold">{categoryFilter}</span></span>
-                )}
-              </p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
-                  <tr>
-                    <th className="px-5 py-3 text-left">{t('admin.productName')}</th>
-                    <th className="px-5 py-3 text-left">{t('admin.category')}</th>
-                    <th className="px-5 py-3 text-left">{t('admin.customer')}</th>
-                    <th className="px-5 py-3 text-left">{t('admin.rating')}</th>
-                    <th className="px-5 py-3 text-left">{t('admin.comment')}</th>
-                    <th className="px-5 py-3 text-left">{t('admin.date')}</th>
-                    <th className="px-5 py-3 text-left">{t('admin.actions')}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {reviews.map((review) => (
-                    <tr key={review.id} className="hover:bg-gray-50 transition-colors">
-                      {/* Product */}
-                      <td className="px-5 py-4">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={review.product.image}
-                            alt={review.product.name}
-                            className="w-10 h-10 rounded-lg object-cover border border-gray-100 shrink-0"
-                          />
-                          <Link
-                            href={`/products/${review.product.id}`}
-                            className="font-medium text-gray-900 hover:text-blue-600 line-clamp-1 max-w-[130px]"
-                            target="_blank"
-                          >
-                            {review.product.name}
-                          </Link>
-                        </div>
-                      </td>
-
-                      {/* Category */}
-                      <td className="px-5 py-4">
-                        <Link
-                          href={buildUrl({ category: review.product.category })}
-                          className="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full hover:bg-blue-100 transition-colors whitespace-nowrap"
-                        >
-                          {review.product.category}
-                        </Link>
-                      </td>
-
-                      {/* Customer */}
-                      <td className="px-5 py-4">
-                        <p className="font-medium text-gray-900 text-xs">{review.user.name ?? '—'}</p>
-                        <p className="text-xs text-gray-400">{review.user.email}</p>
-                      </td>
-
-                      {/* Rating */}
-                      <td className="px-5 py-4">
-                        <StarDisplay rating={review.rating} />
-                      </td>
-
-                      {/* Comment */}
-                      <td className="px-5 py-4 max-w-[200px]">
-                        <p className="text-gray-600 line-clamp-2 text-xs leading-relaxed">
-                          {review.comment}
-                        </p>
-                      </td>
-
-                      {/* Date */}
-                      <td className="px-5 py-4 text-gray-400 text-xs whitespace-nowrap">
-                        {new Date(review.createdAt).toLocaleDateString('en-US', {
-                          year: 'numeric', month: 'short', day: 'numeric',
-                        })}
-                      </td>
-
-                      {/* Actions */}
-                      <td className="px-5 py-4">
-                        <div className="flex items-center gap-2">
-                          <Link
-                            href={`/admin/reviews/${review.id}/edit`}
-                            className="flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg transition-colors"
-                          >
-                            <Pencil className="w-3 h-3" /> {t('admin.edit')}
-                          </Link>
-                          <DeleteReviewButton reviewId={review.id} />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
+          <div className="text-center py-20 bg-white rounded-2xl border-2 border-slate-200">
+            <Star className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+            <p className="text-slate-700 font-bold text-lg mb-2">No Reviews Found</p>
+            <p className="text-slate-600 text-sm mb-6">
+              {hasFilters ? 'Try adjusting your filters' : 'No reviews have been submitted yet'}
+            </p>
+            {hasFilters && (
+              <button
+                onClick={() => {
+                  setSearchTerm('');
+                  setCategoryFilter('all');
+                  setRatingFilter(0);
+                }}
+                className="px-6 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors"
+              >
+                Clear Filters
+              </button>
+            )}
+          </div>
         )}
       </div>
     </div>

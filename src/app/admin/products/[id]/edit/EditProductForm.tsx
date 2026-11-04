@@ -3,7 +3,8 @@
 import { useTransition, useState } from 'react';
 import { updateProduct } from '@/actions/admin';
 import type { Product } from '@prisma/client';
-import { PlusCircle, Tag, Ruler, Palette, Star } from 'lucide-react';
+import { extractPinterestImage } from '@/actions/image';
+import { PlusCircle, Tag, Ruler, Palette, Star, Loader2 } from 'lucide-react';
 
 const PRESET_SIZES  = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '6', '7', '8', '9', '10', '11', '12'];
 const PRESET_COLORS = [
@@ -27,6 +28,7 @@ export default function EditProductForm({ product, categories }: EditProductForm
   const [selectedCategory, setSelectedCategory]   = useState(product.category);
   const [customCategory, setCustomCategory]       = useState('');
   const [imageUrl, setImageUrl]                   = useState(product.image);
+  const [isLoadingImage, setIsLoadingImage]       = useState(false);
   const [selectedSizes, setSelectedSizes]   = useState<string[]>(
     product.sizes ? product.sizes.split(',').map(s => s.trim()).filter(Boolean) : []
   );
@@ -37,6 +39,24 @@ export default function EditProductForm({ product, categories }: EditProductForm
 
   const toggleSize  = (s: string) => setSelectedSizes(p  => p.includes(s) ? p.filter(x => x !== s) : [...p, s]);
   const toggleColor = (c: string) => setSelectedColors(p => p.includes(c) ? p.filter(x => x !== c) : [...p, c]);
+
+  async function handleImageUrlChange(value: string) {
+    setImageUrl(value);
+    
+    // Auto-extract image from Pinterest links
+    if (value.includes('pinterest.com')) {
+      setIsLoadingImage(true);
+      try {
+        const extracted = await extractPinterestImage(value);
+        setImageUrl(extracted);
+      } catch (error) {
+        console.error('Failed to extract image:', error);
+        // Keep the original URL if extraction fails
+      } finally {
+        setIsLoadingImage(false);
+      }
+    }
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -78,12 +98,16 @@ export default function EditProductForm({ product, categories }: EditProductForm
 
       <div>
         <label className={label}>Image URL</label>
-        <input name="image" type="text" required className={input} value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
+        <div className="flex gap-2">
+          <input name="image" type="text" required className={input} value={imageUrl} onChange={e => handleImageUrlChange(e.target.value)} disabled={isLoadingImage} placeholder="https://… or paste Pinterest link" />
+          {isLoadingImage && <Loader2 className="w-5 h-5 animate-spin text-indigo-500 mt-2.5" />}
+        </div>
         {imageUrl && (
           <div className="mt-2 w-24 h-24 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
             <img src={imageUrl} alt="preview" className="w-full h-full object-cover" />
           </div>
         )}
+        <p className="text-xs text-gray-400 mt-1">💡 Tip: Paste Pinterest links directly—we'll extract the image for you!</p>
       </div>
 
       {/* Category */}

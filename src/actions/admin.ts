@@ -54,6 +54,13 @@ export async function updateProduct(id: string, formData: FormData) {
 
 export async function deleteProduct(id: string) {
   await requireAdmin();
+  
+  // Validate product exists before attempting deletion
+  const product = await prisma.product.findUnique({ where: { id } });
+  if (!product) {
+    throw new Error('Product not found');
+  }
+  
   await prisma.product.delete({ where: { id } });
   revalidatePath('/admin/products');
 }
