@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, Suspense } from 'react';
-import { Loader2, AlertCircle, CheckCircle2, Mail, ArrowLeft, ShoppingBag, Lock, Send } from 'lucide-react';
+import { Loader2, AlertCircle, CheckCircle2, ArrowLeft, Lock, Send } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 function ForgotPasswordContent() {
@@ -61,7 +61,7 @@ function ForgotPasswordContent() {
           
           <h2 className="text-3xl font-black text-slate-900 mb-3">Reset Your Password</h2>
           <p className="text-slate-600 text-sm leading-relaxed mb-8">
-            Forgot your password? No worries! We'll send you an email with a secure link to reset it. Your account is safe with us.
+            Forgot your password? No worries! We&apos;ll send you an email with a secure link to reset it. Your account is safe with us.
           </p>
 
           {/* Security tips */}
@@ -96,7 +96,7 @@ function ForgotPasswordContent() {
           {!success ? (
             <>
               <h1 className="text-4xl font-black text-slate-900 mb-2">Forgot Password?</h1>
-              <p className="text-sm text-slate-600 mb-8">Enter your email address and we'll send you a link to reset your password.</p>
+              <p className="text-sm text-slate-600 mb-8">Enter your email address and we&apos;ll send you a link to reset your password.</p>
 
               {error && (
                 <div className="flex items-center gap-3 bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-6 animate-in shake font-medium">
@@ -110,7 +110,7 @@ function ForgotPasswordContent() {
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: '50ms' }}>
                   <label className="text-xs font-bold text-slate-700 block mb-2">Email Address</label>
                   <div className="relative group">
-                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
                     <input 
                       type="email" 
                       required 
@@ -120,7 +120,7 @@ function ForgotPasswordContent() {
                       className="w-full pl-10 pr-4 py-3 text-sm text-slate-900 bg-slate-50 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all placeholder-slate-400 font-medium" 
                     />
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-1.5 font-medium">We'll send a password reset link to this email</p>
+                  <p className="text-[11px] text-slate-500 mt-1.5 font-medium">We&apos;ll send a password reset link to this email</p>
                 </div>
 
                 {/* Submit Button */}
@@ -150,7 +150,7 @@ function ForgotPasswordContent() {
 
               {/* Sign Up Link */}
               <p className="text-center text-sm text-slate-600 mt-6 pt-6 border-t-2 border-slate-200 font-medium">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link href="/signup"
                   className="font-bold text-blue-600 hover:text-blue-700 transition-colors">
                   Sign Up
@@ -167,7 +167,7 @@ function ForgotPasswordContent() {
 
                 <h2 className="text-3xl font-black text-slate-900 mb-2">Check Your Email!</h2>
                 <p className="text-slate-600 text-sm mb-2">
-                  We've sent a password reset link to:
+                  We&apos;ve sent a password reset link to:
                 </p>
                 <p className="text-sm font-bold text-blue-600 mb-8 break-all">
                   {email}
@@ -184,7 +184,7 @@ function ForgotPasswordContent() {
                 </div>
 
                 <p className="text-xs text-slate-500 mb-6">
-                  Didn't receive the email? <button onClick={() => setSuccess(false)} className="text-blue-600 hover:text-blue-700 font-bold transition-colors">Try again</button>
+                  Didn&apos;t receive the email? <button onClick={() => setSuccess(false)} className="text-blue-600 hover:text-blue-700 font-bold transition-colors">Try again</button>
                 </p>
 
                 {/* Back to Sign In */}

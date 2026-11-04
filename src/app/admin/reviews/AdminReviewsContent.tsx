@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Star, Pencil, Trash2, Filter, Search } from 'lucide-react';
+import { Star, Pencil, Search } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useState, useMemo } from 'react';
 import DeleteReviewButton from './DeleteReviewButton';
@@ -33,16 +33,10 @@ interface Review {
   product: { id: string; name: string; image: string; category: string };
 }
 
-interface CategoryCount {
-  category: string;
-  count: number;
-}
-
 interface Props {
   reviews: Review[];
   totalReviews: number;
   avgRating: number | null;
-  categoryCounts: CategoryCount[];
   ratingFilter?: string;
   productFilter?: string;
   categoryFilter?: string;
@@ -52,7 +46,6 @@ export default function AdminReviewsContent({
   reviews,
   totalReviews,
   avgRating,
-  categoryCounts,
   ratingFilter: initialRatingFilter,
   productFilter: initialProductFilter,
   categoryFilter: initialCategoryFilter,
@@ -125,13 +118,13 @@ export default function AdminReviewsContent({
               </label>
               <div className="relative">
                 <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search by product or email..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2.5 border-2 border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
+              <input
+                type="text"
+                placeholder="Search by product or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-4 py-2.5 border-2 border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
               </div>
             </div>
 

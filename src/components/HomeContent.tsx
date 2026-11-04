@@ -313,8 +313,8 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
           </div>
         ) : (
           <div ref={productsReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-            {products.map((product, i) => (
-              <div key={product.id} style={productsReveal.visible ? { animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 40}ms both` } : { opacity: 0 }}>
+            {productsReveal.visible && products.map((product, i) => (
+              <div key={product.id} style={{ animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 40}ms both` }}>
                 <ProductCard product={product} />
               </div>
             ))}
@@ -336,8 +336,8 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
               </div>
             </div>
             <div ref={featuredReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-              {featuredProducts.map((product, i) => (
-                <div key={product.id} style={featuredReveal.visible ? { animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 50}ms both` } : { opacity: 0 }}>
+              {featuredReveal.visible && featuredProducts.map((product, i) => (
+                <div key={product.id} style={{ animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 50}ms both` }}>
                   <ProductCard product={product} />
                 </div>
               ))}

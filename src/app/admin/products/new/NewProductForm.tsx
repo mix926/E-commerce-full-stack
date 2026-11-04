@@ -78,7 +78,7 @@ export default function NewProductForm({ categories }: NewProductFormProps) {
       {/* Description */}
       <div>
         <label className={label}>Description</label>
-        <textarea name="description" required rows={3} placeholder="Describe the product…" className={`${input} resize-none`} />
+        <textarea name="description" required rows={3} placeholder="Describe the product&hellip;" className={`${input} resize-none`} />
       </div>
 
       {/* Price + Stock */}
@@ -106,7 +106,7 @@ export default function NewProductForm({ categories }: NewProductFormProps) {
             <img src={imageUrl} alt="preview" className="w-full h-full object-cover" onError={() => setImageUrl('')} />
           </div>
         )}
-        <p className="text-xs text-gray-400 mt-1">💡 Tip: Paste Pinterest links directly—we'll extract the image for you!</p>
+        <p className="text-xs text-gray-400 mt-1">💡 Tip: Paste Pinterest links directly&mdash;we&apos;ll extract the image for you!</p>
       </div>
 
       {/* Category */}

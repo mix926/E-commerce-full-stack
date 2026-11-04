@@ -107,7 +107,7 @@ export default function EditProductForm({ product, categories }: EditProductForm
             <img src={imageUrl} alt="preview" className="w-full h-full object-cover" />
           </div>
         )}
-        <p className="text-xs text-gray-400 mt-1">💡 Tip: Paste Pinterest links directly—we'll extract the image for you!</p>
+        <p className="text-xs text-gray-400 mt-1">💡 Tip: Paste Pinterest links directly&mdash;we&apos;ll extract the image for you!</p>
       </div>
 
       {/* Category */}

@@ -7,7 +7,7 @@ interface Column<T> {
   key: keyof T;
   label: string;
   sortable?: boolean;
-  render?: (value: any, row: T) => ReactNode;
+  render?: (value: T[keyof T], row: T) => ReactNode;
   width?: string;
 }
 

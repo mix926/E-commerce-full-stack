@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, Suspense } from 'react';
-import { Loader2, AlertCircle, CheckCircle2, Lock, Eye, EyeOff, ArrowLeft, ShoppingBag } from 'lucide-react';
+import { useState, Suspense } from 'react';
+import { Loader2, AlertCircle, CheckCircle2, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
 function ResetPasswordContent() {
@@ -17,14 +17,10 @@ function ResetPasswordContent() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tokenValidating, setTokenValidating] = useState(true);
   const [tokenInvalid, setTokenInvalid] = useState(false);
 
   // Validate token on mount (optional - can happen on form submit)
-  useEffect(() => {
-    // Token will be validated when user tries to submit
-    setTokenValidating(false);
-  }, [token]);
+  // Token will be validated when user tries to submit
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,17 +80,6 @@ function ResetPasswordContent() {
     } finally {
       setLoading(false);
     }
-  }
-
-  if (tokenValidating) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-500 mx-auto mb-4" />
-          <p className="text-slate-600">Verifying reset token...</p>
-        </div>
-      </div>
-    );
   }
 
   return (

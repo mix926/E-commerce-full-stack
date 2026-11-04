@@ -144,7 +144,7 @@ export default function AdminProductsContent({ products }: { products: Product[]
               </label>
               <select
                 value={stockFilter}
-                onChange={(e) => setStockFilter(e.target.value as any)}
+                onChange={(e) => setStockFilter(e.target.value as 'all' | 'low' | 'out')}
                 className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="all">All Products</option>

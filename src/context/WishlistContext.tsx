@@ -43,7 +43,7 @@ function getSnapshot(): WishlistItem[] {
   }
 }
 
-let serverSnapshot: WishlistItem[] = [];
+const serverSnapshot: WishlistItem[] = [];
 
 function getServerSnapshot(): WishlistItem[] {
   return serverSnapshot;

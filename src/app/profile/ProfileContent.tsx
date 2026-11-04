@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { User, Mail, Package, Star, Calendar, LogOut, ShoppingCart, Tag, Heart, Edit2, Lock, Settings } from 'lucide-react';
+import { User, Package, Star, LogOut, ShoppingCart, Tag, Heart, Edit2, Lock, Settings } from 'lucide-react';
 import { logoutUser } from '@/actions/auth';
 import { useLanguage } from '@/context/LanguageContext';
+import { useMemo } from 'react';
 
 interface ProfileContentProps {
   user: { name: string | null; email: string; createdAt: string };
@@ -13,7 +14,9 @@ interface ProfileContentProps {
 
 export default function ProfileContent({ user, orderCount, reviewCount }: ProfileContentProps) {
   const { t } = useLanguage();
-  const membershipDays = Math.floor((Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+  const membershipDays = useMemo(() => {
+    return Math.floor((Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+  }, [user.createdAt]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -48,7 +51,7 @@ export default function ProfileContent({ user, orderCount, reviewCount }: Profil
               <div className="inline-block px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full">
                 <p className="text-xs font-semibold text-blue-700 flex items-center gap-1 justify-center">
                   <Star className="w-3.5 h-3.5" />
-                  Member for {membershipDays} days
+                  Member since {new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                 </p>
               </div>
             </div>
@@ -221,7 +224,7 @@ export default function ProfileContent({ user, orderCount, reviewCount }: Profil
           {/* Sign Out Section */}
           <div className="bg-red-50 border border-red-200 rounded-2xl p-6 shadow-sm animate-in fade-in slide-in-from-right-4 duration-500" style={{ animationDelay: '400ms' }}>
             <p className="text-sm text-red-700 mb-4">
-              Once you sign out, you'll need to sign in again with your credentials.
+              Once you sign out, you&apos;ll need to sign in again with your credentials.
             </p>
             <form action={logoutUser}>
               <button

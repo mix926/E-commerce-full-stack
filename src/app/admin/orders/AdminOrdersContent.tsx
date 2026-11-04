@@ -6,7 +6,6 @@ import { ShoppingBag, ArrowRight } from 'lucide-react';
 import AdminHeader from '@/components/admin/AdminHeader';
 import DataTable from '@/components/admin/DataTable';
 import StatusBadge from '@/components/admin/StatusBadge';
-import ActionButton from '@/components/admin/ActionButton';
 
 const statusTabs = ['all', 'pending', 'processing', 'shipped', 'delivered', 'cancelled'];
 
@@ -123,7 +122,7 @@ export default function AdminOrdersContent({ orders, statusFilter }: Props) {
           searchableColumns={['id', 'user']}
           actions={(row) => (
             <Link
-              href={`/admin/orders/${(row as any).id}`}
+              href={`/admin/orders/${row.id}`}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-colors"
             >
               View <ArrowRight className="w-3 h-3" />
