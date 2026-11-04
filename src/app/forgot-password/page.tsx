@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, Suspense } from 'react';
-import { Loader2, AlertCircle, CheckCircle2, ArrowLeft, Lock, Send } from 'lucide-react';
+import { Loader2, AlertCircle, CheckCircle2, Mail, ArrowLeft, Lock, Send } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 function ForgotPasswordContent() {

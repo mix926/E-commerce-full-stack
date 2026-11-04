@@ -31,7 +31,7 @@ export default async function AdminReviewsPage({
     };
   }
 
-  const [reviews, totalReviews, avgRatingResult, categoryCounts] = await Promise.all([
+  const [reviews, totalReviews, avgRatingResult] = await Promise.all([
     prisma.review.findMany({
       where,
       include: {
@@ -42,12 +42,6 @@ export default async function AdminReviewsPage({
     }),
     prisma.review.count(),
     prisma.review.aggregate({ _avg: { rating: true } }),
-    Promise.all(
-      CATEGORIES.map(async (cat) => ({
-        category: cat,
-        count: await prisma.review.count({ where: { product: { category: cat } } }),
-      }))
-    ),
   ]);
 
   return (
@@ -55,7 +49,6 @@ export default async function AdminReviewsPage({
       reviews={reviews.map((r) => ({ ...r, createdAt: r.createdAt }))}
       totalReviews={totalReviews}
       avgRating={avgRatingResult._avg.rating ?? null}
-      categoryCounts={categoryCounts}
       ratingFilter={ratingFilter}
       productFilter={productFilter}
       categoryFilter={categoryFilter}

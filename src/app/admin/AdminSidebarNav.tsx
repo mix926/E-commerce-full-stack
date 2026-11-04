@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, ShoppingBag, Users, Star } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Users, Star, FolderOpen } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function AdminSidebarNav() {
@@ -12,6 +12,7 @@ export default function AdminSidebarNav() {
   const navItems = [
     { href: '/admin', label: t('admin.dashboard'), icon: LayoutDashboard, exact: true },
     { href: '/admin/products', label: t('admin.products'), icon: Package, exact: false },
+    { href: '/admin/categories', label: 'Categories', icon: FolderOpen, exact: false },
     { href: '/admin/orders', label: t('admin.orders'), icon: ShoppingBag, exact: false },
     { href: '/admin/reviews', label: t('admin.reviews'), icon: Star, exact: false },
     { href: '/admin/users', label: t('admin.users'), icon: Users, exact: false },

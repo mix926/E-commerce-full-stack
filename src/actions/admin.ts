@@ -131,3 +131,69 @@ export async function updateReview(reviewId: string, formData: FormData) {
   revalidatePath(`/products/${review.productId}`);
   redirect('/admin/reviews');
 }
+
+export async function deleteCategory(category: string) {
+  try {
+    await requireAdmin();
+    
+    if (!category) {
+      throw new Error('Category name cannot be empty');
+    }
+    
+    // Check if category has products
+    const productCount = await prisma.product.count({
+      where: { category },
+    });
+    
+    if (productCount > 0) {
+      throw new Error(`Cannot delete category with ${productCount} product(s). Move or delete products first.`);
+    }
+    
+    revalidatePath('/admin/categories');
+    return { success: true, message: 'Category deleted' };
+  } catch (error) {
+    console.error('deleteCategory error:', error);
+    throw error;
+  }
+}
+
+export async function renameCategory(oldCategory: string, newCategory: string) {
+  try {
+    await requireAdmin();
+    
+    if (!oldCategory || !newCategory) {
+      throw new Error('Category names cannot be empty');
+    }
+
+    if (oldCategory === newCategory) {
+      throw new Error('New category name must be different');
+    }
+
+    // Check if new category already exists
+    const existing = await prisma.product.findFirst({
+      where: { category: newCategory },
+    });
+    
+    if (existing) {
+      throw new Error(`Category "${newCategory}" already exists`);
+    }
+    
+    // Rename all products in this category
+    const result = await prisma.product.updateMany({
+      where: { category: oldCategory },
+      data: { category: newCategory },
+    });
+
+    if (result.count === 0) {
+      throw new Error(`Category "${oldCategory}" not found`);
+    }
+    
+    revalidatePath('/admin/categories');
+    revalidatePath('/admin/products');
+    
+    return { success: true, message: `Renamed to "${newCategory}"` };
+  } catch (error) {
+    console.error('renameCategory error:', error);
+    throw error;
+  }
+}
