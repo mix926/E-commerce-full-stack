@@ -4,7 +4,7 @@ import { useTransition, useState } from 'react';
 import { updateProduct } from '@/actions/admin';
 import type { Product } from '@prisma/client';
 import { extractPinterestImage } from '@/actions/image';
-import { PlusCircle, Tag, Ruler, Palette, Star, Loader2 } from 'lucide-react';
+import { PlusCircle, Tag, Ruler, Palette, Star, Loader2, Globe } from 'lucide-react';
 
 const PRESET_SIZES  = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '6', '7', '8', '9', '10', '11', '12'];
 const PRESET_COLORS = [
@@ -27,6 +27,8 @@ export default function EditProductForm({ product, categories }: EditProductForm
   const [useCustomCategory, setUseCustomCategory] = useState(false);
   const [selectedCategory, setSelectedCategory]   = useState(product.category);
   const [customCategory, setCustomCategory]       = useState('');
+  const [categoryTranslation, setCategoryTranslation] = useState<string>('');
+  const [translatingCategory, setTranslatingCategory] = useState(false);
   const [imageUrl, setImageUrl]                   = useState(product.image);
   const [isLoadingImage, setIsLoadingImage]       = useState(false);
   const [selectedSizes, setSelectedSizes]   = useState<string[]>(
@@ -55,6 +57,33 @@ export default function EditProductForm({ product, categories }: EditProductForm
       } finally {
         setIsLoadingImage(false);
       }
+    }
+  }
+
+  async function handleCustomCategoryChange(value: string) {
+    setCustomCategory(value);
+
+    // Auto-translate category name to Khmer
+    if (value.trim().length > 2) {
+      setTranslatingCategory(true);
+      try {
+        const encodedText = encodeURIComponent(value);
+        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodedText}&langpair=en|km`, {
+          method: 'GET',
+          headers: { 'User-Agent': 'Mozilla/5.0' },
+        });
+
+        const data = (await response.json()) as { responseData?: { translatedText?: string }; responseStatus?: number };
+        if (data.responseStatus === 200 && data.responseData?.translatedText) {
+          setCategoryTranslation(data.responseData.translatedText);
+        }
+      } catch (error) {
+        console.error('Translation error:', error);
+      } finally {
+        setTranslatingCategory(false);
+      }
+    } else {
+      setCategoryTranslation('');
     }
   }
 
@@ -136,11 +165,28 @@ export default function EditProductForm({ product, categories }: EditProductForm
             </div>
           </div>
         ) : (
-          <div className="space-y-2">
-            <input type="text" value={customCategory} onChange={e => setCustomCategory(e.target.value)}
+          <div className="space-y-3">
+            <input type="text" value={customCategory} onChange={e => handleCustomCategoryChange(e.target.value)}
               placeholder="e.g. Furniture" required className={input} autoFocus />
             <p className="text-xs text-gray-400">New category appears in the navbar automatically.</p>
-            <button type="button" onClick={() => { setUseCustomCategory(false); setSelectedCategory(product.category); setCustomCategory(''); }}
+            
+            {/* Auto-translation preview */}
+            {customCategory.trim().length > 2 && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <Globe className="w-4 h-4 text-blue-600" />
+                  <span className="text-xs font-semibold text-blue-900">Auto-Translated to Khmer</span>
+                  {translatingCategory && <Loader2 className="w-3 h-3 animate-spin text-blue-600" />}
+                </div>
+                {categoryTranslation ? (
+                  <p className="text-sm text-blue-800 font-medium">{categoryTranslation}</p>
+                ) : (
+                  <p className="text-xs text-blue-600">Translating...</p>
+                )}
+              </div>
+            )}
+
+            <button type="button" onClick={() => { setUseCustomCategory(false); setSelectedCategory(product.category); setCustomCategory(''); setCategoryTranslation(''); }}
               className="text-xs font-semibold text-gray-500 hover:text-gray-700">← Use existing category</button>
           </div>
         )}

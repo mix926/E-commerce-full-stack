@@ -52,6 +52,11 @@ export async function loginUser(formData: FormData) {
     throw new Error('Invalid email or password');
   }
 
+  // Check if user has a password (non-OAuth users should have one)
+  if (!user.password) {
+    throw new Error('This account uses GitHub sign-in. Please sign in with GitHub.');
+  }
+
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     throw new Error('Invalid email or password');

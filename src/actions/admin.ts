@@ -4,11 +4,116 @@ import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { translateToMultiple } from '@/lib/translate';
 
 async function requireAdmin() {
   const session = await getSession();
   if (!session || session.role !== 'admin') throw new Error('Unauthorized');
   return session;
+}
+
+/**
+ * Get category translation or translate if not exists
+ */
+export async function getCategoryTranslation(categoryName: string, lang: string = 'km') {
+  try {
+    // Check if translation exists
+    const existing = await prisma.categoryTranslation.findUnique({
+      where: {
+        categoryName_lang: {
+          categoryName,
+          lang,
+        },
+      },
+    });
+
+    if (existing) {
+      return existing.translation;
+    }
+
+    // Translate the category name
+    const translations = await translateToMultiple(categoryName, [lang], 'en');
+    const translated = translations[lang] || categoryName;
+
+    // Store the translation
+    await prisma.categoryTranslation.upsert({
+      where: {
+        categoryName_lang: {
+          categoryName,
+          lang,
+        },
+      },
+      create: {
+        categoryName,
+        lang,
+        translation: translated,
+      },
+      update: {
+        translation: translated,
+      },
+    });
+
+    return translated;
+  } catch (error) {
+    console.error('Error getting category translation:', error);
+    return categoryName;
+  }
+}
+
+/**
+ * Get all translations for a category
+ */
+export async function getAllCategoryTranslations(categoryName: string) {
+  try {
+    const translations = await prisma.categoryTranslation.findMany({
+      where: { categoryName },
+    });
+
+    const result: Record<string, string> = { en: categoryName };
+    translations.forEach(t => {
+      result[t.lang] = t.translation;
+    });
+
+    return result;
+  } catch (error) {
+    console.error('Error getting all category translations:', error);
+    return { en: categoryName };
+  }
+}
+
+/**
+ * Auto-translate and store category when creating a product with custom category
+ */
+export async function autoTranslateCategory(categoryName: string) {
+  try {
+    // Translate to all supported languages (English, Khmer)
+    const translations = await translateToMultiple(categoryName, ['km'], 'en');
+
+    // Store translations in database
+    for (const [lang, translated] of Object.entries(translations)) {
+      await prisma.categoryTranslation.upsert({
+        where: {
+          categoryName_lang: {
+            categoryName,
+            lang,
+          },
+        },
+        create: {
+          categoryName,
+          lang,
+          translation: translated,
+        },
+        update: {
+          translation: translated,
+        },
+      });
+    }
+
+    return translations;
+  } catch (error) {
+    console.error('Error auto-translating category:', error);
+    return { km: categoryName };
+  }
 }
 
 export async function createProduct(formData: FormData) {
@@ -22,6 +127,9 @@ export async function createProduct(formData: FormData) {
   const sizes       = (formData.get('sizes') as string | null)?.trim() || null;
   const colors      = (formData.get('colors') as string | null)?.trim() || null;
   const featured    = formData.get('featured') === 'true';
+
+  // Auto-translate category if it's a new custom category
+  await autoTranslateCategory(category);
 
   await prisma.product.create({
     data: { name, description, price, image, category, stock, sizes, colors, featured },
@@ -42,6 +150,9 @@ export async function updateProduct(id: string, formData: FormData) {
   const sizes       = (formData.get('sizes') as string | null)?.trim() || null;
   const colors      = (formData.get('colors') as string | null)?.trim() || null;
   const featured    = formData.get('featured') === 'true';
+
+  // Auto-translate category if it's a new custom category
+  await autoTranslateCategory(category);
 
   await prisma.product.update({
     where: { id },

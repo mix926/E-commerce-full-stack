@@ -11,10 +11,12 @@ model User {
   id                     String   @id @default(uuid())
   name                   String?
   email                  String   @unique
-  password               String
+  password               String?
   role                   String   @default("customer")
   password_reset_token   String?
   password_reset_expires DateTime?
+  githubId               String?  @unique
+  googleId               String?  @unique
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
@@ -105,4 +107,16 @@ model Review {
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([userId, productId])
+}
+
+model CategoryTranslation {
+  id           String   @id @default(uuid())
+  categoryName String   // Original category name (English)
+  lang         String   // Language code: 'en', 'km', etc.
+  translation  String   // Translated text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([categoryName, lang])
+  @@index([categoryName])
 }
