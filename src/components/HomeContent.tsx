@@ -14,6 +14,7 @@ interface HomeContentProps {
   products: Product[];
   featuredProducts: Product[];
   searchQuery: string;
+  categoryTranslations?: Record<string, string>;
 }
 
 function useReveal(threshold = 0.1) {
@@ -32,7 +33,7 @@ function useReveal(threshold = 0.1) {
   return { ref, visible };
 }
 
-export default function HomeContent({ products, featuredProducts, searchQuery }: HomeContentProps) {
+export default function HomeContent({ products, featuredProducts, searchQuery, categoryTranslations = {} }: HomeContentProps) {
   const { t } = useLanguage();
   const productsReveal = useReveal();
   const featuredReveal = useReveal();
@@ -315,7 +316,7 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
           <div ref={productsReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {productsReveal.visible && products.map((product, i) => (
               <div key={product.id} style={{ animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 40}ms both` }}>
-                <ProductCard product={product} />
+                <ProductCard product={product} categoryTranslations={categoryTranslations} />
               </div>
             ))}
           </div>
@@ -338,7 +339,7 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
             <div ref={featuredReveal.ref} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {featuredReveal.visible && featuredProducts.map((product, i) => (
                 <div key={product.id} style={{ animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 50}ms both` }}>
-                  <ProductCard product={product} />
+                  <ProductCard product={product} categoryTranslations={categoryTranslations} />
                 </div>
               ))}
             </div>

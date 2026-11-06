@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { getSession } from '@/lib/session';
+import { getCategoryTranslations } from '@/lib/categories';
 import ProductDetailContent from '@/components/ProductDetailContent';
 
 interface ProductDetailPageProps {
@@ -10,7 +11,7 @@ interface ProductDetailPageProps {
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { id } = await params;
 
-  const [product, session] = await Promise.all([
+  const [product, session, categoryTranslations] = await Promise.all([
     prisma.product.findUnique({
       where: { id },
       include: {
@@ -21,6 +22,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
       },
     }),
     getSession(),
+    getCategoryTranslations(),
   ]);
 
   if (!product) notFound();
@@ -36,12 +38,16 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
 
   const isSignedIn = !!session;
 
+  const translationsObj: Record<string, string> = {};
+  categoryTranslations.forEach((value, key) => { translationsObj[key] = value; });
+
   return (
     <ProductDetailContent
       product={product}
       relatedProducts={relatedProducts}
       userHasReviewed={userHasReviewed}
       isSignedIn={isSignedIn}
+      categoryTranslations={translationsObj}
     />
   );
 }

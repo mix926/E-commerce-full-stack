@@ -14,9 +14,11 @@ import {
   Phone,
   ArrowRight,
   LogOut,
+  Globe,
 } from 'lucide-react';
 import { useWishlist } from '@/context/WishlistContext';
 import { logoutUser } from '@/actions/auth';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface MobileNavProps {
   cartCount: number;
@@ -250,6 +252,15 @@ export default function MobileNav({ cartCount, user }: MobileNavProps) {
                 <Phone className="w-4 h-4 text-gray-400 shrink-0" />
                 <span>Contact Us</span>
               </Link>
+
+              {/* Language Switcher */}
+              <div className="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-gray-50 transition-colors touch-target">
+                <span className="flex items-center gap-2 text-gray-600">
+                  <Globe className="w-4 h-4 text-gray-400 shrink-0" />
+                  <span>Language</span>
+                </span>
+                <LanguageSwitcher />
+              </div>
 
               {user && (
                 <form action={logoutUser} className="pt-2">

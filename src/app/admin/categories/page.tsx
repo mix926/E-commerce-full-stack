@@ -20,12 +20,6 @@ export default async function AdminCategoriesPage() {
       orderBy: { category: 'asc' },
     });
 
-    // Get counts for each category efficiently
-    const categoriesWithCounts = categories.map((c) => ({
-      name: c.category,
-      productCount: 0, // Will be set in next query
-    }));
-
     // Get all counts in one query
     const counts = await prisma.product.groupBy({
       by: ['category'],
@@ -33,10 +27,19 @@ export default async function AdminCategoriesPage() {
     });
 
     const countMap = new Map(counts.map((c) => [c.category, c._count]));
-    
-    categoriesWithCounts.forEach((cat) => {
-      cat.productCount = countMap.get(cat.name) || 0;
+
+    // Get all Khmer translations for categories
+    const translations = await prisma.categoryTranslation.findMany({
+      where: { lang: 'km' },
+      select: { categoryName: true, translation: true },
     });
+    const translationMap = new Map(translations.map((t) => [t.categoryName, t.translation]));
+
+    const categoriesWithCounts = categories.map((c) => ({
+      name: c.category,
+      productCount: countMap.get(c.category) || 0,
+      nameKm: translationMap.get(c.category) || '',
+    }));
 
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">

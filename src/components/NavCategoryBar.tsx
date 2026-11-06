@@ -6,10 +6,22 @@ import { useLanguage } from '@/context/LanguageContext';
 
 interface NavCategoryBarProps {
   categories: string[];
+  categoryTranslations?: Record<string, string>;
 }
 
-export default function NavCategoryBar({ categories }: NavCategoryBarProps) {
-  const { t } = useLanguage();
+export default function NavCategoryBar({ categories, categoryTranslations = {} }: NavCategoryBarProps) {
+  const { t, lang } = useLanguage();
+
+  function getCategoryLabel(cat: string): string {
+    // If Khmer, prefer DB translation, then hardcoded key, then raw name
+    if (lang === 'km') {
+      if (categoryTranslations[cat]) return categoryTranslations[cat];
+      const key = `category.${cat.toLowerCase()}`;
+      const translated = t(key);
+      if (translated !== key) return translated;
+    }
+    return cat;
+  }
 
   return (
     <>
@@ -23,20 +35,15 @@ export default function NavCategoryBar({ categories }: NavCategoryBarProps) {
           {t('nav.allProducts')}
         </Link>
 
-        {categories.map((cat) => {
-          // Use translation key if it exists, fallback to raw name
-          const key = `category.${cat.toLowerCase()}`;
-          const label = t(key) === key ? cat : t(key);
-          return (
-            <Link
-              key={cat}
-              href={`/products?category=${encodeURIComponent(cat)}`}
-              className="hover:text-blue-600 transition-colors shrink-0 whitespace-nowrap touch-target h-6 flex items-center"
-            >
-              {label}
-            </Link>
-          );
-        })}
+        {categories.map((cat) => (
+          <Link
+            key={cat}
+            href={`/products?category=${encodeURIComponent(cat)}`}
+            className="hover:text-blue-600 transition-colors shrink-0 whitespace-nowrap touch-target h-6 flex items-center"
+          >
+            {getCategoryLabel(cat)}
+          </Link>
+        ))}
 
         <div className="flex items-center gap-3 sm:gap-4 text-gray-400 shrink-0">
           <Link href="/faq" className="hover:text-gray-600 transition-colors touch-target h-6 flex items-center">

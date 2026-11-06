@@ -14,9 +14,10 @@ interface ProductsContentProps {
   search: string;
   category: string;
   sort: string;
+  categoryTranslations?: Record<string, string>;
 }
 
-export default function ProductsContent({ products, totalCount, search, category, sort }: ProductsContentProps) {
+export default function ProductsContent({ products, totalCount, search, category, sort, categoryTranslations = {} }: ProductsContentProps) {
   const { t } = useLanguage();
 
   return (
@@ -114,7 +115,7 @@ export default function ProductsContent({ products, totalCount, search, category
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map((product, i) => (
               <div key={product.id} style={{ animation: `cardPop .5s cubic-bezier(.22,1,.36,1) ${i * 40}ms both` }}>
-                <ProductCard product={product} />
+                <ProductCard product={product} categoryTranslations={categoryTranslations} />
               </div>
             ))}
           </div>

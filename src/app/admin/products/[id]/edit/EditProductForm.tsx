@@ -91,6 +91,9 @@ export default function EditProductForm({ product, categories }: EditProductForm
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     formData.set('category', useCustomCategory ? customCategory.trim() : selectedCategory);
+    if (useCustomCategory && categoryTranslation.trim()) {
+      formData.set('categoryKm', categoryTranslation.trim());
+    }
     formData.set('image',    imageUrl);
     formData.set('sizes',    selectedSizes.join(','));
     formData.set('colors',   selectedColors.join(','));
@@ -175,14 +178,40 @@ export default function EditProductForm({ product, categories }: EditProductForm
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <Globe className="w-4 h-4 text-blue-600" />
-                  <span className="text-xs font-semibold text-blue-900">Auto-Translated to Khmer</span>
+                  <span className="text-xs font-semibold text-blue-900">Khmer Translation</span>
                   {translatingCategory && <Loader2 className="w-3 h-3 animate-spin text-blue-600" />}
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (translatingCategory || !customCategory.trim()) return;
+                      setTranslatingCategory(true);
+                      try {
+                        const encodedText = encodeURIComponent(customCategory);
+                        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodedText}&langpair=en|km`, {
+                          method: 'GET',
+                          headers: { 'User-Agent': 'Mozilla/5.0' },
+                        });
+                        const data = (await response.json()) as { responseData?: { translatedText?: string }; responseStatus?: number };
+                        if (data.responseStatus === 200 && data.responseData?.translatedText) {
+                          setCategoryTranslation(data.responseData.translatedText);
+                        }
+                      } catch { /* ignore */ } finally {
+                        setTranslatingCategory(false);
+                      }
+                    }}
+                    className="ml-auto text-[10px] font-bold text-blue-600 hover:text-blue-800 underline"
+                  >
+                    {translatingCategory ? 'Translating...' : '↻ Auto-translate'}
+                  </button>
                 </div>
-                {categoryTranslation ? (
-                  <p className="text-sm text-blue-800 font-medium">{categoryTranslation}</p>
-                ) : (
-                  <p className="text-xs text-blue-600">Translating...</p>
-                )}
+                <input
+                  type="text"
+                  value={categoryTranslation}
+                  onChange={e => setCategoryTranslation(e.target.value)}
+                  placeholder="បញ្ចូលឈ្មោះប្រភេទជាភាសាខ្មែរ"
+                  className="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <p className="text-[10px] text-blue-500 mt-1.5">Edit this field or click Auto-translate to generate.</p>
               </div>
             )}
 

@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { getCategoryTranslations } from '@/lib/categories';
 import ProductsContent from '@/components/ProductsContent';
 
 export const dynamic = 'force-dynamic';
@@ -35,10 +36,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     ];
   }
 
-  const [products, totalCount] = await Promise.all([
+  const [products, totalCount, categoryTranslations] = await Promise.all([
     prisma.product.findMany({ where, orderBy, take: 24 }),
     prisma.product.count({ where }),
+    getCategoryTranslations(),
   ]);
+
+  const translationsObj: Record<string, string> = {};
+  categoryTranslations.forEach((value, key) => { translationsObj[key] = value; });
 
   return (
     <ProductsContent
@@ -47,6 +52,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       search={search}
       category={category}
       sort={sort}
+      categoryTranslations={translationsObj}
     />
   );
 }

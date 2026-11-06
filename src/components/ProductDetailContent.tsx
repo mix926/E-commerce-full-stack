@@ -90,6 +90,7 @@ interface ProductDetailContentProps {
   relatedProducts: Product[];
   userHasReviewed: boolean;
   isSignedIn: boolean;
+  categoryTranslations?: Record<string, string>;
 }
 
 function StarRating({ rating, size = 'md' }: { rating: number; size?: 'sm' | 'md' | 'lg' }) {
@@ -113,9 +114,20 @@ export default function ProductDetailContent({
   relatedProducts,
   userHasReviewed,
   isSignedIn,
+  categoryTranslations = {},
 }: ProductDetailContentProps) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [showZoom, setShowZoom] = useState(false);
+
+  function getCategoryLabel(cat: string): string {
+    if (lang === 'km') {
+      if (categoryTranslations[cat]) return categoryTranslations[cat];
+      const key = `category.${cat.toLowerCase()}`;
+      const translated = t(key);
+      if (translated !== key) return translated;
+    }
+    return cat;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -130,7 +142,7 @@ export default function ProductDetailContent({
           <Link href="/" className="text-slate-600 hover:text-blue-600 transition-colors">{t('home.breadcrumbHome') || 'Home'}</Link>
           <span className="text-slate-400">/</span>
           <Link href={`/products?category=${product.category}`} className="text-slate-600 hover:text-blue-600 transition-colors">
-            {t(`category.${product.category.toLowerCase()}`) || product.category}
+            {getCategoryLabel(product.category)}
           </Link>
           <span className="text-slate-400">/</span>
           <span className="text-slate-900 font-bold truncate max-w-[300px]">{product.name}</span>
@@ -166,7 +178,7 @@ export default function ProductDetailContent({
           {/* Product Info */}
           <div className="flex flex-col">
             <span className="text-xs font-black text-blue-600 uppercase tracking-wider mb-3">
-              {t(`category.${product.category.toLowerCase()}`) || product.category}
+              {getCategoryLabel(product.category)}
             </span>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-tight">
               {product.name}

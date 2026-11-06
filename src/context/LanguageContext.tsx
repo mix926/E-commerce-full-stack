@@ -735,13 +735,31 @@ const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>('en');
-  
+
+  // Load saved language from localStorage on mount
+  useEffect(() => {
+    const saved = typeof window !== 'undefined'
+      ? (localStorage.getItem(STORAGE_KEY) as Lang | null)
+      : null;
+    if (saved === 'en' || saved === 'km') {
+      setLang(saved);
+    }
+  }, []);
+
+  // Persist language to localStorage whenever it changes
+  const changeLang = (newLang: Lang) => {
+    setLang(newLang);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, newLang);
+    }
+  };
+
   const t = (key: string): string => {
     return translations[lang][key] ?? translations['en'][key] ?? key;
   };
 
   return (
-    <LanguageContext.Provider value={{lang, setLang, t}}>
+    <LanguageContext.Provider value={{ lang, setLang: changeLang, t }}>
       {children}
     </LanguageContext.Provider>
   );

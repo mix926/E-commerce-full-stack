@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getSession } from '@/lib/session';
 import { getCartCount } from '@/actions/cart';
-import { getCategories } from '@/lib/categories';
+import { getCategories, getCategoryTranslations } from '@/lib/categories';
 import { ShoppingBag, ShoppingCart } from 'lucide-react';
 import UserMenu from './UserMenu';
 import WishlistNavButton from './WishlistNavButton';
@@ -12,11 +12,18 @@ import NavCategoryBar from './NavCategoryBar';
 import NavSearchBar from './NavSearchBar';
 
 export default async function Navbar() {
-  const [session, categories] = await Promise.all([
+  const [session, categories, categoryTranslations] = await Promise.all([
     getSession(),
     getCategories(),
+    getCategoryTranslations(),
   ]);
   const cartCount = session ? await getCartCount() : 0;
+
+  // Convert Map to plain object for serialization to client component
+  const translationsObj: Record<string, string> = {};
+  categoryTranslations.forEach((value, key) => {
+    translationsObj[key] = value;
+  });
 
   return (
     <header className="sticky top-0 z-40 bg-white/98 backdrop-blur-lg border-b border-gray-100 shadow-sm">
@@ -72,7 +79,7 @@ export default async function Navbar() {
           </div>
         </div>
 
-        <NavCategoryBar categories={categories} />
+        <NavCategoryBar categories={categories} categoryTranslations={translationsObj} />
       </div>
     </header>
   );

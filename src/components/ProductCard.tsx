@@ -9,6 +9,7 @@ import { useLanguage } from '@/context/LanguageContext';
 
 interface ProductCardProps {
   product: Product;
+  categoryTranslations?: Record<string, string>;
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -29,8 +30,18 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
-  const { t } = useLanguage();
+export default function ProductCard({ product, categoryTranslations = {} }: ProductCardProps) {
+  const { t, lang } = useLanguage();
+
+  function getCategoryLabel(cat: string): string {
+    if (lang === 'km') {
+      if (categoryTranslations[cat]) return categoryTranslations[cat];
+      const key = `category.${cat.toLowerCase()}`;
+      const translated = t(key);
+      if (translated !== key) return translated;
+    }
+    return cat;
+  }
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group h-full">
@@ -81,7 +92,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Category + Rating row */}
         <div className="flex items-center justify-between gap-2 mb-2">
           <span className="text-[9px] sm:text-[10px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-1.5 sm:px-2 py-0.5 rounded-full truncate">
-            {t(`category.${product.category.toLowerCase()}`) || product.category}
+            {getCategoryLabel(product.category)}
           </span>
           <StarRating rating={product.rating} />
         </div>

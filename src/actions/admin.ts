@@ -82,31 +82,50 @@ export async function getAllCategoryTranslations(categoryName: string) {
 }
 
 /**
- * Auto-translate and store category when creating a product with custom category
+ * Save a category translation (manual or auto) to the database.
  */
-export async function autoTranslateCategory(categoryName: string) {
+export async function saveCategoryTranslation(categoryName: string, lang: string, translation: string) {
+  if (!categoryName || !translation.trim()) return;
   try {
-    // Translate to all supported languages (English, Khmer)
+    await prisma.categoryTranslation.upsert({
+      where: {
+        categoryName_lang: {
+          categoryName,
+          lang,
+        },
+      },
+      create: {
+        categoryName,
+        lang,
+        translation: translation.trim(),
+      },
+      update: {
+        translation: translation.trim(),
+      },
+    });
+  } catch (error) {
+    console.error('Error saving category translation:', error);
+  }
+}
+
+/**
+ * Auto-translate and store category when creating a product with custom category.
+ * If a manual Khmer translation is provided, use it instead of auto-translating.
+ */
+export async function autoTranslateCategory(categoryName: string, manualKm?: string) {
+  try {
+    if (manualKm && manualKm.trim()) {
+      // Use the manually-provided Khmer translation
+      await saveCategoryTranslation(categoryName, 'km', manualKm);
+      return { km: manualKm.trim() };
+    }
+
+    // Auto-translate to all supported languages (English, Khmer)
     const translations = await translateToMultiple(categoryName, ['km'], 'en');
 
     // Store translations in database
     for (const [lang, translated] of Object.entries(translations)) {
-      await prisma.categoryTranslation.upsert({
-        where: {
-          categoryName_lang: {
-            categoryName,
-            lang,
-          },
-        },
-        create: {
-          categoryName,
-          lang,
-          translation: translated,
-        },
-        update: {
-          translation: translated,
-        },
-      });
+      await saveCategoryTranslation(categoryName, lang, translated);
     }
 
     return translations;
@@ -127,9 +146,10 @@ export async function createProduct(formData: FormData) {
   const sizes       = (formData.get('sizes') as string | null)?.trim() || null;
   const colors      = (formData.get('colors') as string | null)?.trim() || null;
   const featured    = formData.get('featured') === 'true';
+  const categoryKm  = (formData.get('categoryKm') as string | null)?.trim() || undefined;
 
-  // Auto-translate category if it's a new custom category
-  await autoTranslateCategory(category);
+  // Auto-translate category (or save manual Khmer translation if provided)
+  await autoTranslateCategory(category, categoryKm);
 
   await prisma.product.create({
     data: { name, description, price, image, category, stock, sizes, colors, featured },
@@ -150,9 +170,10 @@ export async function updateProduct(id: string, formData: FormData) {
   const sizes       = (formData.get('sizes') as string | null)?.trim() || null;
   const colors      = (formData.get('colors') as string | null)?.trim() || null;
   const featured    = formData.get('featured') === 'true';
+  const categoryKm  = (formData.get('categoryKm') as string | null)?.trim() || undefined;
 
-  // Auto-translate category if it's a new custom category
-  await autoTranslateCategory(category);
+  // Auto-translate category (or save manual Khmer translation if provided)
+  await autoTranslateCategory(category, categoryKm);
 
   await prisma.product.update({
     where: { id },
@@ -243,6 +264,30 @@ export async function updateReview(reviewId: string, formData: FormData) {
   redirect('/admin/reviews');
 }
 
+/**
+ * Create a new category with EN + KH translations (no product needed).
+ */
+export async function createCategory(formData: FormData) {
+  await requireAdmin();
+  const nameEn = (formData.get('nameEn') as string | null)?.trim();
+  const nameKm = (formData.get('nameKm') as string | null)?.trim();
+
+  if (!nameEn) throw new Error('English category name is required');
+
+  // Check if category already exists (a product with that category)
+  const existing = await prisma.product.findFirst({ where: { category: nameEn } });
+  if (existing) throw new Error(`Category "${nameEn}" already exists`);
+
+  // Save Khmer translation if provided
+  if (nameKm) {
+    await saveCategoryTranslation(nameEn, 'km', nameKm);
+  }
+
+  revalidatePath('/admin/categories');
+  revalidatePath('/admin/products');
+  redirect('/admin/categories');
+}
+
 export async function deleteCategory(category: string) {
   try {
     await requireAdmin();
@@ -268,40 +313,63 @@ export async function deleteCategory(category: string) {
   }
 }
 
-export async function renameCategory(oldCategory: string, newCategory: string) {
+export async function renameCategory(oldCategory: string, newCategory: string, newCategoryKm?: string) {
   try {
     await requireAdmin();
-    
+
     if (!oldCategory || !newCategory) {
       throw new Error('Category names cannot be empty');
     }
 
-    if (oldCategory === newCategory) {
+    if (oldCategory === newCategory && !newCategoryKm) {
       throw new Error('New category name must be different');
     }
 
-    // Check if new category already exists
-    const existing = await prisma.product.findFirst({
-      where: { category: newCategory },
-    });
-    
-    if (existing) {
-      throw new Error(`Category "${newCategory}" already exists`);
-    }
-    
-    // Rename all products in this category
-    const result = await prisma.product.updateMany({
-      where: { category: oldCategory },
-      data: { category: newCategory },
-    });
+    // Check if new category already exists (only if renaming to a different name)
+    if (oldCategory !== newCategory) {
+      const existing = await prisma.product.findFirst({
+        where: { category: newCategory },
+      });
 
-    if (result.count === 0) {
-      throw new Error(`Category "${oldCategory}" not found`);
+      if (existing) {
+        throw new Error(`Category "${newCategory}" already exists`);
+      }
     }
-    
+
+    // Rename all products in this category (only if name changed)
+    if (oldCategory !== newCategory) {
+      const result = await prisma.product.updateMany({
+        where: { category: oldCategory },
+        data: { category: newCategory },
+      });
+
+      if (result.count === 0) {
+        throw new Error(`Category "${oldCategory}" not found`);
+      }
+
+      // Move existing translations to the new name
+      const existingTranslations = await prisma.categoryTranslation.findMany({
+        where: { categoryName: oldCategory },
+      });
+      for (const t of existingTranslations) {
+        await prisma.categoryTranslation.upsert({
+          where: { categoryName_lang: { categoryName: newCategory, lang: t.lang } },
+          create: { categoryName: newCategory, lang: t.lang, translation: t.translation },
+          update: { translation: t.translation },
+        });
+      }
+      // Delete old translation entries
+      await prisma.categoryTranslation.deleteMany({ where: { categoryName: oldCategory } });
+    }
+
+    // Update or create Khmer translation if provided
+    if (newCategoryKm && newCategoryKm.trim()) {
+      await saveCategoryTranslation(newCategory, 'km', newCategoryKm.trim());
+    }
+
     revalidatePath('/admin/categories');
     revalidatePath('/admin/products');
-    
+
     return { success: true, message: `Renamed to "${newCategory}"` };
   } catch (error) {
     console.error('renameCategory error:', error);
