@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Lang = 'en' | 'km';
 
@@ -8,6 +8,8 @@ interface LanguageContextType {
   setLang: (lang: Lang) => void;
   t: (key: string) => string;
 }
+
+const STORAGE_KEY = 'eshop-lang';
 
 // Translations
 const translations: Record<Lang, Record<string, string>> = {

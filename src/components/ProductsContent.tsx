@@ -53,7 +53,7 @@ export default function ProductsContent({ products, totalCount, search, category
                   <input
                     name="search" type="text" defaultValue={search}
                     placeholder={t('products.search')}
-                    className="pl-10 pr-4 py-2.5 text-sm border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white w-56 shadow-sm transition-all hover:border-slate-300"
+                    className="pl-10 pr-4 py-2.5 text-sm border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white w-full sm:w-56 shadow-sm transition-all hover:border-slate-300"
                   />
                 </div>
               </form>

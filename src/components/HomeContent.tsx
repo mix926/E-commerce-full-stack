@@ -90,7 +90,7 @@ export default function HomeContent({ products, featuredProducts, searchQuery }:
           HERO SECTION
       ═══════════════════════════════════════════ */}
       {!searchQuery && (
-        <section className="relative overflow-hidden border-b border-slate-200" style={{ minHeight: 650 }}>
+        <section className="relative overflow-hidden border-b border-slate-200 min-h-[500px] sm:min-h-[600px] lg:min-h-[650px]">
           {/* Background gradients */}
           <div className="absolute inset-0 pointer-events-none opacity-40">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl" />

@@ -168,7 +168,7 @@ export default function ProductDetailContent({
             <span className="text-xs font-black text-blue-600 uppercase tracking-wider mb-3">
               {t(`category.${product.category.toLowerCase()}`) || product.category}
             </span>
-            <h1 className="text-4xl font-black text-slate-900 mb-4 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-tight">
               {product.name}
             </h1>
 
@@ -179,7 +179,7 @@ export default function ProductDetailContent({
               <span className="text-slate-600 font-medium">({product.reviews.length} {t('product.reviews')})</span>
             </div>
 
-            <p className="text-4xl font-black text-slate-900 mb-6">
+            <p className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 mb-6">
               ${product.price.toFixed(2)}
             </p>
 
