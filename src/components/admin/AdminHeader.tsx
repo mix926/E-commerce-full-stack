@@ -13,7 +13,7 @@ interface AdminHeaderProps {
 export default function AdminHeader({ title, subtitle, breadcrumbs, actions }: AdminHeaderProps) {
   return (
     <div className="border-b border-gray-200 bg-white">
-      <div className="px-8 py-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         {/* Breadcrumbs */}
         {breadcrumbs && breadcrumbs.length > 0 && (
           <div className="flex items-center gap-1 mb-4">
@@ -31,7 +31,7 @@ export default function AdminHeader({ title, subtitle, breadcrumbs, actions }: A
         {/* Title and Actions */}
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-1">{title}</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{title}</h1>
             {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
           </div>
           {actions && <div className="flex gap-2 shrink-0">{actions}</div>}

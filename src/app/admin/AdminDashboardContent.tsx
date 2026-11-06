@@ -62,7 +62,7 @@ export default function AdminDashboardContent({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
       <AdminHeader
         title={t('admin.dashboard')}
@@ -70,7 +70,7 @@ export default function AdminDashboardContent({
         breadcrumbs={[{ label: 'Admin' }, { label: 'Dashboard' }]}
       />
 
-      <div className="p-8 space-y-8">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat) => (

@@ -5,6 +5,7 @@ import { Star, Pencil, Search } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useState, useMemo } from 'react';
 import DeleteReviewButton from './DeleteReviewButton';
+import AdminHeader from '@/components/admin/AdminHeader';
 
 const CATEGORIES = ['Electronics', 'Accessories', 'Clothing', 'Home', 'Sports', 'Books'];
 
@@ -84,30 +85,43 @@ export default function AdminReviewsContent({
   const hasFilters = !!(searchTerm || categoryFilter !== 'all' || ratingFilter > 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
-      <div className="bg-white border-b-2 border-slate-200 px-8 py-6">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-black text-slate-900 mb-2">{t('admin.reviewsManagement')}</h1>
-          <div className="flex items-center gap-6">
+      <AdminHeader
+        title={t('admin.reviewsManagement')}
+        subtitle="Monitor and manage customer reviews across all products"
+        breadcrumbs={[{ label: 'Admin' }, { label: 'Reviews' }]}
+        actions={
+          <div className="hidden sm:flex items-center gap-4 text-sm">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-slate-600">Total Reviews:</span>
-              <span className="text-2xl font-black text-blue-600">{totalReviews}</span>
+              <span className="font-semibold text-gray-600">Total:</span>
+              <span className="text-xl font-black text-blue-600">{totalReviews}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-slate-600">Average Rating:</span>
-              <div className="flex items-center gap-1">
-                <span className="text-2xl font-black text-amber-500">
-                  {avgRating?.toFixed(1) ?? '—'}
-                </span>
-                <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
-              </div>
+              <span className="font-semibold text-gray-600">Avg:</span>
+              <span className="text-xl font-black text-amber-500">
+                {avgRating?.toFixed(1) ?? '—'}
+              </span>
+              <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
             </div>
           </div>
+        }
+      />
+
+      {/* Mobile stats bar */}
+      <div className="sm:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-around">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-gray-500">Total</span>
+          <span className="text-lg font-black text-blue-600">{totalReviews}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-gray-500">Avg</span>
+          <span className="text-lg font-black text-amber-500">{avgRating?.toFixed(1) ?? '—'}</span>
+          <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
         </div>
       </div>
 
-      <div className="p-8 max-w-7xl mx-auto">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
         {/* Filters Section */}
         <div className="bg-white rounded-2xl border-2 border-slate-200 p-6 mb-8 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

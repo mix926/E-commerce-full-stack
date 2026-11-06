@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { Trash2, Edit2, FolderOpen, Plus, Check, X, Globe, Loader2, Tag } from 'lucide-react';
 import { deleteCategory, renameCategory, createCategory } from '@/actions/admin';
 import { useToast } from '@/context/ToastContext';
+import AdminHeader from '@/components/admin/AdminHeader';
 
 interface Category {
   name: string;
@@ -123,16 +124,15 @@ export default function AdminCategoriesContent({ categories }: Props) {
   const input = 'border border-gray-200 rounded-xl px-4 py-2.5 w-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm';
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
+    <div>
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <FolderOpen className="w-8 h-8 text-indigo-600" />
-          <h1 className="text-3xl font-black text-slate-900">Category Management</h1>
-        </div>
-        <p className="text-slate-600">Manage product categories with bilingual (English + Khmer) support.</p>
-      </div>
+      <AdminHeader
+        title="Category Management"
+        subtitle="Manage product categories with bilingual (English + Khmer) support."
+        breadcrumbs={[{ label: 'Admin' }, { label: 'Categories' }]}
+      />
 
+      <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
       {/* Create New Category Button / Form */}
       {!showCreateForm ? (
         <button
@@ -314,6 +314,7 @@ export default function AdminCategoriesContent({ categories }: Props) {
           <p className="text-slate-600 text-sm">Create a new category above or add products with categories.</p>
         </div>
       )}
+      </div>
     </div>
   );
 }

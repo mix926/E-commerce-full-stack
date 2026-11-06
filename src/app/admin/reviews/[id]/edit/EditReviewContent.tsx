@@ -19,7 +19,7 @@ export default function EditReviewContent({ review }: Props) {
   const { t } = useLanguage();
 
   return (
-    <div className="p-8 max-w-2xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-2xl">
       <Link
         href="/admin/reviews"
         className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 mb-6 transition-colors"

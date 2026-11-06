@@ -25,7 +25,7 @@ export default function AdminOrderDetailContent({ order }: Props) {
   const { t } = useLanguage();
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">
         {t('order.number')}{order.id.slice(-8).toUpperCase()}
       </h1>

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Package, ShoppingBag, Users, Star, FolderOpen } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
-export default function AdminSidebarNav() {
+export default function AdminSidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const { t } = useLanguage();
 
@@ -26,6 +26,7 @@ export default function AdminSidebarNav() {
           <Link
             key={href}
             href={href}
+            onClick={onNavigate}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
               isActive
                 ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30'

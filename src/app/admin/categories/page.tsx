@@ -42,14 +42,14 @@ export default async function AdminCategoriesPage() {
     }));
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="bg-gradient-to-b from-slate-50 to-white">
         <AdminCategoriesContent categories={categoriesWithCounts} />
       </div>
     );
   } catch (error) {
     console.error('Failed to load categories:', error);
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-8">
+      <div className="bg-gradient-to-b from-slate-50 to-white p-4 sm:p-6 lg:p-8">
         <div className="max-w-2xl mx-auto bg-red-50 border-2 border-red-200 rounded-2xl p-6">
           <h1 className="text-2xl font-bold text-red-900 mb-2">Error Loading Categories</h1>
           <p className="text-red-700">Failed to load categories. Please try again later.</p>

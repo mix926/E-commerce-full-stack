@@ -80,7 +80,7 @@ export default function AdminOrdersContent({ orders, statusFilter }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       {/* Header */}
       <AdminHeader
         title={t('admin.ordersTitle')}
@@ -88,7 +88,7 @@ export default function AdminOrdersContent({ orders, statusFilter }: Props) {
         breadcrumbs={[{ label: 'Admin' }, { label: 'Orders' }]}
       />
 
-      <div className="p-8 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
         {/* Status Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {statusTabs.map((tab) => (
