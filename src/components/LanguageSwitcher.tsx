@@ -45,7 +45,7 @@ export default function LanguageSwitcher() {
   }
 
   return (
-    <div ref={dropdownRef} className="relative">
+    <div ref={dropdownRef} className="relative z-[60]">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center gap-1 px-1.5 sm:px-2.5 py-2 rounded-lg text-xs font-bold text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors touch-target"
@@ -63,7 +63,7 @@ export default function LanguageSwitcher() {
       {/* Dropdown menu */}
       {isOpen && (
         <div
-          className="absolute right-0 top-full mt-1 min-w-[140px] bg-white rounded-xl shadow-lg border border-gray-200 py-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150"
+          className="absolute right-0 top-full mt-1 min-w-[140px] bg-white rounded-xl shadow-lg border border-gray-200 py-1 z-[60] animate-in fade-in slide-in-from-top-1 duration-150"
           role="listbox"
         >
           {LANGUAGES.map((l) => (
