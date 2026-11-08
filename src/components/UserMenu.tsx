@@ -36,8 +36,7 @@ export default function UserMenu({ name, email, role }: UserMenuProps) {
         className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         <User className="w-5 h-5" />
-        <span className="hidden md:block max-w-[100px] truncate">{displayName}</span>
-        <ChevronDown className={`w-3.5 h-3.5 hidden md:block transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
       {open && (
