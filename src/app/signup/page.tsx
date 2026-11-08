@@ -150,7 +150,7 @@ function SignUpContent() {
 
             {/* Submit Button */}
             <button type="submit" disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black text-white transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)', animationDelay: '250ms', boxShadow: '0 10px 30px rgba(59,130,246,.3)' }}>
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black text-white bg-gray-900 hover:bg-black transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: '250ms' }}>
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
