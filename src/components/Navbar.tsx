@@ -31,7 +31,7 @@ export default async function Navbar() {
         <div className="h-16 flex items-center justify-between gap-2 sm:gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow touch-target">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gray-900 text-white flex items-center justify-center shadow-md group-hover:bg-black transition-colors touch-target">
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="flex flex-col">

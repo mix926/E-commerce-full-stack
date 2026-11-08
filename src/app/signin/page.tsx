@@ -136,8 +136,7 @@ function SignInContent() {
 
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: '150ms' }}>
               <button type="submit" disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black text-white transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-                style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', boxShadow: '0 6px 20px rgba(99,102,241,.3)' }}>
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-black text-white bg-gray-900 hover:bg-black transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed mt-2">
                 {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                 {loading ? t('signin.submitting') : t('signin.submit')}
               </button>
