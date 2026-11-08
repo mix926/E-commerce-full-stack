@@ -4,7 +4,7 @@ import { Product } from '@prisma/client';
 import Link from 'next/link';
 import {
   ArrowRight, Star, ShieldCheck, Truck, RefreshCw,
-  Zap, TrendingUp, Sparkles, Tag, CheckCircle2,
+  Zap, TrendingUp, Tag, CheckCircle2,
 } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import { useLanguage } from '@/context/LanguageContext';
@@ -103,11 +103,6 @@ export default function HomeContent({ products, featuredProducts, searchQuery, c
 
               {/* ── Copy ── */}
               <div className="text-center lg:text-left" style={{ animation: 'fadeLeft .65s cubic-bezier(.22,1,.36,1) both' }}>
-
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold mb-6 bg-blue-50 text-blue-700 border border-blue-200 ring-2 ring-blue-100/50">
-                  <Sparkles className="w-4 h-4" />
-                  {t('home.hero.badge')}
-                </div>
 
                 <h1 className="font-black tracking-tight leading-tight mb-6" style={{ fontSize: 'clamp(1.875rem, 6vw, 3.75rem)' }}>
                   <span className="block text-slate-900">{t('home.hero.title1')}</span>
