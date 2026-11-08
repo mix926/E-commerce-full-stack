@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Sparkles, Search } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 interface NavCategoryBarProps {
@@ -55,20 +55,7 @@ export default function NavCategoryBar({ categories, categoryTranslations = {} }
         </div>
       </div>
 
-      {/* Mobile Search Bar */}
-      <div className="md:hidden px-4 pb-3">
-        <form action="/products" method="GET">
-          <div className="relative w-full">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              name="search"
-              type="text"
-              placeholder={t('nav.searchPlaceholder')}
-              className="w-full pl-10 pr-4 py-2.5 sm:py-3 text-xs sm:text-sm border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500/30 bg-gray-50 input-mobile"
-            />
-          </div>
-        </form>
-      </div>
+      {/* Mobile Search Bar removed — search accessible via hamburger menu */}
     </>
   );
 }
