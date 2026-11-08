@@ -47,8 +47,7 @@ function SignUpContent() {
 
         <div className="relative max-w-xs text-center z-10 animate-in fade-in slide-in-from-left-8 duration-700">
           {/* Logo */}
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl"
-            style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)', boxShadow: '0 20px 40px rgba(59,130,246,.25)' }}>
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl bg-gray-900">
             <ShoppingBag className="w-8 h-8 text-white" />
           </div>
           <h2 className="text-3xl font-black text-slate-900 mb-3">Join Our Store!</h2>
@@ -78,8 +77,7 @@ function SignUpContent() {
         <div className="w-full max-w-sm animate-in fade-in slide-in-from-right-8 duration-700">
 
           <div className="lg:hidden text-center mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg"
-              style={{ background: 'linear-gradient(135deg,#3b82f6,#6366f1)', boxShadow: '0 8px 24px rgba(59,130,246,.25)' }}>
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg bg-gray-900">
               <ShoppingBag className="w-6 h-6 text-white" />
             </div>
             <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Create Account</p>
