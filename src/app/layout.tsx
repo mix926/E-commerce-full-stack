@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={plusJakartaSans.variable}>
-      <body className="bg-gray-50 text-gray-900 min-h-screen flex flex-col antialiased font-sans">
+      <body className="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col antialiased font-sans transition-colors duration-200">
         <Providers>
           {/* Main Navigation */}
           <Navbar />

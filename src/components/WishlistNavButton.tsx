@@ -11,7 +11,7 @@ export default function WishlistNavButton() {
     <Link
       href="/wishlist"
       aria-label="Wishlist"
-      className="relative flex items-center text-gray-700 hover:text-rose-600 transition-colors p-2 rounded-lg hover:bg-gray-100"
+      className="relative flex items-center text-gray-700 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
     >
       <Heart className="w-5 h-5" />
       {wishlistCount > 0 && (

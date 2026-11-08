@@ -10,7 +10,7 @@ export default function NavAuthButtons() {
     <div className="hidden md:flex items-center gap-2">
       <Link
         href="/signin"
-        className="text-xs font-semibold text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-lg hover:bg-gray-50"
+        className="text-xs font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
       >
         {t('nav.signIn')}
       </Link>
